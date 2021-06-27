@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>位运算知识点汇总 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">位运算知识点汇总</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 23, 2021&nbsp;&nbsp;15:34:58</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9B%B8%E5%85%B3/">二进制相关</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[toc]</p>
+<p>位运算就是基于整数的二进制表示进行的运算。由于计算机内部就是以二进制来存储数据，位运算是相当快的。</p>
+<p>常用的运算符共 6 种，分别为与（ <code>&amp;</code> ）、或（ <code>|</code> ）、异或（ <code>^</code> ）、取反（ <code>~</code> ）、左移（ <code>&lt;&lt;</code> ）和右移（ <code>&gt;&gt;</code> ）。</p>
+<h2 id="与、或、异或"><a href="#与、或、异或" class="headerlink" title="与、或、异或"></a>与、或、异或</h2><p>与（ <code>&amp;</code> ）或（ <code>|</code> ）和异或（ <code>^</code> ）这三者都是两数间的运算，因此在这里一起讲解。</p>
+<p>它们都是将两个整数作为二进制数，对二进制表示中的每一位逐一运算。</p>
+<table>
+<thead>
+<tr>
+<th align="center">运算符</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>&amp;</code></td>
+<td align="center">只有两个对应位都为 1 时才为 1</td>
+</tr>
+<tr>
+<td align="center">`</td>
+<td align="center">`</td>
+</tr>
+<tr>
+<td align="center"><code>^</code></td>
+<td align="center">只有两个对应位不同时才为 1</td>
+</tr>
+</tbody></table>
+<p>异或运算的逆运算是它本身，也就是说两次异或同一个数最后结果不变，即 a ^ b ^ b = a 。</p>
+<h2 id="取反"><a href="#取反" class="headerlink" title="取反"></a>取反</h2><p>取反是对一个数 $num$ 进行的计算，即单目运算。</p>
+<p> <code>~</code> 把 $num$ 的补码中的 0 和 1 全部取反（0 变为 1，1 变为 0）。有符号整数的符号位在 <code>~</code> 运算中同样会取反。</p>
+<p>补码：在二进制表示下，正数和 0 的补码为其本身，负数的补码是将其对应正数按位取反后加一。</p>
+<p>举例（有符号整数）：</p>
+<p>$$<br>\begin{aligned}<br>5&amp;=(00000101)_2\<br>\text{<del>}5&amp;=(11111010)_2=-6\<br>-5\text{ 的补码}&amp;=(11111011)_2\<br>\text{</del>}(-5)&amp;=(00000100)_2=4<br>\end{aligned}<br>$$</p>
+<h2 id="左移和右移"><a href="#左移和右移" class="headerlink" title="左移和右移"></a>左移和右移</h2><p> <code>num &lt;&lt; i</code> 表示将 $num$ 的二进制表示向左移动 $i$ 位所得的值。</p>
+<p> <code>num &gt;&gt; i</code> 表示将 $num$ 的二进制表示向右移动 $i$ 位所得的值。</p>
+<p>举例：</p>
+<p>$$<br>\begin{aligned}<br>11&amp;=(00001011)_2\<br>11&lt;&lt;3&amp;=(01011000)_2=88\<br>11&gt;&gt;2&amp;=(00000010)_2=2<br>\end{aligned}<br>$$</p>
+<p>移位运算中如果出现如下情况，则其行为未定义：</p>
+<ol>
+<li>右操作数（即移位数）为负值；</li>
+<li>右操作数大于等于左操作数的位数；</li>
+</ol>
+<h2 id="复合赋值位运算符"><a href="#复合赋值位运算符" class="headerlink" title="复合赋值位运算符"></a>复合赋值位运算符</h2><p>和 <code>+=</code> , <code>-=</code> 等运算符类似，位运算也有复合赋值运算符： <code>&amp;=</code> , <code>|=</code> , <code>^=</code> , <code>&lt;&lt;=</code> , <code>&gt;&gt;=</code> 。（取反是单目运算，所以没有。）</p>
+<h2 id="关于优先级"><a href="#关于优先级" class="headerlink" title="关于优先级"></a>关于优先级</h2><p>位运算的优先级低于算术运算符（除了取反），而按位与、按位或及异或低于比较运算符（详见 <a href="../lang/op.md">运算页面</a> ），所以使用时需多加注意，在必要时添加括号。</p>
+<h2 id="位运算的应用"><a href="#位运算的应用" class="headerlink" title="位运算的应用"></a>位运算的应用</h2><p>位运算一般有三种作用：</p>
+<ol>
+<li><p>高效地进行某些运算，代替其它低效的方式。</p>
+</li>
+<li><p>表示集合。（常用于 <a href="../dp/state.md">状压 DP</a> 。）</p>
+</li>
+<li><p>题目本来就要求进行位运算。</p>
+</li>
+</ol>
+<p>需要注意的是，用位运算代替其它运算方式（即第一种应用）在很多时候并不能带来太大的优化，反而会使代码变得复杂，使用时需要斟酌。（但像“乘 2 的非负整数次幂”和“除以 2 的非负整数次幂”就最好使用位运算，因为此时使用位运算可以优化复杂度。）</p>
+<h3 id="乘-2-的非负整数次幂"><a href="#乘-2-的非负整数次幂" class="headerlink" title="乘 2 的非负整数次幂"></a>乘 2 的非负整数次幂</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mulPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;  <span class="comment">// 计算 n*(2^m)</span></span><br><span class="line">  <span class="keyword">return</span> n &lt;&lt; m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="除以-2-的非负整数次幂"><a href="#除以-2-的非负整数次幂" class="headerlink" title="除以 2 的非负整数次幂"></a>除以 2 的非负整数次幂</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">divPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;  <span class="comment">// 计算 n/(2^m)</span></span><br><span class="line">  <span class="keyword">return</span> n &gt;&gt; m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>!!! warning<br>    我们平常写的除法是向 0 取整，而这里的右移是向下取整（注意这里的区别），即当数大于等于 0 时两种方法等价，当数小于 0 时会有区别，如： <code>-1 / 2</code> 的值为 $0$ ，而 <code>-1 &gt;&gt; 1</code> 的值为 $-1$ 。</p>
+<h3 id="判断一个数是不是-2-的非负整数次幂"><a href="#判断一个数是不是-2-的非负整数次幂" class="headerlink" title="判断一个数是不是 2 的非负整数次幂"></a>判断一个数是不是 2 的非负整数次幂</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123; <span class="keyword">return</span> n &gt; <span class="number">0</span> &amp;&amp; (n &amp; (n - <span class="number">1</span>)) == <span class="number">0</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="对-2-的非负整数次幂取模"><a href="#对-2-的非负整数次幂取模" class="headerlink" title="对 2 的非负整数次幂取模"></a>对 2 的非负整数次幂取模</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">modPowerOfTwo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> mod)</span> </span>&#123; <span class="keyword">return</span> x &amp; (mod - <span class="number">1</span>); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="取绝对值"><a href="#取绝对值" class="headerlink" title="取绝对值"></a>取绝对值</h3><p>在某些机器上，效率比 <code>n &gt; 0 ? n : -n</code> 高。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Abs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (n ^ (n &gt;&gt; <span class="number">31</span>)) - (n &gt;&gt; <span class="number">31</span>);</span><br><span class="line">  <span class="comment">/* n&gt;&gt;31 取得 n 的符号，若 n 为正数，n&gt;&gt;31 等于 0，若 n 为负数，n&gt;&gt;31 等于 -1</span></span><br><span class="line"><span class="comment">     若 n 为正数 n^0=n, 数不变，若 n 为负数有 n^(-1)</span></span><br><span class="line"><span class="comment">     需要计算 n 和 -1 的补码，然后进行异或运算，</span></span><br><span class="line"><span class="comment">     结果 n 变号并且为 n 的绝对值减 1，再减去 -1 就是绝对值 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="取两个数的最大-最小值"><a href="#取两个数的最大-最小值" class="headerlink" title="取两个数的最大/最小值"></a>取两个数的最大/最小值</h3><p>在某些机器上，效率比 <code>a &gt; b ? a : b</code> 高。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果 a&gt;=b,(a-b)&gt;&gt;31 为 0，否则为 -1</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> b &amp; ((a - b) &gt;&gt; <span class="number">31</span>) | a &amp; (~(a - b) &gt;&gt; <span class="number">31</span>); &#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">min</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a &amp; ((a - b) &gt;&gt; <span class="number">31</span>) | b &amp; (~(a - b) &gt;&gt; <span class="number">31</span>); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="判断符号是否相同"><a href="#判断符号是否相同" class="headerlink" title="判断符号是否相同"></a>判断符号是否相同</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSameSign</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;  <span class="comment">// 有 0 的情况例外</span></span><br><span class="line">  <span class="keyword">return</span> (x ^ y) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="交换两个数"><a href="#交换两个数" class="headerlink" title="交换两个数"></a>交换两个数</h3><p>note: “该方法具有局限性”<br>    这种方式只能用来交换两个整数，使用范围有限。</p>
+<pre><code>对于一般情况下的交换操作，推荐直接调用 `algorithm` 库中的 `std::swap` 函数。</code></pre><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span> </span>&#123; a ^= b ^= a ^= b; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取一个数二进制的某一位"><a href="#获取一个数二进制的某一位" class="headerlink" title="获取一个数二进制的某一位"></a>获取一个数二进制的某一位</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取 a 的第 b 位，最低位编号为 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getBit</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> (a &gt;&gt; b) &amp; <span class="number">1</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="将一个数二进制的某一位设置为-0"><a href="#将一个数二进制的某一位设置为-0" class="headerlink" title="将一个数二进制的某一位设置为 0"></a>将一个数二进制的某一位设置为 0</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将 a 的第 b 位设置为 0 ，最低位编号为 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">unsetBit</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a &amp; ~(<span class="number">1</span> &lt;&lt; b); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="将一个数二进制的某一位设置为-1"><a href="#将一个数二进制的某一位设置为-1" class="headerlink" title="将一个数二进制的某一位设置为 1"></a>将一个数二进制的某一位设置为 1</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将 a 的第 b 位设置为 1 ，最低位编号为 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setBit</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a | (<span class="number">1</span> &lt;&lt; b); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="将一个数二进制的某一位取反"><a href="#将一个数二进制的某一位取反" class="headerlink" title="将一个数二进制的某一位取反"></a>将一个数二进制的某一位取反</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将 a 的第 b 位取反 ，最低位编号为 0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">flapBit</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a ^ (<span class="number">1</span> &lt;&lt; b); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表示集合"><a href="#表示集合" class="headerlink" title="表示集合"></a>表示集合</h3><p>一个数的二进制表示可以看作是一个集合（0 表示不在集合中，1 表示在集合中）。比如集合 <code>{1, 3, 4, 8}</code> ，可以表示成 $(100011010)_2$ 。而对应的位运算也就可以看作是对集合进行的操作。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th align="center">集合表示</th>
+<th align="center">位运算语句</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>交集</td>
+<td align="center">$a \cap b$</td>
+<td align="center"><code>a &amp; b</code></td>
+</tr>
+<tr>
+<td>并集</td>
+<td align="center">$a \cup b$</td>
+<td align="center">`a</td>
+</tr>
+<tr>
+<td>补集</td>
+<td align="center">$\bar{a}$</td>
+<td align="center"><code>~a</code> （全集为二进制都是 1）</td>
+</tr>
+<tr>
+<td>差集</td>
+<td align="center">$a \setminus b$</td>
+<td align="center"><code>a &amp; (~b)</code></td>
+</tr>
+<tr>
+<td>对称差</td>
+<td align="center">$a\triangle b$</td>
+<td align="center"><code>a ^ b</code></td>
+</tr>
+</tbody></table>
+<h3 id="遍历某个集合的子集"><a href="#遍历某个集合的子集" class="headerlink" title="遍历某个集合的子集"></a>遍历某个集合的子集</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 遍历 u 的非空子集</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> s = u; s; s = (s - <span class="number">1</span>) &amp; u) &#123;</span><br><span class="line">  <span class="comment">// s 是 u 的一个非空子集</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用这种方法可以在 $O(2^{popcount(u)})$ （ $popcount(u)$ 表示 $u$ 二进制中 1 的个数）的时间复杂度内遍历 $u$ 的子集，进而可以在 $O(3^n)$ 的时间复杂度内遍历大小为 $n$ 的集合的每个子集的子集。（复杂度为 $O(3^n)$ 是因为每个元素都有 不在大子集中/只在大子集中/同时在大小子集中 三种状态。）</p>
+<h2 id="bitset"><a href="#bitset" class="headerlink" title="bitset"></a>bitset</h2><p>如果需要操作的集合非常大，可以使用 bitset 。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"># 位运算</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/06/11/CPP-little-problem/">CPP-little-problem</a>
+            
+            
+            <a class="next" rel="next" href="/2021/04/06/Java-HashMap/">Java_HashMap</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

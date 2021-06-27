@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>Win10 Linux SubSystem | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Win10 Linux SubSystem</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 20, 2021&nbsp;&nbsp;19:14:23</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Linux/">Linux</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>今天一个同学问我能不能帮忙运行一下一个cpp程序, 但是是linux下mingw标准的.<br>我电脑不太行, 一直没装虚拟机, 但是知道有wsl(Windows Subsystem for Linux)这个东西, 子系统, 并且可以直接win10软件商城下载, 超级方便, 今天正好顺便学学吧.</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Win10 应用商店直接搜索Linux, 会出来很多发行版, 我选择第一个”Ubuntu”</p>
+<p>点击下载就可以了</p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>第一期启动, 需要”好几分钟”配置时间<br>黑色框中显示:”Installing, this may take a few minutes…”</p>
+<p>等待一段时间后, 会出来几行内容, 让你创建用户, 输入用户名(自己随便输入一个即可), 然后输入密码, 再然后重复输入一下密码确认, 就行了.</p>
+<h3 id="初体验"><a href="#初体验" class="headerlink" title="初体验"></a>初体验</h3><h4 id="第一步-进入管理员模式"><a href="#第一步-进入管理员模式" class="headerlink" title="第一步: 进入管理员模式"></a>第一步: 进入管理员模式</h4><p>很多网上博客没提到的是: 要先进入管理员模式, 不然vim无法保存内容的哦!</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -i</span><br></pre></td></tr></table></figure>
+<h4 id="第二步-更换镜像源"><a href="#第二步-更换镜像源" class="headerlink" title="第二步: 更换镜像源"></a>第二步: 更换镜像源</h4><p>不会吧, 不会吧, 不会有人下载速度 20 B/s叭?<br>外国网站访问下载超慢, 但我们可以用阿里/网易/清华的镜像源.</p>
+<p>实测在我这里, 阿里比清华快好多倍的样子, <strong>请各位自行测试选择</strong></p>
+<h5 id="1-备份原来的源"><a href="#1-备份原来的源" class="headerlink" title="1. 备份原来的源"></a>1. 备份原来的源</h5><p>其实可有可无</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.<span class="built_in">list</span> /etc/apt/sources.<span class="built_in">list</span>.bak</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-vim打开并编辑"><a href="#2-vim打开并编辑" class="headerlink" title="2. vim打开并编辑"></a>2. vim打开并编辑</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/apt/sources.<span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-vim使用"><a href="#3-vim使用" class="headerlink" title="3. vim使用"></a>3. vim使用</h5><p>进去直接按i, 进入插入模式<br>然后把所有没注释的行注释, 找个空把第四条内的源复制进去<br>按esc, 输入” : + w + q”即可保存退出</p>
+<h5 id="4-镜像源"><a href="#4-镜像源" class="headerlink" title="4. 镜像源"></a>4. 镜像源</h5><p>阿里镜像(20.04版本, 如果过时请直接访问阿里云开发者社区[<a href="https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b11cUMLJB]" target="_blank" rel="noopener">https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b11cUMLJB]</a>):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-security main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-updates main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-proposed main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-backports main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<p>清华镜像(20.04版本, 如果过时请直接访问清华镜像站[<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/]" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/]</a>):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse</span></span></span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse</span></span></span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse</span></span></span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse</span></span></span><br><span class="line"></span><br><span class="line"># 预发布软件源，不建议启用</span><br><span class="line"><span class="meta"># deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse</span></span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse</span></span></span><br></pre></td></tr></table></figure>
+
+<p>其他公司镜像自行百度.</p>
+<h5 id="5-刷新下载源"><a href="#5-刷新下载源" class="headerlink" title="5. 刷新下载源"></a>5. 刷新下载源</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> update</span><br></pre></td></tr></table></figure>
+
+<h4 id="第三步-安装编译环境"><a href="#第三步-安装编译环境" class="headerlink" title="第三步: 安装编译环境"></a>第三步: 安装编译环境</h4><p>比较统一的是: 只需要安装”build-essential”包就全都有了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install build-essential</span><br></pre></td></tr></table></figure>
+
+<p>安装codeblocks:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> update</span><br><span class="line"></span><br><span class="line">sudo apt-<span class="built_in">get</span> install codeblocks</span><br><span class="line"></span><br><span class="line">sudo apt-<span class="built_in">get</span> install codeblocks-contrib</span><br></pre></td></tr></table></figure>
+
+<h4 id="第四步-安装图形用户界面"><a href="#第四步-安装图形用户界面" class="headerlink" title="第四步: 安装图形用户界面"></a>第四步: 安装图形用户界面</h4><p><a href="https://sourceforge.net/projects/xming/" target="_blank" rel="noopener">https://sourceforge.net/projects/xming/</a><br>要用到外部软件 Xming<br>安装后打开Xlaunch，选择 “multiple windows”，一直下一步就行了, 默认端口0<br>命令输入 DISPLAY=:0 codeblocks，即可打开</p>
+<p>成功打开! 恭喜完成各项配置, 你可以在win10系统下使用codeblocks编写C/C++代码, 运行于linux下标准了!</p>
+<h4 id="第五步-各种错误怎么办"><a href="#第五步-各种错误怎么办" class="headerlink" title="第五步: 各种错误怎么办!"></a>第五步: 各种错误怎么办!</h4><p>我也遇到国很多错误, 先百度, 实在不行就重装!</p>
+<p>在CMD中, 注意是<strong>CMD</strong>, 输入”wslconfig /u Ubuntu”即可卸载<br>(cmd中输入wsl也可以进入子系统的)</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/WSL/"># WSL</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/03/13/VScode%E7%BC%96%E8%BE%91Markdown%E8%AE%BE%E7%BD%AE/">VScode编辑Markdown设置</a>
+            
+            
+            <a class="next" rel="next" href="/2021/01/18/javascript-no-1/">javascript no.1</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

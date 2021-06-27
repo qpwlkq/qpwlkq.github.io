@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>我常用的快捷键 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">我常用的快捷键</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 29, 2020&nbsp;&nbsp;21:48:22</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88/">经验之谈</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>百度他不香吗?</p>
+<p>快捷键学会常用的就行, 快速提高使用舒适度和速度<br>尽可能脱离鼠标, 毕竟电脑最开始么有鼠标这玩意, 并且你是专业的 .</p>
+<p>最后列举了几个常用的Windows快捷键. 有些快捷键我也不用, 不管<br>有的功能可能描述不太准确, 自己动手用过之后才能知道到底怎么用</p>
+<h2 id="想不想玩转computer"><a href="#想不想玩转computer" class="headerlink" title="想不想玩转computer?"></a>想不想玩转computer?</h2><h3 id="想不想让人直呼内行"><a href="#想不想让人直呼内行" class="headerlink" title="想不想让人直呼内行?"></a>想不想让人直呼内行?</h3><h4 id="想不想被大家顶礼膜拜"><a href="#想不想被大家顶礼膜拜" class="headerlink" title="想不想被大家顶礼膜拜?"></a>想不想被大家顶礼膜拜?</h4><h2 id="那就学些快捷键吧"><a href="#那就学些快捷键吧" class="headerlink" title="那就学些快捷键吧!!!"></a>那就学些快捷键吧!!!</h2><h2 id="1-最常用"><a href="#1-最常用" class="headerlink" title="1. 最常用"></a>1. 最常用</h2><pre><code>CTRL + F 查找
+CTRL + R 替换
+CTRL + C/V/X 复制/粘贴/剪切
+CTRL + A 全选
+CTRL + X 剪切
+
+CTRL + Shift + C/X 注释一行或者选中行/取消注释
+CTRL + 滚轮(鼠标中间) 放大缩小
+CTRL + D 向下复制一行
+
+ALT + ↑/↓ 上移/下移代码
+CTRL + L 剪切, 但是我把它当作删除一行使用...................滑稽</code></pre><p><strong>上面的快捷键几乎对于所有的软件通用, 和Windows系统</strong></p>
+<h2 id="2-关于编译器"><a href="#2-关于编译器" class="headerlink" title="2. 关于编译器"></a>2. 关于编译器</h2><h3 id="2-1-code-blocks"><a href="#2-1-code-blocks" class="headerlink" title="2.1 code::blocks:"></a>2.1 code::blocks:</h3><p>CTRL + F9 编译<br><strong>右键可以格式化代码</strong><br>太白了, 虽然可以更换主题, 但是主程序上面的工具栏无法更改, 好用是好用, 晚上对眼不好</p>
+<pre><code>ctrl + C 终止程序(开启编译后再黑色运行框框中)
+ctrl + Z 终止输入</code></pre><h3 id="2-2-Visual-studios"><a href="#2-2-Visual-studios" class="headerlink" title="2.2 Visual studios :"></a>2.2 Visual studios :</h3><p>Shift + F5 编译<br><strong>ctrl + A 全选之后, 按下Ctrl + K , 松开, 再按Ctrl + F, 格式化代码!!!</strong></p>
+<p>黑色主题比较好看, 还算比较好用, 总体比较大, 写工程用的, 其实有点小题大做<br>时候的时候, 要关掉安全开发周期<br>注意不是标准的C++版本!!!<br>常常与CB输出不一样.<br>微软nb呗</p>
+<h3 id="CLion-Dev-…"><a href="#CLion-Dev-…" class="headerlink" title="CLion, Dev, …"></a>CLion, Dev, …</h3><p>不知道<br>其他编译器不管</p>
+<h3 id="4-Windows-10系统快捷键"><a href="#4-Windows-10系统快捷键" class="headerlink" title="4. Windows  10系统快捷键"></a>4. Windows  10系统快捷键</h3><h2 id="强烈推荐"><a href="#强烈推荐" class="headerlink" title="强烈推荐!!! :"></a>强烈推荐!!! :</h2><p>Win + ←/→/↑/↓  能够分屏!<br>Win + I 设置<br>ALT + TAB 切换当前窗口<br>Win + X 开始菜单<br>Win + D 最小化所有窗口, 返回桌面<br>Win + L 锁屏防偷窥<br>Win + E 文件资源管理器<br>Win + T/数字键 选择任务栏<br>CTRL + Shift + Esc 任务管理器<br>ALT + F4 关闭<br>windows + W 截屏</p>
+<h2 id="5-浏览器快捷键-浏览器太多了-自己百度吧-同等重要"><a href="#5-浏览器快捷键-浏览器太多了-自己百度吧-同等重要" class="headerlink" title="5. 浏览器快捷键, 浏览器太多了, 自己百度吧(同等重要)"></a>5. 浏览器快捷键, 浏览器太多了, 自己百度吧(同等重要)</h2>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/09/30/%E5%90%84%E7%A7%8DIDE%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81%E5%BF%AB%E6%8D%B7%E9%94%AE/">各种IDE格式化代码快捷键</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/29/HDU-6739-Invoker-%E7%BA%BF%E6%80%A7DP/">HDU-6739-Invoker-线性DP</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

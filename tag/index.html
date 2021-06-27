@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>tag | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            
+
+    <div class="container">
+        <div class="post-wrap tags">
+            <h2 class="post-title">-&nbsp;Tag Cloud&nbsp;-</h2>
+
+            <div class="tag-cloud-tags">
+                
+                    <a href="/tags/%E8%B4%AA%E5%BF%83/">贪心<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">字符串匹配<small>(1)</small></a>
+                
+                    <a href="/tags/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%BB%9F%E8%AE%A1/">算法复杂度统计<small>(1)</small></a>
+                
+                    <a href="/tags/6/">6<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%90%9C%E7%B4%A2/">搜索<small>(19)</small></a>
+                
+                    <a href="/tags/%E5%B7%AE%E5%88%86/">差分<small>(1)</small></a>
+                
+                    <a href="/tags/EXGCD/">EXGCD<small>(1)</small></a>
+                
+                    <a href="/tags/cpp-JJ/">cpp_JJ<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串<small>(2)</small></a>
+                
+                    <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/">二进制<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%B0%BA%E5%8F%96/">尺取<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划<small>(1)</small></a>
+                
+                    <a href="/tags/HashMap/">HashMap<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%95%B0%E5%AD%A6/">数学<small>(1)</small></a>
+                
+                    <a href="/tags/Java/">Java<small>(1)</small></a>
+                
+                    <a href="/tags/kmp/">kmp<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%95%B0%E8%AE%BA%E5%88%86%E5%9D%97/">数论分块<small>(1)</small></a>
+                
+                    <a href="/tags/LCA-Tarjan/">LCA-Tarjan<small>(1)</small></a>
+                
+                    <a href="/tags/LCA-Tarjan%E7%AE%97%E6%B3%95/">LCA-Tarjan算法<small>(1)</small></a>
+                
+                    <a href="/tags/Java%E5%A4%A7%E6%95%B0/">Java大数<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/">单调队列<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86/">容斥原理<small>(1)</small></a>
+                
+                    <a href="/tags/Min-25/">Min_25<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">树状数组<small>(1)</small></a>
+                
+                    <a href="/tags/4/">4<small>(1)</small></a>
+                
+                    <a href="/tags/RMQ%E9%97%AE%E9%A2%98/">RMQ问题<small>(1)</small></a>
+                
+                    <a href="/tags/DB/">DB<small>(2)</small></a>
+                
+                    <a href="/tags/ST%E8%A1%A8/">ST表<small>(1)</small></a>
+                
+                    <a href="/tags/STL/">STL<small>(2)</small></a>
+                
+                    <a href="/tags/SpringBoot2-5x/">SpringBoot2.5x<small>(1)</small></a>
+                
+                    <a href="/tags/%E5%AD%97%E5%85%B8%E6%A0%91/">字典树<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%A8%A1%E6%8B%9F/">模拟<small>(1)</small></a>
+                
+                    <a href="/tags/WSL/">WSL<small>(1)</small></a>
+                
+                    <a href="/tags/ac%E8%87%AA%E5%8A%A8%E6%9C%BA/">ac自动机<small>(1)</small></a>
+                
+                    <a href="/tags/VScode/">VScode<small>(1)</small></a>
+                
+                    <a href="/tags/1/">1<small>(1)</small></a>
+                
+                    <a href="/tags/hash%E5%93%88%E5%B8%8C/">hash哈希<small>(1)</small></a>
+                
+                    <a href="/tags/Javascript/">Javascript<small>(1)</small></a>
+                
+                    <a href="/tags/2/">2<small>(1)</small></a>
+                
+                    <a href="/tags/java/">java<small>(1)</small></a>
+                
+                    <a href="/tags/LIS/">LIS<small>(1)</small></a>
+                
+                    <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算<small>(1)</small></a>
+                
+                    <a href="/tags/js/">js<small>(1)</small></a>
+                
+                    <a href="/tags/3/">3<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%89%B9%E5%A4%84%E7%90%86/">批处理<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E6%8F%92%E5%80%BC/">拉格朗日插值<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%A8%A1%E6%9D%BF/">模板<small>(3)</small></a>
+                
+                    <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81/">格式化代码<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%AC%A7%E6%8B%89%E9%99%8D%E5%B9%82/">欧拉降幂<small>(1)</small></a>
+                
+                    <a href="/tags/%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0/">欧拉函数<small>(1)</small></a>
+                
+                    <a href="/tags/%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88/">经验之谈<small>(1)</small></a>
+                
+                    <a href="/tags/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/">矩阵快速幂<small>(1)</small></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

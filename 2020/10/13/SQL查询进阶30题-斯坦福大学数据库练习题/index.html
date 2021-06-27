@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>SQL查询进阶30题(斯坦福大学数据库练习题) | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">SQL查询进阶30题(斯坦福大学数据库练习题)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 13, 2020&nbsp;&nbsp;16:58:09</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="进阶30题"><a href="#进阶30题" class="headerlink" title="进阶30题"></a>进阶30题</h2><p>ps : 上一篇基础30题看不看初始化代码都无所谓, 但是这20个题目, 不能不看.</p>
+<ol start="1030">
+<li><p>Find the titles(<strong>title</strong>) of all movies directed by Steven Spielberg</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title</span><br><span class="line">    <span class="keyword">from</span> movie</span><br><span class="line">    <span class="keyword">where</span> Director = <span class="string">"Steven Spielberg"</span></span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Find all years(<strong>year</strong>) that have a movie that received a rating of 4 or 5, and sort them in increasing order.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">year</span></span><br><span class="line">    <span class="keyword">from</span> rating, movie</span><br><span class="line">    <span class="keyword">where</span> stars &gt; <span class="number">3</span> <span class="keyword">and</span> movie.mid = rating.mid</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">year</span> <span class="keyword">asc</span></span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Find the titles(<strong>title</strong>) of all movies that have no ratings.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title</span><br><span class="line">    <span class="keyword">from</span> movie <span class="keyword">left</span> <span class="keyword">join</span> rating <span class="keyword">on</span> movie.mid = rating.mid</span><br><span class="line">    <span class="keyword">where</span> stars <span class="keyword">is</span> <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Some reviewers didn’t provide a date with their rating.<br>Find the names(<strong>name</strong>) of all reviewers who have ratings with a NULL value for the date.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">name</span></span><br><span class="line">    <span class="keyword">from</span> rating <span class="keyword">left</span> <span class="keyword">join</span> reviewer <span class="keyword">on</span> rating.rid = reviewer.rid</span><br><span class="line">    <span class="keyword">where</span> ratingDate <span class="keyword">is</span> <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Write a query to return the ratings data in a more readable format: <strong>reviewer name, movie title, stars</strong>, and <strong>ratingDate</strong>.<br>Also, sort the data, first by reviewer name, then by movie title, and lastly by number of stars.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> reviewer.name, movie.title, rating.stars, rating.ratingDate</span><br><span class="line">    <span class="keyword">from</span> movie, reviewer, rating</span><br><span class="line">    <span class="keyword">where</span> movie.mid = rating.mid <span class="keyword">and</span> rating.rid = reviewer.rid</span><br><span class="line">		<span class="keyword">order</span> <span class="keyword">by</span> reviewer.name, movie.title, rating.stars, rating.ratingDate</span><br></pre></td></tr></table></figure>
+<p>PS: 之前想多了, 总想着把三个表连接起来, 有选项为空是没问题的<br>&nbsp;</p>
+</li>
+<li><p>For all cases where the same reviewer rated the same movie twice and gave it a higher rating the second time, return the reviewer’s <strong>name</strong> and the <strong>title</strong> of the movie.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, title </span><br><span class="line">    <span class="keyword">from</span> movie, reviewer, rating r1, rating r2</span><br><span class="line">        <span class="keyword">where</span> movie.mid = r1.mid </span><br><span class="line">        <span class="keyword">and</span> r1.rid = reviewer.rid </span><br><span class="line">        <span class="keyword">and</span> r1.mid = r2.mid <span class="keyword">and</span> r1.rid = r2.rid </span><br><span class="line">        <span class="keyword">and</span> r1.ratingDate &lt; r2.ratingDate </span><br><span class="line">        <span class="keyword">and</span> r1.stars &lt; r2.stars</span><br></pre></td></tr></table></figure>
+<p>PS: rating r1, rating r2 同时定义了两个rating表, “rating”就不能直接用了, 只能用r1/r2<br>&nbsp;</p>
+</li>
+<li><p>标号有点问题, 20个题目,第一题题号1030, 最后一个是1050, 所以中间跳过一个编号才是20题……OwO<br>&nbsp;</p>
+</li>
+<li><p>List movie titles(<strong>title</strong>) and average ratings(<strong>stars</strong>), from highest-rated to lowest-rated.<br>If two or more movies have the same average rating, list them in alphabetical order.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title, <span class="keyword">avg</span>(stars) <span class="keyword">as</span> stars</span><br><span class="line">    <span class="keyword">from</span> movie <span class="keyword">inner</span> <span class="keyword">join</span> rating <span class="keyword">on</span> movie.mid = rating.mid</span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> movie.mid</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">avg</span>(stars) <span class="keyword">desc</span>, title</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title, <span class="keyword">avg</span>(stars) <span class="keyword">as</span> stars</span><br><span class="line">    <span class="keyword">from</span> movie, rating</span><br><span class="line">        <span class="keyword">where</span> movie.mid = rating.mid <span class="keyword">and</span> stars <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> rating.mid</span><br><span class="line">        <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">avg</span>(stars) <span class="keyword">desc</span>, title</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title, new.avgstars <span class="keyword">as</span> stars</span><br><span class="line">    <span class="keyword">from</span> movie <span class="keyword">join</span> (<span class="keyword">select</span> rating.mid, <span class="keyword">avg</span>(rating.stars) <span class="keyword">as</span> avgstars</span><br><span class="line">                     <span class="keyword">from</span> rating</span><br><span class="line">                     <span class="keyword">group</span> <span class="keyword">by</span> rating.mid) <span class="keyword">as</span> <span class="keyword">new</span></span><br><span class="line">    <span class="keyword">on</span> movie.mid = new.mid</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> new.avgstars <span class="keyword">desc</span>, title;</span><br></pre></td></tr></table></figure>
+<p>PS: 三种方法, 我换来换去, 结果发现没用”as stars”, 加上都过了, 我吐了你呢?<br>&nbsp;</p>
+</li>
+<li><p>Find the names(<strong>name</strong>) of all reviewers who have contributed three or more ratings. (As an extra challenge, try writing the query without HAVING or without COUNT.)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span></span><br><span class="line">    <span class="keyword">from</span> rating, reviewer</span><br><span class="line">    <span class="keyword">where</span> rating.rid = reviewer.rid</span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> rating.rid <span class="keyword">having</span> <span class="keyword">count</span>(rating.rid) &gt; <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Find the names(<strong>name</strong>) of all reviewers who rated Gone with the Wind.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">name</span></span><br><span class="line">    <span class="keyword">from</span> rating, reviewer, movie</span><br><span class="line">        <span class="keyword">where</span> rating.rid = reviewer.rid <span class="keyword">and</span> rating.mid = movie.mid <span class="keyword">and</span> movie.title = <span class="string">"Gone with the Wind"</span></span><br></pre></td></tr></table></figure>
+<p>PS : 电影名字可能会重复, 故不能写编号, 但是评论家的名字为啥不能重复?<br>&nbsp;</p>
+</li>
+<li><p>For any rating where the reviewer is the same as the director of the movie, return the <strong>reviewer name</strong>, <strong>movie title</strong>, and number of <strong>stars</strong>.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, title, stars</span><br><span class="line">    <span class="keyword">from</span> movie, reviewer, rating</span><br><span class="line">        <span class="keyword">where</span> movie.director = reviewer.name <span class="keyword">and</span> movie.mid = rating.mid <span class="keyword">and</span> rating.rid = reviewer.rid</span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Return all reviewer names(<strong>name</strong>) and movie names together in a single list, alphabetized.  (Sorting by the first name of the reviewer and first word in the title is fine; no need for special processing on last names or removing “The”.) </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> reviewer</span><br><span class="line">    <span class="keyword">union</span></span><br><span class="line">    <span class="keyword">select</span> title <span class="keyword">as</span> <span class="keyword">name</span> <span class="keyword">from</span> movie</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">name</span>;</span><br></pre></td></tr></table></figure>
+<p>PS: “Union”, 粉墨登场<br>&nbsp;</p>
+</li>
+<li><p>Find the titles(<strong>title</strong>) of all movies not reviewed by Chris Jackson.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title</span><br><span class="line">    <span class="keyword">from</span> movie</span><br><span class="line">    <span class="keyword">where</span> <span class="keyword">mid</span> <span class="keyword">not</span> <span class="keyword">in</span> (</span><br><span class="line">	<span class="keyword">select</span> <span class="keyword">mid</span></span><br><span class="line">    <span class="keyword">from</span> rating <span class="keyword">inner</span> <span class="keyword">join</span> reviewer <span class="keyword">using</span>(rid)</span><br><span class="line">    <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">"Chris Jackson"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>For all pairs of reviewers such that both reviewers gave a rating to the same movie, return the names of both reviewers(<strong>reviewer_name1, reviewer_name2</strong>). Eliminate duplicates, don’t pair reviewers with themselves, and include each pair only once. For each pair, return the names in the pair in alphabetical order.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> r1.name <span class="keyword">as</span> reviewer_name1, r2.name <span class="keyword">as</span> reviewer_name2</span><br><span class="line">    <span class="keyword">from</span> reviewer r1, reviewer r2, rating rt1, rating rt2</span><br><span class="line">        <span class="keyword">where</span> r1.name &lt; r2.name</span><br><span class="line">        <span class="keyword">and</span> r1.rid = rt1.rid</span><br><span class="line">        <span class="keyword">and</span> r2.rid = rt2.rid</span><br><span class="line">        <span class="keyword">and</span> rt1.mid = rt2.mid;</span><br></pre></td></tr></table></figure>
+<p>PS: ???<br>&nbsp;</p>
+</li>
+<li><p>For each rating that is the lowest (fewest stars) currently in the database, return the reviewer <strong>name</strong>, movie <strong>title</strong>, and number of <strong>stars</strong>.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> r.name, m.title, rt.stars</span><br><span class="line">    <span class="keyword">from</span> rating rt</span><br><span class="line">    <span class="keyword">left</span> <span class="keyword">join</span> reviewer r <span class="keyword">on</span> r.rid = rt.rid</span><br><span class="line">   	<span class="keyword">left</span> <span class="keyword">join</span> movie m <span class="keyword">on</span> rt.mid = m.mid</span><br><span class="line">    <span class="keyword">where</span> rt.stars <span class="keyword">in</span> (<span class="keyword">select</span> <span class="keyword">min</span>(stars) <span class="keyword">from</span> rating);</span><br></pre></td></tr></table></figure>
+<p>PS: ???<br>&nbsp;</p>
+</li>
+<li><p>List movie titles(<strong>title</strong>) and average ratings(<strong>avg_rating</strong>), from highest-rated to lowest-rated. If two or more movies have the same average rating, list them in alphabetical order.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title, <span class="keyword">avg</span>(stars) <span class="keyword">as</span> avg_rating</span><br><span class="line">    <span class="keyword">from</span> movie <span class="keyword">inner</span> <span class="keyword">join</span> rating <span class="keyword">using</span>(<span class="keyword">mid</span>)</span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> movie.mid</span><br><span class="line">    	<span class="keyword">order</span> <span class="keyword">by</span> avg_rating <span class="keyword">desc</span>, title</span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Find the names(<strong>name</strong>) of all reviewers who have contributed three or more ratings. (As an extra challenge, try writing the query without HAVING or without COUNT.)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">name</span></span><br><span class="line">    <span class="keyword">from</span> reviewer <span class="keyword">inner</span> <span class="keyword">join</span> rating <span class="keyword">using</span> (rid)</span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> reviewer.rid <span class="keyword">having</span> <span class="keyword">count</span>(*) &gt;= <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>PS: 对于extra challenge, 我表示无能为力O.o<br>&nbsp;</p>
+</li>
+<li><p>Some directors directed more than one movie. For all such directors, return the titles(<strong>title</strong>) of all movies directed by them, along with the director name. Sort by director name(<strong>director</strong>), then movie title. (As an ex</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title, d1.director</span><br><span class="line">    <span class="keyword">from</span> movie d1</span><br><span class="line">    <span class="keyword">where</span> title <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">    <span class="keyword">and</span> director <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">    <span class="keyword">and</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*)</span><br><span class="line">        <span class="keyword">from</span> movie d2</span><br><span class="line">         <span class="keyword">where</span> d1.director = d2.director</span><br><span class="line">        ) &gt; <span class="number">1</span></span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> d1.director, title</span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Find the movie(s) with the highest average rating. Return the movie <strong>title</strong>(s) and average rating(<strong>avg_rating</strong>).<br>(<em>Hint</em>: This query is more difficult to write in SQLite than other systems; you might think of it as finding the highest average rating and then choosing the movie(s) with that average rating.)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+<li><p>Find the movie(s) with the lowest average rating. Return the movie <strong>title</strong>(s) and average rating(<strong>avg_rating</strong>). (<em>Hint</em>: This query may be more difficult to write in SQLite than other systems; you might think of it as finding the lowest average rating and then choosing the movie(s) with that average rating.)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">&amp;nbsp;</span><br><span class="line"></span><br><span class="line">1050. For each director, return the **director**'s name together with the **title**(s) of the movie(s) they directed that received the highest rating(**stars**) among all of their movies, and the value of that rating. Ignore movies whose director is NULL.</span><br><span class="line">```sql</span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+</li>
+</ol>
+<p>PS: 最后三个需要多层select, 挺难的, 再说吧</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/DB/"># DB</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/10/13/%E6%A8%A1%E6%9D%BF1-%E6%95%B0%E8%AE%BA/">模板1_数论</a>
+            
+            
+            <a class="next" rel="next" href="/2020/10/07/SQL%E6%9F%A5%E8%AF%A2%E5%9F%BA%E7%A1%8030%E9%A2%98/">SQL查询基础30题</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

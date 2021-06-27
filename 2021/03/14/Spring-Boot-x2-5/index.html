@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>Spring Boot 2.5x | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Spring Boot 2.5x</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 14, 2021&nbsp;&nbsp;19:51:52</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Java-Spring/">Java Spring</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>!使用eclipse运行spring boot项目, 不要重复开启程序, 对于第一个程序先中止再运行, 不然会端口占用error.  </p>
+<p>interface<br>java企业级开发工具类库<br>Spring Framework 工具类框架<br>Spring MVC 网站开发框架<br>Spring Boot 简化Spring 应用开发<br>Spring Cloud 微服务框架<br>Spring Data 数据访问框架<br>Spring Rest shell 可以调用Rest服务的命令行工具  </p>
+<p>Spring Boot 不是一个框架<br>配合模板和框架来简化Spring项目开发<br>轻松创建具有最小或零配置的独立应用程序的方式<br>Boot :快速启动</p>
+<p>-&gt;自动化数据访问-&gt;自动化依赖管理-&gt;自动化参数配置-&gt;自动化依赖注入-&gt;自动化性能监控-&gt;自动化web服务器-&gt;  </p>
+<p>自动化配置机制:＠ 标注</p>
+<p>可以禁用自动配置<br>耦合性要低</p>
+<p>bean: 携带某些特殊数据的对象</p>
+<p>ㄟ( ▔, ▔ )ㄏ<br>┗|｀O′|┛ 嗷~~  </p>
+<p>启动-&gt;依赖-配置<br>自动化依赖-&gt;解析-加载<br>自动化配置-&gt;工厂模式创建bean-依赖注入<br>自动化服务器-&gt;内置Web Server-监听  </p>
+<p>Spring Boot 使用Spring Data连接MySQL数据库<br>分布式框架的又一巅峰  </p>
+<p>Spring Data 简化MySQL的数据访问</p>
+<p>Spring Data新特性<br>Spring JPA java持久层框架<br>jdbc orm<br>对象数据库映射<br>面试题  </p>
+<p>MongoDB数据库与面试题</p>
+<p>关系型数据库<br>非关系型数据库(NoSQL): MongoDB, redis</p>
+<p>UI层, 用户界面层<br>service层, 服务层<br>DAO层, 数据持久层  </p>
+<p>MongoDB C++语言编写<br>分布式数据库<br>特点: 高i性能, 易部署, 易使用, 存储数据非常方便<br>开源, 跨平台  </p>
+<p><strong>公司技术驱动, 业务驱动的差别!!!!</strong><br><strong>国内很多公司没有核心技术, 只能不停发布更新业务, 996, 997.</strong></p>
+<p>支持 Windows, Linux, OS X和Solaris系统</p>
+<p>mongoDB<br>集成内存缓存<br>高性能高并发<br>灵活的数据模型<br>便于横向扩展<br>自动分片存储<br>支持分布式查询  </p>
+<p>移动互联网<br>不能搬砖, 容易被取代!  </p>
+<p>mongoDB基础命令</p>
+<p>启动命令<br>mongod.exe –port 27017 –dbpath=”../data” –logpath=”../log/mongo.log”  </p>
+<p>可视化的管理工具, Robomongo Robo 3T</p>
+<p>mongoDB 高级面试题</p>
+<ol>
+<li>Spring Data for MongoDB映射机制  </li>
+<li>官方驱动是什么?  </li>
+<li>MongoDB 存储什么数据? NoSQL, 面向文档JSON</li>
+<li>MongoDB 优缺点</li>
+<li>MongoDB 几大存储引擎</li>
+<li>数据复制的过程</li>
+<li>索引类型</li>
+<li>性能优化</li>
+<li>性能监控</li>
+<li>GEO索引算法</li>
+</ol>
+<p>Redis 6.0<br>微服务框架, 又一个分布式框架的巅峰<br>10亿次<br>1亿次<br>如果是都从磁盘读取, 因为读取速度有较大差异, 不太行哦</p>
+<p><strong>优先缓存部分数据!</strong></p>
+<p>服务器端的缓存</p>
+<p>😕😕😕😕😕  </p>
+<p>缓存</p>
+<p>Spring Data for Redis<br>配置参数 redisConnectionFactory 工厂模式<br>RedisConnection对象  </p>
+<p>接口?<br>GeoOperations -&gt; geospatial 操作<br>HashOperations -&gt; hash操作<br>HyperLogLogOperations -&gt; HyperLogLog操作<br>ListOperations -&gt; … list操作<br>SetOperations -&gt; … set操作<br>ValueOperations -&gt; Redis string操作<br>ZSetOperations -&gt; Redis zset操作  </p>
+<p>Java Spring Boot 1.5 安全机制  </p>
+<p>买票上车  </p>
+<ol>
+<li>自定义实现安全验证</li>
+<li>Apache Shiro 开源框架</li>
+<li>Spring Security 开源框架</li>
+</ol>
+<p>Spring Security<br>Spring Boot2.5 实战API帮助<br>文档 Swagger<br>分布式架构的又双叒叕一巅峰</p>
+<p><strong>Swagger</strong>  自动生成帮助文档<br>自动生成测试网页, 罗列所有API接口, 并可以测试接口功能, 超级好用</p>
+<p>rest doc  </p>
+<p>Spring Boot 性能监控(Admin &amp; Actuator)</p>
+<p>vm虚拟机, gc垃圾回收器<br>性能监控 Actuator<br>Endpoint : 暴露一些Spring MVC内部运行的信息<br>分布式监控, 几个软件</p>
+<p>按需采集参数<br>Micrometer 多维度指标收集器 语言中立的API  </p>
+<p>micrometer 支持的监控系统: ……(各种维护费用较高) </p>
+<p>int m, n;  </p>
+<p>Spring boot admin监控</p>
+<p>Spring boot Docker容器<br>快速运维, 容器, 方便应用程序打包部署, 提供客户端, 服务端两套命令</p>
+<p>Docker Hub github  </p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/SpringBoot2-5x/"># SpringBoot2.5x</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/03/26/javascript-no-2/">javascript no.2</a>
+            
+            
+            <a class="next" rel="next" href="/2021/03/13/VScode%E7%BC%96%E8%BE%91Markdown%E8%AE%BE%E7%BD%AE/">VScode编辑Markdown设置</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
