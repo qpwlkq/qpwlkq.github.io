@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>字节跳动-飞书后台开发-一面记录 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">字节跳动-飞书后台开发-一面记录</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 29, 2021&nbsp;&nbsp;12:13:10</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>2021.6.28 15:00 - 16:00</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因为我提前几个小时就进入飞书面试了, 所以提前大概十五分钟就开始了.<br>上来我也没有自我介绍, 面试官挺帅, 直接就开始问了.<br>第一个算法题, 问一个数字的二进制位数多少个1, 我给秒了.<br>然后, 面试官说我算法挺多奖, 挺好就不问算法了, 那一刻, 我心有点凉, 因为八股文我没学好啊.</p>
+<p>现在想来, 因为我项目有点夸大了, 让面试官误解了, 所以问了很多数据库的问题.</p>
+<p>回忆总结如下(有的问题是项目延申出来的, 有的问题是面试官主导问的)</p>
+<h3 id="一-数据库"><a href="#一-数据库" class="headerlink" title="一, 数据库"></a>一, 数据库</h3><ol>
+<li><p>我看你数据库支持事务, 满足隔离性吗<br>我说: 虽然四个性质我好像满足, 但其实不支持事务(当时对事务理解太浅, 现在想来好丢人啊)</p>
+</li>
+<li><p>mysql的几个引擎你知道吗?<br>我说: 不知道(只知道个名字也没用啊, 干脆不知道为好)</p>
+</li>
+<li><p>几个锁, 乐观锁之类那是不是也不知道?<br>我说: 不知道(问啥啥不会, 被吐槽了, 😥555555)</p>
+</li>
+</ol>
+<h3 id="二-操作系统"><a href="#二-操作系统" class="headerlink" title="二, 操作系统"></a>二, 操作系统</h3><ol>
+<li><p>进程你了解多少<br>我说: 进程包括线程, 打开应用程序就会创建一个进程</p>
+</li>
+<li><p>那一个进程最多有多少线程?<br>我说: 四个(不对)</p>
+</li>
+<li><p>那么进程有几种状态?<br>我说: 运行态, 阻塞态, 比如在io输入的时候(又给自己挖坑了)</p>
+</li>
+<li><p>(这一个问题我记不清了), 在问io输入属于软什么, 还是硬什么?<br>我说: 不知道这两个概念.</p>
+</li>
+<li><p>linux你了解吗?<br>我说: 没学过.</p>
+</li>
+</ol>
+<h3 id="三-计算机网络"><a href="#三-计算机网络" class="headerlink" title="三, 计算机网络"></a>三, 计算机网络</h3><ol>
+<li><p>http你了解多少?<br>我说: http是不经过加密的, 而https是加密传输</p>
+</li>
+<li><p>那么, https是如何加密的?<br>我说: 通过一些加密算法, 但具体什么算法我就不清楚了(https加密这块自己挖坑跳进去了)</p>
+</li>
+<li><p>你知道一个网页上的内容获取的过程你知道么?<br>我说: 网址先通过DNS解析之后获得服务器地址, 然后tcp三次握手建立连接, 就能传输数据了</p>
+</li>
+<li><p>那你知道DNS有哪几种吗?<br>我说: 不知道</p>
+</li>
+<li><p>你刚才说tcp三次握手, 那几次挥手呢, 如何确认正确性(最后一句忘了咋问的了, 大体意思是问我报文标志位)?<br>我说: 四次挥手, 报文的确认号, 是上一个报文序列号 + 1(然后面试官说, 我明白你意思了, 其他的我也没说)</p>
+</li>
+<li><p>那tcp四次挥手的时候, close_wait状态是发送端还是接收端的?<br>我说: 发送端(错了)</p>
+</li>
+<li><p>ip端口号最多有多少个你知道吗?<br>我说: 不知道(理论65536个, 取决于内存能不能开那么多)</p>
+</li>
+</ol>
+<h3 id="四-其他的问题"><a href="#四-其他的问题" class="headerlink" title="四, 其他的问题"></a>四, 其他的问题</h3><ol>
+<li>(因为我开着浏览器主页)给你一个搜索记录日志文件, 里面有10亿个关键词, 可重复, 问输出被搜索次数最多的20个关键词<br>我回答比较散乱, 我对于全英文字母提出用 hash + trie,(结束后百度了一下, 竟然算法选对了吗, 但不全)<br>然后对于中文, 我没有提出好的思路, 只说第一步要hash.</li>
+</ol>
+<p>这里我的思维被禁锢住了, 一直在按做算法题的思路走, 最后面试官说可以先把关键词分类到不同的文件(分治!), 然后用最小堆之类的数据结构都可以排序. 确实</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>真的除了算法, 其他的都不行啊, 数据库我会用个语句, 但是不了解底层, 功夫不到家!</li>
+<li>和面试官边面边聊.<br>我问面试官我表现咋样.<br>面试官说我真的会的太少了, 第一次面试不要灰心, 算法是你的强项, 你交流能力挺好的.<br>我说我比较单一, 想只要一项强, 就通吃, 结果大三了, 自食恶果了.<br>面试官说: 算法是所有岗位的基础, 算法好固然好, 其他的也很重要, 比如tcp某个状态你不知道发生在什么时候, 你排查错误的时候就找不到.<br>我恍然大悟, 表示肯定, 确实是这样的.<br>我玩笑的说, 这不是想要去学么.<br>….<br>总之, 表现不好, 中途面试官说我会把你的情况给二面说一下, 然后又安慰我不要灰心, 我以为我凉了一面. 但是一小时后, hr来电话约了二面???</li>
+<li>我现在在怀疑一面二面有没有关系了😥, whatever, 加油奥里给</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/interview/"># interview</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/06/11/CPP-little-problem/">CPP-little-problem</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
