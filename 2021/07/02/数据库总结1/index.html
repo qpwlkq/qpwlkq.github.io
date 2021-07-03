@@ -12,7 +12,7 @@
 
 
 
-<title>数据库总结1 | Hexo</title>
+<title>数据库复习1 | Hexo</title>
 
 
 
@@ -210,7 +210,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">数据库总结1</h1>
+            <h1 class="post-title">数据库复习1</h1>
             
                 <div class="post-meta">
                     
@@ -236,7 +236,98 @@
 
         <div class="post-content">
             <p>我要精通数据库😶</p>
-<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4>
+<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4><ol>
+<li>设计数据库的原则: <ol>
+<li>数据表的个数越少越好</li>
+<li>数据表中的字段越少越好: 在数据冗余和检索效率中进行平衡</li>
+<li>数据表中联合主键的字段越少越好: 索引开销大</li>
+<li>是否多用外键有待商榷.</li>
+</ol>
+</li>
+<li>数据库约束<ol>
+<li>主键约束</li>
+<li>外键约束</li>
+<li>唯一性约束</li>
+<li>字段约束: not null, default, check</li>
+</ol>
+</li>
+<li>关键字顺序及执行顺序<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> player_id, player_name, <span class="keyword">count</span>(*) <span class="keyword">as</span> <span class="keyword">num</span> <span class="comment">#顺序5</span></span><br><span class="line"><span class="keyword">FROM</span> player <span class="keyword">JOIN</span> team <span class="keyword">ON</span> player.team_id = team.team_id <span class="comment">#顺序1</span></span><br><span class="line"><span class="keyword">WHERE</span> height &gt; <span class="number">1.80</span> <span class="comment">#顺序2</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> player.team_id <span class="comment">#顺序3</span></span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">num</span> &gt; <span class="number">2</span> <span class="comment">#顺序4</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">num</span> <span class="keyword">DESC</span> <span class="comment">#顺序6</span></span><br><span class="line"><span class="keyword">LIMIT</span> <span class="number">2</span> <span class="comment">#顺序7</span></span><br></pre></td></tr></table></figure></li>
+<li>函数<ol>
+<li>内置函数<ol>
+<li>算术函数<ol>
+<li>ABS() 取绝对值</li>
+<li>MOD() 取余</li>
+<li>ROUND() 四舍五入为指定的小数位数, 有两个参数：字段名称和小数位数</li>
+</ol>
+</li>
+<li>字符串函数<ol>
+<li>CONCAT() 将多个字符串连接起来</li>
+<li>LENGTH() 计算字段长度, 一个汉字算三个字符, 一个字母或数字算一个.</li>
+<li>CHAR_LENGTH() 计算字段的长度, 汉字也算一个字符</li>
+<li>LOWER() 大写转小写</li>
+<li>UPPER() 小写转大写</li>
+<li>REPLACE(‘asdf’, ‘sd’, 123) 结果:a123d 替换函数, 有三个参数:　要替换的表达式或字段名, 想要查找的被替换字符串, 替换成哪个字符串</li>
+<li>SUBSTRING() 截取字符串, 有三个参数: 带截取的表达式或字段名, 开始截取的位置, 想要截取的字符串长度</li>
+</ol>
+</li>
+<li>日期函数<ol>
+<li>CURRENT_DATE() 系统当前日期</li>
+<li>CURRENT_TIME() 系统当前时间</li>
+<li>CURRENT_TIMESTAMP() 系统当前日期 + 时间.</li>
+<li>EXTRACT() 抽取具体的年,月,日, 有一个参数为字符串</li>
+<li>DATE(‘2019-04-01 12:00:05’) 返回时间的日期部分, 有一个参数为字符串</li>
+<li>YEAR(), MONTH(), DAY(), HOUR(), MINUTE(), SECOUND(), 均类似, 返回时间字符串的XX部分</li>
+</ol>
+</li>
+<li>转换函数()<ol>
+<li>CAST() 数据类型转换, 参数是表达式, 表达式通过AS关键词分割了2个参数, 分别是原始数据和目标数据类型, CAST 函数在转换数据类型的时候，不会四舍五入, 可以用DECIMAL(a,b)来指定，其中 a 代表整数部分和小数部分加起来最大的位数，b 代表小数位数</li>
+<li>COALESCE() 返回第一个非空数值</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>聚集函数<ol>
+<li>COUNT() 总行数</li>
+<li>MAX() 最大值</li>
+<li>MIN() 最小值</li>
+<li>SUM() 求和</li>
+<li>AVG() 求平均值</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>子查询<ol>
+<li>子查询从数据表中查询了数据结果，如果这个数据结果只执行一次，然后这个数据结果作为主查询的条件进行执行，那么这样的子查询叫做非关联子查询。</li>
+<li>同样，如果子查询需要执行多次，即采用循环的方式，先从外部查询开始，每次都传入子查询进行查询，然后再将结果反馈给外部，这种嵌套的执行方式就称为关联子查询。</li>
+<li>集合比较子查询<ol>
+<li>IN</li>
+<li>ANY</li>
+<li>ALL</li>
+<li>SOME(= ANY)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>sql标准, 最常用: sql92, sql99.</li>
+<li>join<ol>
+<li>集合运算</li>
+<li>等值连接</li>
+<li>非等值连接</li>
+<li>外连接</li>
+<li>子连接</li>
+</ol>
+</li>
+<li>视图(虚拟表)<ol>
+<li>创建视图：CREATE VIEW view_name AS SELECT …</li>
+<li>修改视图：ALTER VIEW view_name AS SELECT …</li>
+<li>删除视图：DROP VIEW view_name</li>
+<li>安全性：虚拟表是基于底层数据表的，我们在使用视图时，一般不会轻易通过视图对底层数据进行修改，即使是使用单表的视图，也会受到限制，比如计算字段，类型转换等是无法通过视图来对底层数据进行修改的，这也在一定程度上保证了数据表的数据安全性。同时，我们还可以针对不同用户开放不同的数据查询权限，比如人员薪酬是个敏感的字段，那么只给某个级别以上的人员开放，其他人的查询视图中则不提供这个字段</li>
+<li>简单清晰：视图是对 SQL 查询的封装，它可以将原本复杂的 SQL 查询简化，在编写好查询之后，我们就可以直接重用它而不必要知道基本的查询细节。同时我们还可以在视图之上再嵌套视图。这样就好比我们在进行模块化编程一样，不仅结构清晰，还提升了代码的复用率。</li>
+<li>试图是虚拟表, 临时表是真实存在的数据表, 只不过用完了就删除, 临时表只在当前连接存在, 连接关闭后自动释放</li>
+</ol>
+</li>
+</ol>
+
         </div>
 
         

@@ -12,7 +12,7 @@
 
 
 
-<title>计算机网络总结2-HTTP(s)协议 | Hexo</title>
+<title>数据库复习1 | Hexo</title>
 
 
 
@@ -144,73 +144,11 @@
             <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">计算机网络总结2-HTTP(s)协议</h1>
+            <h1 class="post-title">数据库复习1</h1>
             
                 <div class="post-meta">
                     
@@ -219,89 +157,16 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 3, 2021&nbsp;&nbsp;10:46:12</a>
+                        Date: <a href="#">July 3, 2021&nbsp;&nbsp;19:51:26</a>
                         </span>
                     
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-                            
-                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h4 id="计算机网络总结第二部分-HTTP-s-协议"><a href="#计算机网络总结第二部分-HTTP-s-协议" class="headerlink" title="计算机网络总结第二部分-HTTP(s)协议"></a>计算机网络总结第二部分-HTTP(s)协议</h4><ol>
-<li>小知识点:<ol>
-<li>http: HyperText Transfer Protocol: 超文本传输协议</li>
-<li>https: Hypertext Transfer Protocol Secure：超文本传输安全协议</li>
-<li>HTTP 默认端口80.</li>
-<li>HTTPS 默认工作在 TCP 协议443端口.</li>
-</ol>
-</li>
-<li>状态码:<ol>
-<li>1xx: 信息, 服务器收到请求，需要请求者继续执行操作.</li>
-<li>2xx: 成功, 操作被成功接受并处理</li>
-<li>3xx: 重定向, 需要进一步的操作以完成请求</li>
-<li>4xx: 客户端错误, 请求包含语法错误或无法完成请求</li>
-<li>5xx: 服务器错误, 服务器在处理请求的过程中发生了错误.</li>
-</ol>
-</li>
-<li>三点注意事项:<ol>
-<li>http是无连接的: 无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间.</li>
-<li>http是媒体独立的: 只要客户端和服务器知道如何处理的数据内容，任何类型的数据都可以通过HTTP发送。客户端以及服务器指定使用适合的MIME-type内容类型.</li>
-<li>http是无状态的: 无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快.</li>
-</ol>
-</li>
-<li>web服务器: 接受客户端的请求并向客户端发送http响应数据</li>
-<li>http消息结构:<ol>
-<li>http请求报文结构:<ol>
-<li><a href="https://imgtu.com/i/RgOrND" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/03/RgOrND.png" alt="RgOrND.png"></a></li>
-</ol>
-</li>
-<li>服务器响应消息:<ol>
-<li><a href="https://imgtu.com/i/RgOggA" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/03/RgOggA.md.jpg" alt="RgOggA.md.jpg"></a></li>
-</ol>
-</li>
-</ol>
-</li>
-<li>http请求方法:<ol>
-<li>HTTP1.0 定义了三种请求方法: <ol>
-<li>GET: </li>
-<li>POST: </li>
-<li>HEAD: </li>
-</ol>
-</li>
-<li>HTTP1.1 新增了六种请求方法：<ol>
-<li>OPTIONS: </li>
-<li>PUT: </li>
-<li>PATCH: </li>
-<li>DELETE: </li>
-<li>TRACE: </li>
-<li>CONNECT: </li>
-</ol>
-</li>
-</ol>
-</li>
-<li>http 1.0 2.0 3.0的区别<ol>
-<li>a</li>
-</ol>
-</li>
-<li>https工作流程<ol>
-<li>tcp三次握手</li>
-<li>客户端验证服务器数字证书</li>
-<li>DH算法协商对称加密算法的密钥, hash算法的密钥</li>
-<li>SSL安全加密隧道协商完成</li>
-<li>网页以加密的方式传输, 用协商的对称加密算法和密钥加密, 保证数据机密性, 用协商的hash算法进行数据完整性保护, 保证数据不被篡改.</li>
-<li></li>
-</ol>
-</li>
-</ol>
-
+            
         </div>
 
         
@@ -333,10 +198,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"># 计算机网络</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -347,10 +208,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/03/C-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">C++网络编程</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%931/">数据库复习1</a>
+            <a class="next" rel="next" href="/2021/07/03/C-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">C++网络编程</a>
             
         </section>
 
