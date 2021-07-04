@@ -12,7 +12,7 @@
 
 
 
-<title>范式设计和反范式设计 | Hexo</title>
+<title>索引 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">范式设计和反范式设计</h1>
+            <h1 class="post-title">索引</h1>
             
                 <div class="post-meta">
                     
@@ -157,7 +219,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 4, 2021&nbsp;&nbsp;20:11:53</a>
+                        Date: <a href="#">July 4, 2021&nbsp;&nbsp;20:47:59</a>
                         </span>
                     
                     
@@ -173,38 +235,47 @@
         </header>
 
         <div class="post-content">
-            <ol>
-<li>范式<ol>
-<li>1NF: 表中的任何属性都是原子性的, 不可再分.</li>
-<li>2NF: 1NF + 数据表中的非主属性, 都与数据表中的候选键有<strong>完全依赖</strong>关系.</li>
-<li>3NF: 2NF + 对任何非主属性都不传递依赖于候选键.</li>
-<li>BCNF(巴斯 - 科德范式): 它在 3NF 的基础上消除了主属性对候选键的部分依赖或者传递依赖关系。</li>
-<li>4NF: 知道名字即可</li>
-<li>5NF(第五范式又称完美范式): 知道名字即可</li>
+            <h4 id="索引是啥"><a href="#索引是啥" class="headerlink" title="索引是啥?"></a>索引是啥?</h4><p>索引就是帮助数据库管理系统高效获取数据的数据结构。</p>
+<h4 id="索引不是万能的"><a href="#索引不是万能的" class="headerlink" title="索引不是万能的"></a>索引不是万能的</h4><h5 id="什么时候建立索引"><a href="#什么时候建立索引" class="headerlink" title="什么时候建立索引"></a>什么时候建立索引</h5><ol>
+<li>行数比较少的情况下，比如不到 1000 行，是不需要创建索引的.</li>
+<li>当数据重复度大，比如高于 10% 的时候，也不需要对这个字段使用索引. (特殊情况: 女儿国, 查找男性数量的索引会很快, 我们不仅要看字段中的数值个数，还要根据数值的分布情况来考虑是否需要创建索引)</li>
+<li>通过功能逻辑分:<ol>
+<li>普通索引</li>
+<li>唯一索引: 普通索引 + 唯一性约束</li>
+<li>主键索引: 唯一索引 + NOT NULL + UNIQUE, 最多一个 </li>
+<li>全文索引: 只支持英文</li>
 </ol>
 </li>
-<li>键: 数据库中的键由一个或多个属性组成<ol>
-<li>超键: 能唯一标识元组的属性集</li>
-<li>候选键(码): 如果超键不包括多余的属性, 那这个超键就是候选键(不带冗余)</li>
-<li>主键(主码): 候选键中选的一个</li>
-<li>外键: 如果数据表R1中的某属性集不是R1的主键, 但是另一个数据表R2的主键, 那么这个属性集就是R1 的外键. (是否使用外键, 业界有巨大争议, 阿里要求表的数据一致性不由外键而是由应用程序保证)</li>
-<li>主属性: 包含在任一候选键中的属性</li>
-<li>非主属性: 与主属性相对, 不包含在任意一个候选键内的属性</li>
+<li>通过物理实现分:<ol>
+<li>聚集索引: 聚集索引可以按照主键来排序存储数据，这样在查找行的时候非常有效, 找到了索引的位置，在它后面就是我们想要找的数据行. 一个表最多一个</li>
+<li>非聚集索引(二级索引/辅助索引): 系统会进行两次查找，第一次先找到索引，第二次再通过聚集索引找到对应的位置取出数据行, 也称回表。非聚集索引不会把索引指向的内容像聚集索引一样直接放到索引的后面，而是维护单独的索引表（只维护索引，不维护索引指向的数据）</li>
+<li>对比:<ol>
+<li>聚集索引的叶子节点存储的就是我们的数据记录，非聚集索引的叶子节点存储的是数据位置。非聚集索引不会影响数据表的物理存储顺序。</li>
+<li>一个表只能有一个聚集索引，因为只能有一种排序存储的方式，但可以有多个非聚集索引，也就是多个索引目录提供数据检索。</li>
+<li>使用聚集索引的时候，数据的查询效率高，但如果对数据进行插入，删除，更新等操作，效率会比非聚集索引低。</li>
 </ol>
 </li>
-<li>问题<ol>
-<li>范式等级越高，设计出来的数据表就越多，进行数据查询的时候就可能需要关联多张表，从而影响查询效率。</li>
-<li>范式本身存在一些问题，可能会带来插入，更新，删除等的异常情况, (现实使用中的异常, 并不是数据库本身的问题, 比如: 新建仓库, 但是没放任何物品, 而数据库某表主键是仓库名+物品名, 主键不为空, 那么就因为设计问题, 没法插入空的仓库数据, 必须要要求仓库有物品, 与现实情况冲突)</li>
 </ol>
 </li>
-<li>反范式优化: 空间换时间, 当冗余信息有价值或者能大幅度提高查询效率的时候, 我们就可以采取反范式的优化</li>
-<li>数据仓库:  因为数据仓库通常存储历史数据，对增删改的实时性要求不强，对历史数据的分析需求强。这时适当允许数据的冗余度，更方便进行数据分析。</li>
-<li>数据库与数据仓库比较:<ol>
-<li>数据库设计的目的在于捕获数据，而数据仓库设计的目的在于分析数据</li>
-<li>数据库对数据的增删改实时性要求强，需要存储在线的用户数据，而数据仓库存储的一般是历史数据</li>
-<li>数据库设计需要尽量避免冗余，但为了提高查询效率也允许一定的冗余度，而数据仓库在设计上更偏向采用反范式设计</li>
+<li>通过字段个数分:<ol>
+<li>单一索引: 索引列为一列时为单一索引.</li>
+<li>联合索引: 多个列组合在一起创建的索引.<ol>
+<li>最左匹配原则: (很像结构体排序), 详见文章: 数据库复习1</li>
+<li>覆盖索引: 详见文章: 数据库复习1</li>
 </ol>
 </li>
+</ol>
+</li>
+<li>平衡二叉搜索树(AVL树), B树, B+树</li>
+<li>B树 和 B+ 树的区别!<ol>
+<li>有 k 个孩子的节点就有 k 个关键字。也就是孩子数量 = 关键字数，而 B 树中，孩子数量 = 关键字数 +1</li>
+<li>非叶子节点的关键字也会同时存在在子节点中，并且是在子节点中所有关键字的最大（或最小）</li>
+<li>非叶子节点仅用于索引，不保存数据记录，跟记录有关的信息都放在叶子节点中。而 B 树中，非叶子节点既保存索引，也保存数据记录</li>
+<li>所有关键字都在叶子节点出现，叶子节点构成一个有序链表，而且叶子节点本身按照关键字的大小从小到大顺序链接</li>
+<li>不仅是对单个关键字的查询上，在查询范围上，B+ 树的效率也比 B 树高。这是因为所有关键字都出现在 B+ 树的叶子节点中，并通过有序链表进行了链接。而在 B 树中则需要通过中序遍历才能完成查询范围的查找，效率要低很多.</li>
+</ol>
+</li>
+<li>为什么不用平衡二叉树:<br>虽然传统的二叉树数据结构查找数据的效率高，但很容易增加磁盘 I/O 操作的次数，影响索引使用的效率。因此在构造索引的时候，我们更倾向于采用“矮胖”的数据结构。<br><a href="https://imgtu.com/i/RfsI56" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/04/RfsI56.md.jpg" alt="RfsI56.md.jpg"></a></li>
 </ol>
 
         </div>
@@ -252,10 +323,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/04/%E7%B4%A2%E5%BC%95/">索引</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B0%83%E4%BC%98/">数据库调优</a>
+            <a class="next" rel="next" href="/2021/07/04/%E8%8C%83%E5%BC%8F%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%8F%8D%E8%8C%83%E5%BC%8F%E8%AE%BE%E8%AE%A1/">范式设计和反范式设计</a>
             
         </section>
 
