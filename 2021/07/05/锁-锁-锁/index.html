@@ -12,7 +12,7 @@
 
 
 
-<title>B树和B+树 | Hexo</title>
+<title>锁!锁!锁! | Hexo</title>
 
 
 
@@ -148,7 +148,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">B树和B+树</h1>
+            <h1 class="post-title">锁!锁!锁!</h1>
             
                 <div class="post-meta">
                     
@@ -157,14 +157,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 5, 2021&nbsp;&nbsp;12:55:11</a>
+                        Date: <a href="#">July 5, 2021&nbsp;&nbsp;13:39:08</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                                <a href="/categories/%E9%94%81/">锁</a>
                             
                         </span>
                     
@@ -173,9 +173,39 @@
         </header>
 
         <div class="post-content">
-            <ol>
-<li>B+ 树是如何进行记录检索的.<br>通过 B+ 树的索引查询行记录，首先是从 B+ 树的根开始，逐层检索，直到找到叶子节点，也就是找到对应的数据页为止，将数据页加载到内存中，页目录中的槽（slot）采用二分查找的方式先找到一个粗略的记录分组，然后再在分组中通过链表遍历的方式查找记录。</li>
-<li>普通索引和唯一索引在查询效率上有什么不同?<br>几乎没有区别, 唯一索引查到了就停止, 而普通多几次判断, 对CPU来说消耗的时间可以忽略不计(特殊情况下, 比如大量重复数据, 检索到页尾仍未完成, 需要读入下一页, 继续检索).<br><a href="https://imgtu.com/i/RhHBKs" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/05/RhHBKs.md.jpg" alt="RhHBKs.md.jpg"></a></li>
+            <p><a href="https://imgtu.com/i/RhLYUx" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/05/RhLYUx.md.png" alt="RhLYUx.md.png"></a></p>
+<ol>
+<li><p>每个层级的锁数量是有限制的. 因为锁会占用内存空间，锁空间的大小是有限的。当某个层级的锁数量超过了这个层级的阈值时，就会进行锁升级。锁升级就是用更大粒度的锁替代多个更小粒度的锁，比如 InnoDB 中行锁升级为表锁，这样做的好处是占用的锁空间降低了，但同时数据的并发度也下降了。</p>
+</li>
+<li><p>共享锁和排它锁</p>
+<ol>
+<li>共享锁(读锁/S锁): 共享锁锁定的资源可以被其他用户读取，但不能修改。在进行SELECT的时候，会将对象进行共享锁锁定，当数据读取完毕之后，就会释放共享锁，这样就可以保证数据在读取时不被修改。</li>
+<li>排它锁(独占锁、写锁或 X 锁): 排它锁锁定的数据只允许进行锁定操作的事务使用，其他事务无法对已锁定的数据进行查询或修改。</li>
+<li>INSERT、DELETE或者UPDATE的时候，数据库也会自动使用排它锁，防止其他事务对该数据行进行操作。</li>
+<li>如果这个数据表中的某个数据行被上了行锁，我们就无法获取排它锁</li>
+<li>意向锁: 意向共享锁/意向排他锁, 给更大一级别的空间示意里面是否已经上过锁.</li>
+<li>返回数据表的场景，如果我们给某一行数据加上了排它锁，数据库会自动给更大一级的空间，比如数据页或数据表加上意向锁，告诉其他人这个数据页或数据表已经有人上过排它锁了，这样当其他人想要获取数据表排它锁的时候，只需要了解是否有人已经获取了这个数据表的意向排他锁即可。</li>
+</ol>
+</li>
+<li><p>乐观锁/悲观锁:</p>
+<ol>
+<li>乐观锁: 认为对同一数据的并发操作不会总发生，属于小概率事件，不用每次都对数据上锁，也就是不采用数据库自身的锁机制，而是通过程序来实现。在程序上，我们可以采用版本号机制或者时间戳机制实现。<ol>
+<li>版本号机制: 检查当前版本号与服务器上的版本号是否一致，如果一致就可以直接提交，如果不一致就需要更新服务器上的最新代码，然后再进行提交.</li>
+<li>时间戳机制: 也是在更新提交的时候，将当前数据的时间戳和更新之前取得的时间戳进行比较，如果两者一致则更新成功，否则就是版本冲突</li>
+</ol>
+</li>
+<li>悲观锁: 对数据被其他事务的修改持保守态度，会通过数据库自身的锁机制来实现，从而保证数据操作的排它性。</li>
+</ol>
+</li>
+<li><p>MySQL MyISAM 存储引擎中也不会出现死锁，这是因为 MyISAM 总是一次性获得全部的锁，这样的话要么全部满足可以执行，要么就需要全部等待.</p>
+</li>
+<li><p>MVCC 多版本并发控制</p>
+<ol>
+<li>db_row_id：隐藏的行 ID，用来生成默认聚集索引。如果我们创建数据表的时候没有指定聚集索引，这时 InnoDB 就会用这个隐藏 ID 来创建聚集索引。采用聚集索引的方式可以提升数据的查找效率。</li>
+<li>db_trx_id：操作这个数据的事务 ID，也就是最后一个对该数据进行插入或更新的事务 ID。</li>
+<li>db_roll_ptr：回滚指针，也就是指向这个记录的 Undo Log 信息<br><a href="https://imgtu.com/i/RhjyZ9" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/05/RhjyZ9.md.jpg" alt="RhjyZ9.md.jpg"></a></li>
+</ol>
+</li>
 </ol>
 
         </div>
@@ -210,7 +240,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/B%E6%A0%91%E5%92%8CB-%E6%A0%91/"># B树和B+树</a>
+                        <a href="/tags/%E9%94%81/"># 锁</a>
                     
                         
                 </span>
@@ -223,10 +253,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/05/%E9%94%81-%E9%94%81-%E9%94%81/">锁!锁!锁!</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/04/%E7%B4%A2%E5%BC%95/">索引</a>
+            <a class="next" rel="next" href="/2021/07/05/B%E6%A0%91%E5%92%8CB+%E6%A0%91/">B树和B+树</a>
             
         </section>
 
