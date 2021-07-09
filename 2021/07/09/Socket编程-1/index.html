@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>Socket编程-1-基本知识 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Socket编程-1-基本知识</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 9, 2021&nbsp;&nbsp;11:59:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Socket%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Socket网络编程</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>对于面试来说, 计算机网络几乎是必问的内容, 而其中的应用层的HTTP和传输层的TPC/UDP更是重中之重.  </p>
+<p>学习TCP的时候总是会或多或少的遇到socket这个东西, 那么这究竟是个啥呢?  </p>
+<p>so, 新的系列开始喽</p>
+<h4 id="一-socket基本知识"><a href="#一-socket基本知识" class="headerlink" title="一. socket基本知识"></a>一. socket基本知识</h4><h5 id="socket-是啥"><a href="#socket-是啥" class="headerlink" title="socket 是啥?"></a>socket 是啥?</h5><ol>
+<li><p>英文原意: 插座, 插口, 窝槽</p>
+</li>
+<li><p>计算机领域称为: 套接字</p>
+<h5 id="socket-是干嘛的"><a href="#socket-是干嘛的" class="headerlink" title="socket 是干嘛的?"></a>socket 是干嘛的?</h5><ol>
+<li>我们把插头插到插排上, 才能获得电力, 同样, 为了能够与其他计算机进行通信, 我们可以通过socket”插到”互联网上, socket就是用来连接到互联网上的工具.<h5 id="文件描述符是什么"><a href="#文件描述符是什么" class="headerlink" title="文件描述符是什么"></a>文件描述符是什么</h5></li>
+</ol>
+</li>
+<li><p>百度词条: 内核（kernel）利用文件描述符（file descriptor）来访问文件。文件描述符是非负整数。打开现存文件或新建文件时，内核会返回一个文件描述符。读写文件也需要使用文件描述符来指定待读写的文件。</p>
+</li>
+<li><p>在Unix/Linux中, 为了统一对各种硬件的操作, 简化接口, 不同的设备也被看成一个文件, 对这些文件的操作, 等同于对磁盘上普通文件的操作</p>
+</li>
+<li><p>为了表示和区分已经打开的文件, Unix/Linux会给每个文件分配一个整数ID, 被称为文件描述符(File Descriptor)</p>
+</li>
+<li><p>我们可以通过 socket() 函数来创建一个网络连接，或者说打开一个网络文件，socket() 的返回值就是文件描述符.</p>
+</li>
+<li><p>有了文件描述符，我们就可以使用普通的文件操作函数来传输数据了</p>
+</li>
+<li><p>要注意Windows和Linux中socket的区别:</p>
+<ol>
+<li>windows中也有文件描述符的概念, 但通常称之为”句柄”</li>
+<li>windows将socket当作一个网络连接, 而不是文件, 所以不能使用文件操作函数, 但可以使用为socket专门设计的函数<h5 id="socket的类型有哪些"><a href="#socket的类型有哪些" class="headerlink" title="socket的类型有哪些?"></a>socket的类型有哪些?</h5>套接字类型其实很多种, 但是我们入门只需要学会最常用的就好了</li>
+<li>流格式套接字(SOCK_STREAM)–基于TCP协议</li>
+</ol>
+</li>
+<li><p>流格式套接字也叫”面向连接的套接字”, 注意使用的时候不可小写</p>
+</li>
+<li><p>SOCK_STREAM 是一种可靠的, 双向的通信数据流, 数据可以准确无误的送到, 如果损坏或者丢失, 可以重新发送</p>
+</li>
+<li><p>流格式套接字有自己的纠错机制</p>
+</li>
+<li><p>SOCK_STREAM 有以下几个特征:</p>
+<ol>
+<li>数据在传输过程中不会消失</li>
+<li>数据是按照顺序传输的</li>
+<li>数据的发送和接受不是同步的(通俗理解: 装100个苹果, 我们可以往袋子里装, 也可以等一等, 每次攒够10个再装袋, 完成”攒”这个动作的就是缓冲区(字符数组), 也就是说, 数据到达了, 我们不需要立刻读取)</li>
+</ol>
+</li>
+<li><p>流格式套接字的应用场景</p>
+<ol>
+<li><p>HTTP</p>
+</li>
+<li><p>数据报格式套接字(SOCK_DGRAM)–基于UDP  </p>
+</li>
+<li><p>数据报格式套接字也叫”无连接的套接字”.</p>
+</li>
+<li><p>计算机只管传输数据, 不做数据校验, 丢了就丢了, 错了就错了, 无法重传, 但是其实SOCK_DGRAM没有想象的那么糟糕, 数据错误只是小概率事件</p>
+</li>
+<li><p>SOCK_DGRAM 有以下几个特征:</p>
+<ol>
+<li>强调快速传输而非顺序传输</li>
+<li>传输的数据可能丢失也可能损毁</li>
+<li>限制每次传输的数据大小</li>
+<li>数据的发送和接受是同步的</li>
+</ol>
+</li>
+<li><p>数据报格式套接字的应用场景:</p>
+<ol>
+<li>各种实时的聊天软件</li>
+<li>结合现实的一点自己的理解: 有时候会遇到消息发送失败的情况, 我们重新发送就行了, 虽然用的是不可靠UDP传输, 但是通过应用层应用本身可以保证可靠性, qq服务器收到消息后, 会发送一个udp应答包回传给用户.</li>
+</ol>
+</li>
+<li><p>面向连接和无连接的套接字到底有什么区别</p>
+</li>
+</ol>
+</li>
+<li><p>无连接套接字遵循的是「尽最大努力交付」的原则，就是尽力而为，实在做不到了也没办法。无连接套接字提供的没有质量保证的服务。</p>
+</li>
+<li><p>面向连接的套接字在正式通信之前要先确定一条路径，没有特殊情况的话，以后就固定地使用这条路径来传递数据包了。当然，路径被破坏的话，比如某个路由器断电了，那么会重新建立路径。这条路径是由路由器维护的，路径上的所有路由器都要存储该路径的信息（实际上只需要存储上游和下游的两个路由器的位置就行），所以路由器是有开销的。这条预先建立好的路径被称为“虚电路”.</p>
+</li>
+<li><p>面向连接的套接字还包括序号、确认信号、数据偏移、控制标志（通常说的 URG、ACK、PSH、RST、SYN、FIN）、窗口、校验和、紧急指针、选项等信息；而无连接的套接字则只包含长度和校验和信息。</p>
+</li>
+<li><p>有连接的数据包比无连接大很多，这意味着更大的负载和更大的带宽。许多即时聊天软件采用 UDP 协议（无连接套接字），与此有莫大的关系。</p>
+</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/socket/"># socket</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/09/Socket%E7%BC%96%E7%A8%8B-2/">Socket编程-2</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/08/Leetcode%E9%9D%A2%E8%AF%95%E9%A2%98-03-02/">Leetcode面试题 03.02</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
