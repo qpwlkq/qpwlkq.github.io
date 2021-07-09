@@ -12,7 +12,7 @@
 
 
 
-<title>Socket编程-3 | Hexo</title>
+<title>Socket编程-3-相关函数/定义详解 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Socket编程-3</h1>
+            <h1 class="post-title">Socket编程-3-相关函数/定义详解</h1>
             
                 <div class="post-meta">
                     
@@ -164,7 +226,7 @@
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Socket%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Socket网络编程</a>
+                                <a href="/categories/Linux%E4%B8%8B%E7%9A%84Socket%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Linux下的Socket网络编程</a>
                             
                         </span>
                     
@@ -173,7 +235,82 @@
         </header>
 
         <div class="post-content">
-            
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>上一篇实现了一个简单web服务器, 他只能相应一次请求, 发送一条信息, 虽然简单, 但总算迈出了第一步, 我们的服务器功能还相当匮乏, 这一篇我们要详细学习相关函数/定义</p>
+<h4 id="1-函数-socket"><a href="#1-函数-socket" class="headerlink" title="1. 函数 socket()"></a>1. 函数 socket()</h4><pre><code>int socket(int af, int type, int protocol);</code></pre><p><strong>作用</strong>: 创建套接字  </p>
+<p><strong>参数1</strong>: af为IP地址类型: AF_INET(表示IPv4), AF_INET6(表示IPv6), PF_INET(=AF_INET), PF_INET6(=AF_INET6), 等  </p>
+<p><strong>参数2</strong>: type: 数据传输方式/套接字类型: SOCK_STREAM（流格式套接字/面向连接的套接字), SOCK_DGRAM（数据报套接字/无连接的套接字, 等  </p>
+<p><strong>参数3</strong>: protocol: IPPROTO_TCP(TCP), IPPTOTO_UDP(UDP), 0(如果设为0, 意思是使用的协议可以通过参数1和2推断出来, 比如tcp和udp)  </p>
+<p><strong>return</strong>: 成功就返回新建的socket的文件描述符, 失败返回-1  </p>
+<h4 id="2-函数-bind"><a href="#2-函数-bind" class="headerlink" title="2. 函数 bind()"></a>2. 函数 bind()</h4><pre><code>int bind(int sock, struct sockaddr *addr, socklen_t addrlen);</code></pre><p><strong>作用</strong>: 将指定了通信协议的套接字文件与自己的IP和端口绑定起来.<br><strong>参数1</strong>: sock: socket文件描述符<br><strong>参数2</strong>: addr: sockaddr结构体变量的指针<br><strong>参数3</strong>: addrlen: addr变量的大小<br><strong>return</strong>: 成功返回0, 失败返回-1  </p>
+<h4 id="3-结构体-sockaddr-in"><a href="#3-结构体-sockaddr-in" class="headerlink" title="3. 结构体 sockaddr_in"></a>3. 结构体 sockaddr_in</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>&#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>     sin_family;   <span class="comment">//地址族(Address Family),也就是地址类型</span></span><br><span class="line">    <span class="keyword">uint16_t</span>        sin_port;     <span class="comment">//16位的端口号</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>  <span class="title">sin_addr</span>;</span>     <span class="comment">//32位IP地址</span></span><br><span class="line">    <span class="keyword">char</span>            sin_zero[<span class="number">8</span>];  <span class="comment">//不使用，一般用0填充</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数1</strong>: sin_family: 地址族<br><strong>参数2</strong>: sin_port: 端口号, 理论取值0<del>65536, 但是0</del>1023一般由系统分配给特定服务程序, 所以尽量取一个大一点的值<br><strong>参数3</strong>: sin_addr: 32位IP地址, in_addr结构体类型, 是为了适应旧版本代码, 具体往后看<br><strong>参数4</strong>: sin_zero[8]: 没有意义, 一般填充为0</p>
+<h4 id="4-结构体-in-addr"><a href="#4-结构体-in-addr" class="headerlink" title="4. 结构体 in_addr"></a>4. 结构体 in_addr</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>&#123;</span></span><br><span class="line">    <span class="keyword">in_addr_t</span>  s_addr;  <span class="comment">//32位的IP地址</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>in_addr_t 在头文件 &lt;netinet/in.h&gt; 中定义，等价于 unsigned long，长度为4个字节.   </p>
+</li>
+<li><p>s_addr 是一个整数，而IP地址是一个字符串，所以需要 inet_addr() 函数进行转换:</p>
+<pre><code>unsigned long ip = inet_addr(&quot;127.0.0.1&quot;);</code></pre></li>
+<li><p>这样设计是为了为了兼容前面的代码</p>
+</li>
+</ol>
+<h4 id="5-结构体-sockaddr"><a href="#5-结构体-sockaddr" class="headerlink" title="5. 结构体 sockaddr"></a>5. 结构体 sockaddr</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>&#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>  sin_family;   <span class="comment">//地址族（Address Family），也就是地址类型</span></span><br><span class="line">    <span class="keyword">char</span>         sa_data[<span class="number">14</span>];  <span class="comment">//IP地址和端口号</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>sockaddr 和 sockaddr_in可以相互转换, 他们所占的字节数量是相同的.</li>
+<li>可以认为sockaddr是通用的, 而sockaddr_in是专门存放IPv4地址的结构体, 定义时使用sockaddr_in, 使用时将它强制转换为sockaddr.</li>
+</ol>
+<h4 id="6-函数-connect"><a href="#6-函数-connect" class="headerlink" title="6. 函数 connect()"></a>6. 函数 connect()</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> sock, struct sockaddr *serv_addr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>各个参数的说明和 bind() 相同，不再赘述.<br>作用: 请求连接服务器</p>
+<h4 id="7-函数-write-amp-read"><a href="#7-函数-write-amp-read" class="headerlink" title="7. 函数 write() &amp; read()"></a>7. 函数 write() &amp; read()</h4><h6 id="write"><a href="#write" class="headerlink" title="write():"></a>write():</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> nbytes)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数1</strong>: fd: 要写入的文件的描述符<br><strong>参数2</strong>: buf: 要写入的数据的缓冲区地址<br><strong>参数3</strong>: nbytes: 要写入的数据的字节数<br><strong>return</strong>:write() 函数会将缓冲区 buf 中的 nbytes 个字节写入文件 fd，成功则返回写入的字节数，失败则返回 -1。</p>
+<pre><code>size_t 是通过 typedef 声明的 unsigned int 类型；
+ssize_t 在 &quot;size_t&quot; 前面加了一个&quot;s&quot;，代表 signed，
+即 ssize_t 是通过 typedef 声明的 signed int 类型。</code></pre><p><strong>注意</strong>:</p>
+<ol>
+<li>TCP协议独立于 write()函数，数据有可能刚被写入缓冲区就发送到网络，也可能在缓冲区中不断积压，多次写入的数据被一次性发送到网络，这取决于当时的网络情况、当前线程是否空闲等诸多因素，不由程序员控制。</li>
+</ol>
+<h6 id="read"><a href="#read" class="headerlink" title="read()"></a>read()</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> nbytes)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数1</strong>: fd: 要读取的文件的描述符<br><strong>参数2</strong>: buf: 要接受的数据的缓冲区地址<br><strong>参数3</strong>: nbytes: 要读取的数据的字节数  </p>
+<p><strong>注意</strong>:</p>
+<ol>
+<li>read()也是从输入缓冲区中读取数据，而不是直接从网络中读取.</li>
+</ol>
+<h4 id="8-转换函数-htonl-htons-ntohl-ntohs"><a href="#8-转换函数-htonl-htons-ntohl-ntohs" class="headerlink" title="8. 转换函数 htonl(), htons(), ntohl(), ntohs()"></a>8. 转换函数 htonl(), htons(), ntohl(), ntohs()</h4><pre><code>HBO和NBO的概念:
+主机字节顺序HBO（Host Byte Order）
+网络字节顺序NBO（Network Byte Order）
+先转换再用
+
+四个转换函数:
+htonl()--&quot;Host to Network Long&quot;
+htons()--&quot;Host to Network Short&quot;
+ntohl()--&quot;Network to Host Long&quot;
+ntohs()--&quot;Network to Host Short&quot;
+INADDR_ANY 泛指本机
+作用: 如果有多个网卡, 只需要管理一个套接字, **接受某端口传输的数据就可以了**</code></pre><h4 id="socket缓冲区"><a href="#socket缓冲区" class="headerlink" title="socket缓冲区"></a>socket缓冲区</h4><p><strong>特性</strong>:</p>
+<ol>
+<li>I/O缓冲区在每个TCP套接字中单独存在；</li>
+<li>I/O缓冲区在创建套接字时自动生成；</li>
+<li>即使关闭套接字也会继续传送输出缓冲区中遗留的数据；</li>
+<li>关闭套接字将丢失输入缓冲区中的数据。</li>
+</ol>
+<p>输入输出缓冲区的默认大小一般都是 8K，可以通过 getsockopt() 函数获取：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> optVal;</span><br><span class="line"><span class="keyword">int</span> optLen = <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">getsockopt(servSock, SOL_SOCKET, SO_SNDBUF, (<span class="keyword">char</span>*)&amp;optVal, &amp;optLen);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"Buffer length: %d\n"</span>, optVal);</span><br><span class="line"></span><br><span class="line"><span class="comment">//结果 8192</span></span><br></pre></td></tr></table></figure>
+<h4 id="TCP套接字的阻塞模式"><a href="#TCP套接字的阻塞模式" class="headerlink" title="TCP套接字的阻塞模式"></a>TCP套接字的阻塞模式</h4><p>对于TCP套接字（默认情况下），当使用 write()发送数据时：</p>
+<p>1) 首先会检查缓冲区，如果缓冲区的可用空间长度小于要发送的数据，那么 write() 会被阻塞（暂停执行），直到缓冲区中的数据被发送到目标机器，腾出足够的空间，才唤醒 write()函数继续写入数据。</p>
+<p>2) 如果TCP协议正在向网络发送数据，那么输出缓冲区会被锁定，不允许写入，write()也会被阻塞，直到数据发送完毕缓冲区解锁，write() 才会被唤醒。</p>
+<p>3) 如果要写入的数据大于缓冲区的最大长度，那么将分批写入。</p>
+<p>4) 直到所有数据被写入缓冲区 write() 才能返回。</p>
+<p><strong>当使用 read()读取数据时</strong>：</p>
+<p>1) 首先会检查缓冲区，如果缓冲区中有数据，那么就读取，否则函数会被阻塞，直到网络上有数据到来。</p>
+<p>2) 如果要读取的数据长度小于缓冲区中的数据长度，那么就不能一次性将缓冲区中的所有数据读出，剩余数据将不断积压，直到有 read()函数再次读取。</p>
+<p>3) 直到读取到数据后 read()函数才会返回，否则就一直被阻塞。</p>
+<p>这就是TCP套接字的阻塞模式。<strong>所谓阻塞，就是上一步动作没有完成，下一步动作将暂停，直到上一步动作完成后才能继续，以保持同步性</strong>。</p>
+<h4 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h4><p>不知不觉第三篇结束了, 扎实了基础之后, 下一篇让我们继续改进第二篇文章讲的web服务器程序</p>
+
         </div>
 
         
@@ -219,10 +356,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/09/Socket%E7%BC%96%E7%A8%8B-4/">Socket编程-4</a>
+                <a class="prev" rel="prev" href="/2021/07/09/Socket%E7%BC%96%E7%A8%8B-4/">Socket编程-4-改进我们的服务器</a>
             
             
-            <a class="next" rel="next" href="/2021/07/09/Socket%E7%BC%96%E7%A8%8B-2/">Socket编程-2</a>
+            <a class="next" rel="next" href="/2021/07/09/Socket%E7%BC%96%E7%A8%8B-2/">Socket编程-2-实现一个超简单web服务器程序</a>
             
         </section>
 
