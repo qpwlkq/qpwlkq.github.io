@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>Linux基础 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Archives</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Archives</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Linux基础</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 12, 2021&nbsp;&nbsp;12:54:59</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[toc]</p>
+<h4 id="1-Linux内核"><a href="#1-Linux内核" class="headerlink" title="1. Linux内核"></a>1. Linux内核</h4><p>Linux: 一切皆文件<br>Linux 的内核主要由 5 个子系统组成：进程调度、内存管理、虚拟文件系统、网络接口、进程间通信<br><a href="https://imgtu.com/i/WP5UzT" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/WP5UzT.md.jpg" alt="WP5UzT.md.jpg"></a></p>
+<h5 id="1-1进程调度"><a href="#1-1进程调度" class="headerlink" title="1.1进程调度"></a>1.1进程调度</h5><p>进程调度指的是系统对进程的多种状态之间转换的策略。Linux 下的进程调度有 3 种策略：SCHED_OTHER、SCHED_FIFO 和 SCHED_RR。</p>
+<ol>
+<li>SCHED_OTHER：分时调度策略（默认），是用于针对普通进程的时间片轮转调度策略。  </li>
+<li>SCHED_FIFO：实时调度策略，是针对运行的实时性要求比较高、运行时间短的进程调度策略  </li>
+<li>SCHED_RR：实时调度策略，是针对实时性要求比较高、运行时间比较长的进程调度策略。</li>
+</ol>
+<h5 id="1-2-内存管理-MMU"><a href="#1-2-内存管理-MMU" class="headerlink" title="1.2 内存管理 MMU"></a>1.2 内存管理 MMU</h5><p>内存管理是多个进程间的内存共享策略。在 Linux 中，内存管理主要说的是虚拟内存。MMU主要工作是通过虚拟内存映射到物理内存.</p>
+<h5 id="1-3-虚拟文件管理-VFS"><a href="#1-3-虚拟文件管理-VFS" class="headerlink" title="1.3 虚拟文件管理 VFS"></a>1.3 虚拟文件管理 VFS</h5><p>在 Linux 下支持多种文件系统，如 ext、ext2、ext3、minix、umsdos、msdos、vfat、ntfs、proc、smb、ncp、iso9660、sysv、hpfs、affs 等。</p>
+<h5 id="1-4-网络接口"><a href="#1-4-网络接口" class="headerlink" title="1.4 网络接口"></a>1.4 网络接口</h5><p>网络接口分为网络协议和驱动程序，网络协议是一种网络传输的通信标准，而网络驱动则是对硬件设备的驱动程序。Linux 支持的网络设备多种多样，几乎目前所有网络设备都有驱动程序</p>
+<h5 id="1-5-进程通信"><a href="#1-5-进程通信" class="headerlink" title="1.5 进程通信"></a>1.5 进程通信</h5><p>Linux 操作系统支持多进程，进程之间需要进行数据的交流才能完成控制、协同工作等功能，Linux 的进程间通信是从 UNIX 系统继承过来的。Linux 下的进程间的通信方式主要有管道、信号、消息队列、共享内存和套接字等方法。</p>
+<h4 id="2-目录结构"><a href="#2-目录结构" class="headerlink" title="2. 目录结构"></a>2. 目录结构</h4><p><a href="https://imgtu.com/i/Wi84JK" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/Wi84JK.md.png" alt="Wi84JK.md.png"></a><br><code>bin</code>:<br><code>sbin</code>:<br><code>etc</code>:<br><code>lib</code>:<br><code>media</code>:<br><code>mnt</code>:<br><code>proc</code>:<br><code>tmp</code>:<br><code>boot</code>:<br><code>home</code>:<br><code>root</code>:<br><code>dev</code>:<br><code>lost+found</code>:<br><code>opt</code>:<br><code>var</code>:<br><code>usr</code>:<br><code>usr/bin</code>:<br><code>usr/games</code>:<br><code>usr/include</code>:<br><code>usr/local</code>:</p>
+<h4 id="3-命令解析器-shell-amp-bash"><a href="#3-命令解析器-shell-amp-bash" class="headerlink" title="3. 命令解析器 shell &amp; bash"></a>3. 命令解析器 shell &amp; bash</h4><p>命令解析器在 Linux 操作系统中就是一个进程 (运行的应用程序), 它的名字叫做 bash 通常我们更习惯将其称之为 shell (即: sh)。他们之间的渊源是这样的，在 Unix 操作系统诞生之后一个叫伯恩 (Bourne) 的人为其编写了命令解析器取名为 shell, Linux 操作系统诞生之后伯恩再次改写了 shell (sh), 将其称之为 bash (Bourne Again SHell), bash 就是 sh 的增强版本。  </p>
+<p>在 Linux 操作系统中默认使用的命令解析器是 bash, 当然也同样支持使用 sh。当用户打开一个终端窗口，并输入相关指令， 按回车键， 这时候命令解析器就开始工作了， 具体步骤如下：</p>
+<ol>
+<li>在 Linux 中有一个叫做 PATH 的环境变量，里边存储了一些系统目录 (windows也有, 叫 Path).</li>
+<li>命令解析器需要依次搜索 PATH 中的各个目录，检查这些目录中是否有用户输入的指令<ol>
+<li>如果找到了，执行该目录下的可执行程序，用户输入的命令就被执行完毕了</li>
+<li>如果没有找到，继续搜索其他目录，最后还是没有找到，会提示命令找不到，因此无法被执行</li>
+</ol>
+</li>
+</ol>
+<h4 id="4-命令提示行"><a href="#4-命令提示行" class="headerlink" title="4. 命令提示行"></a>4. 命令提示行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@qpwlkq-VirtualBox:&#x2F;#</span><br><span class="line">&#96;&#96;&#96;  </span><br><span class="line">&#96;qpwlkq-VirtualBox&#96;: 主机名  </span><br><span class="line">&#96;root&#96;: 用户名  </span><br><span class="line">&#96;#&#96;: 表示当前用户是root永华  </span><br><span class="line">&#96;$&#96;: 表示当前用户是普通用户</span><br></pre></td></tr></table></figure>
+<p>root@qpwlkq-VirtualBox:/# cd root<br>root@qpwlkq-VirtualBox:~#</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#96;~&#96;: 在当前用户的家目录中</span><br><span class="line"></span><br><span class="line">#### 5. 命令行快捷键</span><br><span class="line"></span><br><span class="line">&#96;Tab&#96;: 命令自动补齐  </span><br><span class="line">&#96;Ctrl+p(↑)&#96;: 显示输入的上一个历史命令	 </span><br><span class="line">&#96;Ctrl+n(↓)&#96;: 显示输入的下一个历史命令  </span><br><span class="line">&#96;Ctrl+a(home)&#96;: 光标移动命命令行首   </span><br><span class="line">&#96;Ctrl+e(end)&#96;: 光标移动命命令行尾    </span><br><span class="line">&#96;Ctrl+u&#96;: 删除光标前的部分字符串  </span><br><span class="line">&#96;Ctrl+k&#96;: 删除光标后的部分字符串  </span><br><span class="line">&#96;Backspace&#x2F;Delete&#96;: 删除光标前 &#x2F; 后的一个字符</span><br><span class="line"></span><br><span class="line">#### 6. 文件管理命令</span><br><span class="line"></span><br><span class="line">##### 6.1 cd</span><br><span class="line"></span><br><span class="line">进入指定目录:</span><br></pre></td></tr></table></figure>
+<p>$ cd 目录名(相对地址/绝对地址)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">后退回上一级目录</span><br></pre></td></tr></table></figure>
+<p>$ cd ..</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">进入当前用户根目录</span><br></pre></td></tr></table></figure>
+<p>$ cd                    # 方式1<br>$ cd ~                  # 方式2<br>$ cd /home/用户名       # 方式3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最近使用的两个文件夹互相切换</span><br></pre></td></tr></table></figure>
+<p>$ cd -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 6.2 mkdir</span><br></pre></td></tr></table></figure>
+<h1 id="单层目录"><a href="#单层目录" class="headerlink" title="单层目录"></a>单层目录</h1><p>$ mkdir 新目录的名字</p>
+<h1 id="多层目录-需要加参数-p"><a href="#多层目录-需要加参数-p" class="headerlink" title="多层目录, 需要加参数 -p"></a>多层目录, 需要加参数 -p</h1><p>$ mkdir parent/child/baby1/baby2 -p</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">##### 6.3 rmdir&#x2F;rm</span><br><span class="line">&#96;rmdir&#96;: 只能删除空目录，有点 low，不好用  </span><br><span class="line">&#96;rm&#96;: 可以删除文件也可以删除目录，如果删除的的是目录，需要加参数 -r, 意思是递归 (recursion).  </span><br><span class="line">&#96;rm -i&#96;: 删除的时候给出提示  </span><br><span class="line">&#96;rm -f&#96;: 强制删除文件, 没有提示直接删除, 并且不能恢复  </span><br><span class="line"></span><br><span class="line">##### 6.4 cp</span><br><span class="line">拷贝文件: 文件B存在就被覆盖, 不存在就新建.</span><br></pre></td></tr></table></figure>
+<p>$ cp 文件A 文件B</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拷贝目录: 拷贝目录需要参数 -r, 目录B不存在就新建</span><br></pre></td></tr></table></figure>
+<h1 id="场景1-目录A-通过拷贝得到不存在的目录B"><a href="#场景1-目录A-通过拷贝得到不存在的目录B" class="headerlink" title="场景1: 目录A, 通过拷贝得到不存在的目录B"></a>场景1: 目录A, 通过拷贝得到不存在的目录B</h1><p>$ cp 目录A 目录B -r</p>
+<h1 id="场景2-目录A存在的-目录B也是存在的-执行下边的拷贝-gt-目录A会被拷贝并将其放到目录B中"><a href="#场景2-目录A存在的-目录B也是存在的-执行下边的拷贝-gt-目录A会被拷贝并将其放到目录B中" class="headerlink" title="场景2: 目录A存在的, 目录B也是存在的, 执行下边的拷贝 ==&gt; 目录A会被拷贝并将其放到目录B中"></a>场景2: 目录A存在的, 目录B也是存在的, 执行下边的拷贝 ==&gt; 目录A会被拷贝并将其放到目录B中</h1><p>$ cp 目录A 目录B -r</p>
+<h1 id="场景3-把A目录里的某一个或者多个文件拷贝到B目录中"><a href="#场景3-把A目录里的某一个或者多个文件拷贝到B目录中" class="headerlink" title="场景3: 把A目录里的某一个或者多个文件拷贝到B目录中"></a>场景3: 把A目录里的某一个或者多个文件拷贝到B目录中</h1><p>$ cp A/a.txt B    # 拷贝 A目录中的 a.txt 到目录B中<br>$ cp A/* B -r    # 拷贝 A目录中的所有文件到目录B中, 不能确定A目录中是否有子目录, 因此需要加 -r</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 6.5 mv</span><br><span class="line">* 文件的移动:</span><br></pre></td></tr></table></figure>
+<h1 id="语法-mv-要移动的文件-目录"><a href="#语法-mv-要移动的文件-目录" class="headerlink" title="语法: mv 要移动的文件  目录"></a>语法: mv 要移动的文件  目录</h1><h1 id="有一个文件A-移动到目录B中"><a href="#有一个文件A-移动到目录B中" class="headerlink" title="有一个文件A, 移动到目录B中"></a>有一个文件A, 移动到目录B中</h1><h1 id="其中A可以是文件也可以是目录-B必须是目录而且必须是存在的"><a href="#其中A可以是文件也可以是目录-B必须是目录而且必须是存在的" class="headerlink" title="其中A可以是文件也可以是目录, B必须是目录而且必须是存在的"></a>其中A可以是文件也可以是目录, B必须是目录而且必须是存在的</h1><p>$ mv A B</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 文件改名:</span><br></pre></td></tr></table></figure>
+<h1 id="语法-mv-要改名的文件-新名字-原来是不存在的，这点很重要"><a href="#语法-mv-要改名的文件-新名字-原来是不存在的，这点很重要" class="headerlink" title="语法: mv 要改名的文件  新名字(原来是不存在的，这点很重要)"></a>语法: mv 要改名的文件  新名字(原来是不存在的，这点很重要)</h1><h1 id="其中A可以是文件也可以是目录，并且是存在的-B原来是不存在的"><a href="#其中A可以是文件也可以是目录，并且是存在的-B原来是不存在的" class="headerlink" title="其中A可以是文件也可以是目录，并且是存在的, B原来是不存在的"></a>其中A可以是文件也可以是目录，并且是存在的, B原来是不存在的</h1><p>$ mv A B</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 文件覆盖:</span><br></pre></td></tr></table></figure>
+<h1 id="语法-mv-存在文件A-存在的文件B"><a href="#语法-mv-存在文件A-存在的文件B" class="headerlink" title="语法: mv 存在文件A  存在的文件B"></a>语法: mv 存在文件A  存在的文件B</h1><h1 id="其中A是文件（非目录）并且是存在的-B也是一个文件（非目录）并且也存在"><a href="#其中A是文件（非目录）并且是存在的-B也是一个文件（非目录）并且也存在" class="headerlink" title="其中A是文件（非目录）并且是存在的, B也是一个文件（非目录）并且也存在"></a>其中A是文件（非目录）并且是存在的, B也是一个文件（非目录）并且也存在</h1><h1 id="A文件中的内容覆盖B文件中的内容-A文件被删除-只剩下B文件"><a href="#A文件中的内容覆盖B文件中的内容-A文件被删除-只剩下B文件" class="headerlink" title="A文件中的内容覆盖B文件中的内容, A文件被删除, 只剩下B文件"></a>A文件中的内容覆盖B文件中的内容, A文件被删除, 只剩下B文件</h1><p>$ mv A B</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">##### 6.6 查看文件内容</span><br><span class="line">* &#96;cat&#96;: 将文件内容显示到终端</span><br><span class="line">* &#96;more&#96;: 比cat高级一点, 可以以翻屏(空格↑空格↓)的方式查看文件中的内容</span><br><span class="line">* &#96;less&#96;: 类似more</span><br><span class="line">* &#96;head&#96;: 默认前10行, &#96;-行数&#96; 可以指定行数</span><br><span class="line">* &#96;tail&#96;: 默认后10行, &#96;-行数&#96; 可以指定行数</span><br><span class="line"></span><br><span class="line">##### 6.7 链接的创建</span><br><span class="line">* 软连接: 软连接相当于 windows 中的快捷方式</span><br></pre></td></tr></table></figure>
+<p>$ ln -s 源文件路径 软链接文件的名字(可以带路径)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 硬链接: 硬链接相当于起别名, 硬链接计数加一</span><br></pre></td></tr></table></figure>
+<p>$ ln 源文件(非目录) 硬链接文件的名字(可以带路径)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 6.8 修改文件的权限</span><br><span class="line"></span><br><span class="line">* 文字设定法</span><br></pre></td></tr></table></figure>
+<p>#chmod</p>
+<h1 id="语法格式-chmod-who-mod-文件名"><a href="#语法格式-chmod-who-mod-文件名" class="headerlink" title="语法格式: chmod who [+|-|=] mod 文件名"></a>语法格式: chmod who [+|-|=] mod 文件名</h1><pre><code>- who:
+    - u: user  -&gt; 文件所有者
+    - g: group -&gt; 文件所属组用户
+    - o: other -&gt; 其他
+    - a: all, 以上是三类人 u+g+o
+- 对权限的操作:
+    +: 添加权限
+    -: 去除权限
+    =: 权限的覆盖
+- mod: 权限
+    r: read, 读
+    w: write, 写
+    x: execute, 执行
+    -: 没有权限</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 数字设定法</span><br></pre></td></tr></table></figure>
+<h1 id="语法格式-chmod-mod-文件名"><a href="#语法格式-chmod-mod-文件名" class="headerlink" title="语法格式: chmod [+|-|=] mod 文件名"></a>语法格式: chmod [+|-|=] mod 文件名</h1><pre><code>- 对权限的操作:
+    +: 添加权限
+    -: 去除权限
+    =: 权限的覆盖, 等号可以不写
+- mod: 权限描述, 所有权限都放开是 7
+    - 4: read, r
+    - 2: write, w
+    - 1: execute , x
+    - 0: 没有权限</code></pre><h1 id="分解-chmod-0567-a-txt"><a href="#分解-chmod-0567-a-txt" class="headerlink" title="分解: chmod 0567 a.txt"></a>分解: chmod 0567 a.txt</h1><pre><code>0           5           6             7</code></pre><p>  八进制     文件所有者  文件所属组用户    其他人<br>              r + x       r + w         r+w+x</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 修改文件所有者&#x2F;所属组</span><br></pre></td></tr></table></figure>
+<h1 id="语法1-只修改所有者"><a href="#语法1-只修改所有者" class="headerlink" title="语法1-只修改所有者:"></a>语法1-只修改所有者:</h1><p>$ sudo chown 新的所有者 文件名</p>
+<h1 id="语法2-同时修改所有者和所属组"><a href="#语法2-同时修改所有者和所属组" class="headerlink" title="语法2-同时修改所有者和所属组:"></a>语法2-同时修改所有者和所属组:</h1><p>$ sudo chown 新的所有者:新的组名 文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 其他</span><br><span class="line">1. tree命令</span><br><span class="line">&#96;ubuntu: sudo apt install tree&#96;  </span><br><span class="line">&#96;centos: sudo yum install tree&#96;</span><br><span class="line">tree [-L n] 显示多少层</span><br><span class="line">2. pwd命令</span><br><span class="line">查看工作目录</span><br><span class="line">3. touch命令</span><br><span class="line">创建新的文件, 如果文件已存在, 更新文件的修改日期</span><br><span class="line">4. which命令</span><br><span class="line">查看要执行的命令所在的实际路径</span><br><span class="line">5. 重定向命令</span><br><span class="line">   1. &#96;&gt;&#96;: 将文件内容写入到指定文件中，如果文件中已有数据，则会使用新数据覆盖原数据</span><br><span class="line">   2. &#96;&gt;&gt;&#96;: 将输出的内容追加到指定的文件尾部  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 1.3 用户管理命令 ls</span><br></pre></td></tr></table></figure>
+<p>$ ls [args]         # 查看当前目录<br>$ ls [args] 目录名     # 查看指定目录<br>$ ls [args] 文件名     # 查看某个文件的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数1: -a</span><br></pre></td></tr></table></figure>
+<p>$ ls -a   #显示所有文件包括隐藏文件, 前面加’.’的是隐藏文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数2: -l</span><br></pre></td></tr></table></figure>
+<p>$ ls -l   #显示文件的详细信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数3: -F</span><br></pre></td></tr></table></figure>
+<p>$ ls -F   #区分文件和文件夹, 文件夹后面跟’/‘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数4: -h</span><br></pre></td></tr></table></figure>
+<p>$ ls -lh  #人性化表示, 文件大小不用字节数量表示, 转换为K等单位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 其他</span><br></pre></td></tr></table></figure>
+<p>$ ls -laF #可以用ll表示<br>$ ll</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 文件类型</span><br><span class="line">[![WiDli4.md.png](https:&#x2F;&#x2F;z3.ax1x.com&#x2F;2021&#x2F;07&#x2F;12&#x2F;WiDli4.md.png)](https:&#x2F;&#x2F;imgtu.com&#x2F;i&#x2F;WiDli4)  </span><br><span class="line"></span><br><span class="line">&#96;-&#96;: 普通文件, 在linux终端中, 没有执行权限的为白色, 压缩包为红色, 可执行程序为绿色.  </span><br><span class="line">&#96;d&#96;: 目录, 在linux终端中显示为蓝色, 如果目录的所有权限都是开放的, 有绿色的背景色  </span><br><span class="line">&#96;l&#96;: 软连接文件,相当于Windows中的快捷方式, 在linux中显示为淡蓝色.  </span><br><span class="line">&#96;c&#96;: 字符设备, 亮黄色.  </span><br><span class="line">&#96;b&#96;: 块设备, 亮黄色  </span><br><span class="line">&#96;p&#96;: 管道文件, 棕黄色  </span><br><span class="line">&#96;s&#96;: 本地套接字文件, 粉色  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 用户类型 </span><br><span class="line">三种类型都可能有部分权限</span><br><span class="line">1. 文件所有者</span><br><span class="line">2. 文件所属组用户</span><br><span class="line">3. 其他人</span><br><span class="line"></span><br><span class="line">##### 属性1: 文件访问权限</span><br><span class="line">抽出某一条分析:</span><br></pre></td></tr></table></figure>
+<p>drwxr-xr-x 3 qpwlkq qpwlkq 4096 7月 8 15:03 tinyhttpd-0.1.0/</p>
+<pre><code>第一个字符表示文件类型, 后面的9字符表示用户对该文件的操作权限, 9个字符分三份, 前三个表示拥有者权限,中间三个表示文件所属组用户的权限, 后三个表示其他人的权限
+`r`: 读权限  
+`w`: 写权限  
+`x`: 执行权限  
+`-`: 没有任何权限  
+
+##### 属性2: 硬链接计数
+有多少别名, 共同指向磁盘上的同一块内存
+
+##### 属性3: 文件的所有者
+
+
+##### 属性4: 用户所属组
+每个用户默认自己一组(但可以通过操作让多用户一组).
+
+##### 属性5: 文件/目录大小
+注意: 对于一个目录来说, 仅表示这个目录所占的空间大小, 而不包括目录内的文件大小.
+##### 属性6: 日期
+表示文件的修改日期
+
+
+
+#### 1.4 压缩命令
+
+#### 1.5 </code></pre>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/07/11/Linux%E4%B8%8B%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B-2/">Linux下的多线程编程-2-函数</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
