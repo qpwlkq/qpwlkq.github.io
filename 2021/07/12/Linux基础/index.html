@@ -12,7 +12,7 @@
 
 
 
-<title>Linux基础 | Hexo</title>
+<title>Linux基础与命令 | Hexo</title>
 
 
 
@@ -210,7 +210,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Linux基础</h1>
+            <h1 class="post-title">Linux基础与命令</h1>
             
                 <div class="post-meta">
                     
@@ -219,17 +219,23 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 12, 2021&nbsp;&nbsp;12:54:59</a>
+                        Date: <a href="#">July 12, 2021&nbsp;&nbsp;14:39:50</a>
                         </span>
                     
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Linux/">Linux</a>
+                            
+                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <p>[toc]</p>
-<h4 id="1-Linux内核"><a href="#1-Linux内核" class="headerlink" title="1. Linux内核"></a>1. Linux内核</h4><p>Linux: 一切皆文件<br>Linux 的内核主要由 5 个子系统组成：进程调度、内存管理、虚拟文件系统、网络接口、进程间通信<br><a href="https://imgtu.com/i/WP5UzT" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/WP5UzT.md.jpg" alt="WP5UzT.md.jpg"></a></p>
+            <h4 id="1-Linux内核"><a href="#1-Linux内核" class="headerlink" title="1. Linux内核"></a>1. Linux内核</h4><p>Linux: 一切皆文件<br>Linux 的内核主要由 5 个子系统组成：进程调度、内存管理、虚拟文件系统、网络接口、进程间通信<br><a href="https://imgtu.com/i/WP5UzT" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/WP5UzT.md.jpg" alt="WP5UzT.md.jpg"></a></p>
 <h5 id="1-1进程调度"><a href="#1-1进程调度" class="headerlink" title="1.1进程调度"></a>1.1进程调度</h5><p>进程调度指的是系统对进程的多种状态之间转换的策略。Linux 下的进程调度有 3 种策略：SCHED_OTHER、SCHED_FIFO 和 SCHED_RR。</p>
 <ol>
 <li>SCHED_OTHER：分时调度策略（默认），是用于针对普通进程的时间片轮转调度策略。  </li>
@@ -240,7 +246,7 @@
 <h5 id="1-3-虚拟文件管理-VFS"><a href="#1-3-虚拟文件管理-VFS" class="headerlink" title="1.3 虚拟文件管理 VFS"></a>1.3 虚拟文件管理 VFS</h5><p>在 Linux 下支持多种文件系统，如 ext、ext2、ext3、minix、umsdos、msdos、vfat、ntfs、proc、smb、ncp、iso9660、sysv、hpfs、affs 等。</p>
 <h5 id="1-4-网络接口"><a href="#1-4-网络接口" class="headerlink" title="1.4 网络接口"></a>1.4 网络接口</h5><p>网络接口分为网络协议和驱动程序，网络协议是一种网络传输的通信标准，而网络驱动则是对硬件设备的驱动程序。Linux 支持的网络设备多种多样，几乎目前所有网络设备都有驱动程序</p>
 <h5 id="1-5-进程通信"><a href="#1-5-进程通信" class="headerlink" title="1.5 进程通信"></a>1.5 进程通信</h5><p>Linux 操作系统支持多进程，进程之间需要进行数据的交流才能完成控制、协同工作等功能，Linux 的进程间通信是从 UNIX 系统继承过来的。Linux 下的进程间的通信方式主要有管道、信号、消息队列、共享内存和套接字等方法。</p>
-<h4 id="2-目录结构"><a href="#2-目录结构" class="headerlink" title="2. 目录结构"></a>2. 目录结构</h4><p><a href="https://imgtu.com/i/Wi84JK" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/Wi84JK.md.png" alt="Wi84JK.md.png"></a><br><code>bin</code>:<br><code>sbin</code>:<br><code>etc</code>:<br><code>lib</code>:<br><code>media</code>:<br><code>mnt</code>:<br><code>proc</code>:<br><code>tmp</code>:<br><code>boot</code>:<br><code>home</code>:<br><code>root</code>:<br><code>dev</code>:<br><code>lost+found</code>:<br><code>opt</code>:<br><code>var</code>:<br><code>usr</code>:<br><code>usr/bin</code>:<br><code>usr/games</code>:<br><code>usr/include</code>:<br><code>usr/local</code>:</p>
+<h4 id="2-目录结构"><a href="#2-目录结构" class="headerlink" title="2. 目录结构"></a>2. 目录结构</h4><p><a href="https://imgtu.com/i/Wi84JK" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/Wi84JK.md.png" alt="Wi84JK.md.png"></a><br><code>bin</code>:  binary, 二进制文件目录，存储了可执行程序，今天要将的命令对应的可执行程序都在这个目录中<br><code>sbin</code>: super binary, root 用户使用的一些二进制可执行程序<br><code>etc</code>: 配置文件目录，系统的或者用户自己安装的应用程序的配置文件都存储在这个目录中<br><code>lib</code>: library, 存储了一些动态库和静态库，给系统或者安装的软件使用<br><code>media</code>: 挂载目录，挂载外部设备，比如：光驱，扫描仪<br><code>mnt</code>: 临时挂载目录，比如我们可以将 U 盘临时挂载到这个目录下<br><code>proc</code>: 内存使用的一个映射目录，给操作系统使用的<br><code>tmp</code>: 临时目录，存放临时数据，重启电脑数据就被自动删除了<br><code>boot</code>: 存储了开机相关的设置<br><code>home</code>: 存储了普通用户的家目录，家目录名和用户名相同<br><code>root</code>: root 用户的家目录<br><code>dev</code>: device , 设备目录，Linux 中一切皆文件，所有的硬件会抽象成文件存储起来，比如：键盘，鼠标<br><code>lost+found</code>: 一般时候是空的，电脑异常关闭 / 崩溃时用来存储这些无家可归的文件，用于用户系统恢复<br><code>opt</code>: 第三方软件的安装目录<br><code>var</code>: 存储了系统使用的一些经常会发生变化的文件， 比如：日志文件<br><code>usr</code>: unix system resource, 系统的资源目录<br><code>usr/bin</code>: 可执行的二进制应用程序<br><code>usr/games</code>: 游戏目录<br><code>usr/include</code>: 包含的标准头文件目录<br><code>usr/local</code>: 和 opt 目录作用相同，安装第三方软件  </p>
 <h4 id="3-命令解析器-shell-amp-bash"><a href="#3-命令解析器-shell-amp-bash" class="headerlink" title="3. 命令解析器 shell &amp; bash"></a>3. 命令解析器 shell &amp; bash</h4><p>命令解析器在 Linux 操作系统中就是一个进程 (运行的应用程序), 它的名字叫做 bash 通常我们更习惯将其称之为 shell (即: sh)。他们之间的渊源是这样的，在 Unix 操作系统诞生之后一个叫伯恩 (Bourne) 的人为其编写了命令解析器取名为 shell, Linux 操作系统诞生之后伯恩再次改写了 shell (sh), 将其称之为 bash (Bourne Again SHell), bash 就是 sh 的增强版本。  </p>
 <p>在 Linux 操作系统中默认使用的命令解析器是 bash, 当然也同样支持使用 sh。当用户打开一个终端窗口，并输入相关指令， 按回车键， 这时候命令解析器就开始工作了， 具体步骤如下：</p>
 <ol>
@@ -251,9 +257,9 @@
 </ol>
 </li>
 </ol>
-<h4 id="4-命令提示行"><a href="#4-命令提示行" class="headerlink" title="4. 命令提示行"></a>4. 命令提示行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@qpwlkq-VirtualBox:&#x2F;#</span><br><span class="line">&#96;&#96;&#96;  </span><br><span class="line">&#96;qpwlkq-VirtualBox&#96;: 主机名  </span><br><span class="line">&#96;root&#96;: 用户名  </span><br><span class="line">&#96;#&#96;: 表示当前用户是root永华  </span><br><span class="line">&#96;$&#96;: 表示当前用户是普通用户</span><br></pre></td></tr></table></figure>
+<h4 id="4-命令提示行"><a href="#4-命令提示行" class="headerlink" title="4. 命令提示行"></a>4. 命令提示行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@qpwlkq-VirtualBox:&#x2F;#</span><br><span class="line">&#96;&#96;&#96;  </span><br><span class="line"></span><br><span class="line">&#96;qpwlkq-VirtualBox&#96;: 主机名  </span><br><span class="line">&#96;root&#96;: 用户名  </span><br><span class="line">&#96;#&#96;: 表示当前用户是root永华  </span><br><span class="line">&#96;$&#96;: 表示当前用户是普通用户</span><br></pre></td></tr></table></figure>
 <p>root@qpwlkq-VirtualBox:/# cd root<br>root@qpwlkq-VirtualBox:~#</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#96;~&#96;: 在当前用户的家目录中</span><br><span class="line"></span><br><span class="line">#### 5. 命令行快捷键</span><br><span class="line"></span><br><span class="line">&#96;Tab&#96;: 命令自动补齐  </span><br><span class="line">&#96;Ctrl+p(↑)&#96;: 显示输入的上一个历史命令	 </span><br><span class="line">&#96;Ctrl+n(↓)&#96;: 显示输入的下一个历史命令  </span><br><span class="line">&#96;Ctrl+a(home)&#96;: 光标移动命命令行首   </span><br><span class="line">&#96;Ctrl+e(end)&#96;: 光标移动命命令行尾    </span><br><span class="line">&#96;Ctrl+u&#96;: 删除光标前的部分字符串  </span><br><span class="line">&#96;Ctrl+k&#96;: 删除光标后的部分字符串  </span><br><span class="line">&#96;Backspace&#x2F;Delete&#96;: 删除光标前 &#x2F; 后的一个字符</span><br><span class="line"></span><br><span class="line">#### 6. 文件管理命令</span><br><span class="line"></span><br><span class="line">##### 6.1 cd</span><br><span class="line"></span><br><span class="line">进入指定目录:</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#96;~&#96;: 在当前用户的家目录中</span><br><span class="line"></span><br><span class="line">#### 5. 命令行快捷键</span><br><span class="line"></span><br><span class="line">&#96;Tab&#96;: 命令自动补齐  </span><br><span class="line">&#96;Ctrl+p(↑)&#96;: 显示输入的上一个历史命令	 </span><br><span class="line">&#96;Ctrl+n(↓)&#96;: 显示输入的下一个历史命令  </span><br><span class="line">&#96;Ctrl+a(home)&#96;: 光标移动命命令行首   </span><br><span class="line">&#96;Ctrl+e(end)&#96;: 光标移动命命令行尾    </span><br><span class="line">&#96;Ctrl+u&#96;: 删除光标前的部分字符串  </span><br><span class="line">&#96;Ctrl+k&#96;: 删除光标后的部分字符串  </span><br><span class="line">&#96;Backspace&#x2F;Delete&#96;: 删除光标前 &#x2F; 后的一个字符</span><br><span class="line"></span><br><span class="line">#### 6. 文件管理命令</span><br><span class="line"></span><br><span class="line">##### 6.1 cd</span><br><span class="line"></span><br><span class="line">进入指定目录:</span><br></pre></td></tr></table></figure>
 <p>$ cd 目录名(相对地址/绝对地址)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">后退回上一级目录</span><br></pre></td></tr></table></figure>
 <p>$ cd ..</p>
@@ -340,13 +346,7 @@
 ##### 属性5: 文件/目录大小
 注意: 对于一个目录来说, 仅表示这个目录所占的空间大小, 而不包括目录内的文件大小.
 ##### 属性6: 日期
-表示文件的修改日期
-
-
-
-#### 1.4 压缩命令
-
-#### 1.5 </code></pre>
+表示文件的修改日期</code></pre>
         </div>
 
         
@@ -378,6 +378,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/Linux/"># Linux</a>
+                    
+                        
                 </span>
             </div>
             <div>
