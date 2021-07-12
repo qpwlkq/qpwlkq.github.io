@@ -257,94 +257,85 @@
 </ol>
 </li>
 </ol>
-<h4 id="4-命令提示行"><a href="#4-命令提示行" class="headerlink" title="4. 命令提示行"></a>4. 命令提示行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">root@qpwlkq-VirtualBox:&#x2F;#</span><br><span class="line">&#96;&#96;&#96;  </span><br><span class="line"></span><br><span class="line">&#96;qpwlkq-VirtualBox&#96;: 主机名  </span><br><span class="line">&#96;root&#96;: 用户名  </span><br><span class="line">&#96;#&#96;: 表示当前用户是root永华  </span><br><span class="line">&#96;$&#96;: 表示当前用户是普通用户  </span><br><span class="line">&#96;~&#96;: 在当前用户的家目录中</span><br><span class="line"></span><br><span class="line">#### 5. 命令行快捷键</span><br><span class="line"></span><br><span class="line">&#96;Tab&#96;: 命令自动补齐  </span><br><span class="line">&#96;Ctrl+p(↑)&#96;: 显示输入的上一个历史命令	 </span><br><span class="line">&#96;Ctrl+n(↓)&#96;: 显示输入的下一个历史命令  </span><br><span class="line">&#96;Ctrl+a(home)&#96;: 光标移动命命令行首   </span><br><span class="line">&#96;Ctrl+e(end)&#96;: 光标移动命命令行尾    </span><br><span class="line">&#96;Ctrl+u&#96;: 删除光标前的部分字符串  </span><br><span class="line">&#96;Ctrl+k&#96;: 删除光标后的部分字符串  </span><br><span class="line">&#96;Backspace&#x2F;Delete&#96;: 删除光标前 &#x2F; 后的一个字符</span><br><span class="line"></span><br><span class="line">#### 6. 文件管理命令</span><br><span class="line"></span><br><span class="line">##### 6.1 cd</span><br><span class="line"></span><br><span class="line">进入指定目录:</span><br></pre></td></tr></table></figure>
-<p>$ cd 目录名(相对地址/绝对地址)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">后退回上一级目录</span><br></pre></td></tr></table></figure>
-<p>$ cd ..</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">进入当前用户根目录</span><br></pre></td></tr></table></figure>
-<p>$ cd                    # 方式1<br>$ cd ~                  # 方式2<br>$ cd /home/用户名       # 方式3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最近使用的两个文件夹互相切换</span><br></pre></td></tr></table></figure>
-<p>$ cd -</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 6.2 mkdir</span><br></pre></td></tr></table></figure>
-<h1 id="单层目录"><a href="#单层目录" class="headerlink" title="单层目录"></a>单层目录</h1><p>$ mkdir 新目录的名字</p>
-<h1 id="多层目录-需要加参数-p"><a href="#多层目录-需要加参数-p" class="headerlink" title="多层目录, 需要加参数 -p"></a>多层目录, 需要加参数 -p</h1><p>$ mkdir parent/child/baby1/baby2 -p</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">##### 6.3 rmdir&#x2F;rm</span><br><span class="line">&#96;rmdir&#96;: 只能删除空目录，有点 low，不好用  </span><br><span class="line">&#96;rm&#96;: 可以删除文件也可以删除目录，如果删除的的是目录，需要加参数 -r, 意思是递归 (recursion).  </span><br><span class="line">&#96;rm -i&#96;: 删除的时候给出提示  </span><br><span class="line">&#96;rm -f&#96;: 强制删除文件, 没有提示直接删除, 并且不能恢复  </span><br><span class="line"></span><br><span class="line">##### 6.4 cp</span><br><span class="line">拷贝文件: 文件B存在就被覆盖, 不存在就新建.</span><br></pre></td></tr></table></figure>
-<p>$ cp 文件A 文件B</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拷贝目录: 拷贝目录需要参数 -r, 目录B不存在就新建</span><br></pre></td></tr></table></figure>
-<h1 id="场景1-目录A-通过拷贝得到不存在的目录B"><a href="#场景1-目录A-通过拷贝得到不存在的目录B" class="headerlink" title="场景1: 目录A, 通过拷贝得到不存在的目录B"></a>场景1: 目录A, 通过拷贝得到不存在的目录B</h1><p>$ cp 目录A 目录B -r</p>
-<h1 id="场景2-目录A存在的-目录B也是存在的-执行下边的拷贝-gt-目录A会被拷贝并将其放到目录B中"><a href="#场景2-目录A存在的-目录B也是存在的-执行下边的拷贝-gt-目录A会被拷贝并将其放到目录B中" class="headerlink" title="场景2: 目录A存在的, 目录B也是存在的, 执行下边的拷贝 ==&gt; 目录A会被拷贝并将其放到目录B中"></a>场景2: 目录A存在的, 目录B也是存在的, 执行下边的拷贝 ==&gt; 目录A会被拷贝并将其放到目录B中</h1><p>$ cp 目录A 目录B -r</p>
-<h1 id="场景3-把A目录里的某一个或者多个文件拷贝到B目录中"><a href="#场景3-把A目录里的某一个或者多个文件拷贝到B目录中" class="headerlink" title="场景3: 把A目录里的某一个或者多个文件拷贝到B目录中"></a>场景3: 把A目录里的某一个或者多个文件拷贝到B目录中</h1><p>$ cp A/a.txt B    # 拷贝 A目录中的 a.txt 到目录B中<br>$ cp A/* B -r    # 拷贝 A目录中的所有文件到目录B中, 不能确定A目录中是否有子目录, 因此需要加 -r</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 6.5 mv</span><br><span class="line">* 文件的移动:</span><br></pre></td></tr></table></figure>
-<h1 id="语法-mv-要移动的文件-目录"><a href="#语法-mv-要移动的文件-目录" class="headerlink" title="语法: mv 要移动的文件  目录"></a>语法: mv 要移动的文件  目录</h1><h1 id="有一个文件A-移动到目录B中"><a href="#有一个文件A-移动到目录B中" class="headerlink" title="有一个文件A, 移动到目录B中"></a>有一个文件A, 移动到目录B中</h1><h1 id="其中A可以是文件也可以是目录-B必须是目录而且必须是存在的"><a href="#其中A可以是文件也可以是目录-B必须是目录而且必须是存在的" class="headerlink" title="其中A可以是文件也可以是目录, B必须是目录而且必须是存在的"></a>其中A可以是文件也可以是目录, B必须是目录而且必须是存在的</h1><p>$ mv A B</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 文件改名:</span><br></pre></td></tr></table></figure>
-<h1 id="语法-mv-要改名的文件-新名字-原来是不存在的，这点很重要"><a href="#语法-mv-要改名的文件-新名字-原来是不存在的，这点很重要" class="headerlink" title="语法: mv 要改名的文件  新名字(原来是不存在的，这点很重要)"></a>语法: mv 要改名的文件  新名字(原来是不存在的，这点很重要)</h1><h1 id="其中A可以是文件也可以是目录，并且是存在的-B原来是不存在的"><a href="#其中A可以是文件也可以是目录，并且是存在的-B原来是不存在的" class="headerlink" title="其中A可以是文件也可以是目录，并且是存在的, B原来是不存在的"></a>其中A可以是文件也可以是目录，并且是存在的, B原来是不存在的</h1><p>$ mv A B</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 文件覆盖:</span><br></pre></td></tr></table></figure>
-<h1 id="语法-mv-存在文件A-存在的文件B"><a href="#语法-mv-存在文件A-存在的文件B" class="headerlink" title="语法: mv 存在文件A  存在的文件B"></a>语法: mv 存在文件A  存在的文件B</h1><h1 id="其中A是文件（非目录）并且是存在的-B也是一个文件（非目录）并且也存在"><a href="#其中A是文件（非目录）并且是存在的-B也是一个文件（非目录）并且也存在" class="headerlink" title="其中A是文件（非目录）并且是存在的, B也是一个文件（非目录）并且也存在"></a>其中A是文件（非目录）并且是存在的, B也是一个文件（非目录）并且也存在</h1><h1 id="A文件中的内容覆盖B文件中的内容-A文件被删除-只剩下B文件"><a href="#A文件中的内容覆盖B文件中的内容-A文件被删除-只剩下B文件" class="headerlink" title="A文件中的内容覆盖B文件中的内容, A文件被删除, 只剩下B文件"></a>A文件中的内容覆盖B文件中的内容, A文件被删除, 只剩下B文件</h1><p>$ mv A B</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">##### 6.6 查看文件内容</span><br><span class="line">* &#96;cat&#96;: 将文件内容显示到终端</span><br><span class="line">* &#96;more&#96;: 比cat高级一点, 可以以翻屏(空格↑空格↓)的方式查看文件中的内容</span><br><span class="line">* &#96;less&#96;: 类似more</span><br><span class="line">* &#96;head&#96;: 默认前10行, &#96;-行数&#96; 可以指定行数</span><br><span class="line">* &#96;tail&#96;: 默认后10行, &#96;-行数&#96; 可以指定行数</span><br><span class="line"></span><br><span class="line">##### 6.7 链接的创建</span><br><span class="line">* 软连接: 软连接相当于 windows 中的快捷方式</span><br></pre></td></tr></table></figure>
-<p>$ ln -s 源文件路径 软链接文件的名字(可以带路径)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 硬链接: 硬链接相当于起别名, 硬链接计数加一</span><br></pre></td></tr></table></figure>
-<p>$ ln 源文件(非目录) 硬链接文件的名字(可以带路径)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 6.8 修改文件的权限</span><br><span class="line"></span><br><span class="line">* 文字设定法</span><br></pre></td></tr></table></figure>
-<p>#chmod</p>
-<h1 id="语法格式-chmod-who-mod-文件名"><a href="#语法格式-chmod-who-mod-文件名" class="headerlink" title="语法格式: chmod who [+|-|=] mod 文件名"></a>语法格式: chmod who [+|-|=] mod 文件名</h1><pre><code>- who:
-    - u: user  -&gt; 文件所有者
-    - g: group -&gt; 文件所属组用户
-    - o: other -&gt; 其他
-    - a: all, 以上是三类人 u+g+o
-- 对权限的操作:
-    +: 添加权限
-    -: 去除权限
-    =: 权限的覆盖
-- mod: 权限
-    r: read, 读
-    w: write, 写
-    x: execute, 执行
-    -: 没有权限</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* 数字设定法</span><br></pre></td></tr></table></figure>
-<h1 id="语法格式-chmod-mod-文件名"><a href="#语法格式-chmod-mod-文件名" class="headerlink" title="语法格式: chmod [+|-|=] mod 文件名"></a>语法格式: chmod [+|-|=] mod 文件名</h1><pre><code>- 对权限的操作:
-    +: 添加权限
-    -: 去除权限
-    =: 权限的覆盖, 等号可以不写
-- mod: 权限描述, 所有权限都放开是 7
-    - 4: read, r
-    - 2: write, w
-    - 1: execute , x
-    - 0: 没有权限</code></pre><h1 id="分解-chmod-0567-a-txt"><a href="#分解-chmod-0567-a-txt" class="headerlink" title="分解: chmod 0567 a.txt"></a>分解: chmod 0567 a.txt</h1><pre><code>0           5           6             7</code></pre><p>  八进制     文件所有者  文件所属组用户    其他人<br>              r + x       r + w         r+w+x</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 修改文件所有者&#x2F;所属组</span><br></pre></td></tr></table></figure>
-<h1 id="语法1-只修改所有者"><a href="#语法1-只修改所有者" class="headerlink" title="语法1-只修改所有者:"></a>语法1-只修改所有者:</h1><p>$ sudo chown 新的所有者 文件名</p>
-<h1 id="语法2-同时修改所有者和所属组"><a href="#语法2-同时修改所有者和所属组" class="headerlink" title="语法2-同时修改所有者和所属组:"></a>语法2-同时修改所有者和所属组:</h1><p>$ sudo chown 新的所有者:新的组名 文件名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##### 其他</span><br><span class="line">1. tree命令</span><br><span class="line">&#96;ubuntu: sudo apt install tree&#96;  </span><br><span class="line">&#96;centos: sudo yum install tree&#96;</span><br><span class="line">tree [-L n] 显示多少层</span><br><span class="line">2. pwd命令</span><br><span class="line">查看工作目录</span><br><span class="line">3. touch命令</span><br><span class="line">创建新的文件, 如果文件已存在, 更新文件的修改日期</span><br><span class="line">4. which命令</span><br><span class="line">查看要执行的命令所在的实际路径</span><br><span class="line">5. 重定向命令</span><br><span class="line">   1. &#96;&gt;&#96;: 将文件内容写入到指定文件中，如果文件中已有数据，则会使用新数据覆盖原数据</span><br><span class="line">   2. &#96;&gt;&gt;&#96;: 将输出的内容追加到指定的文件尾部  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 1.3 用户管理命令 ls</span><br></pre></td></tr></table></figure>
-<p>$ ls [args]         # 查看当前目录<br>$ ls [args] 目录名     # 查看指定目录<br>$ ls [args] 文件名     # 查看某个文件的信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数1: -a</span><br></pre></td></tr></table></figure>
-<p>$ ls -a   #显示所有文件包括隐藏文件, 前面加’.’的是隐藏文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数2: -l</span><br></pre></td></tr></table></figure>
-<p>$ ls -l   #显示文件的详细信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数3: -F</span><br></pre></td></tr></table></figure>
-<p>$ ls -F   #区分文件和文件夹, 文件夹后面跟’/‘</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 参数4: -h</span><br></pre></td></tr></table></figure>
-<p>$ ls -lh  #人性化表示, 文件大小不用字节数量表示, 转换为K等单位</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##### 其他</span><br></pre></td></tr></table></figure>
-<p>$ ls -laF #可以用ll表示<br>$ ll</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 文件类型</span><br><span class="line">[![WiDli4.md.png](https:&#x2F;&#x2F;z3.ax1x.com&#x2F;2021&#x2F;07&#x2F;12&#x2F;WiDli4.md.png)](https:&#x2F;&#x2F;imgtu.com&#x2F;i&#x2F;WiDli4)  </span><br><span class="line"></span><br><span class="line">&#96;-&#96;: 普通文件, 在linux终端中, 没有执行权限的为白色, 压缩包为红色, 可执行程序为绿色.  </span><br><span class="line">&#96;d&#96;: 目录, 在linux终端中显示为蓝色, 如果目录的所有权限都是开放的, 有绿色的背景色  </span><br><span class="line">&#96;l&#96;: 软连接文件,相当于Windows中的快捷方式, 在linux中显示为淡蓝色.  </span><br><span class="line">&#96;c&#96;: 字符设备, 亮黄色.  </span><br><span class="line">&#96;b&#96;: 块设备, 亮黄色  </span><br><span class="line">&#96;p&#96;: 管道文件, 棕黄色  </span><br><span class="line">&#96;s&#96;: 本地套接字文件, 粉色  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">##### 用户类型 </span><br><span class="line">三种类型都可能有部分权限</span><br><span class="line">1. 文件所有者</span><br><span class="line">2. 文件所属组用户</span><br><span class="line">3. 其他人</span><br><span class="line"></span><br><span class="line">##### 属性1: 文件访问权限</span><br><span class="line">抽出某一条分析:</span><br></pre></td></tr></table></figure>
-<p>drwxr-xr-x 3 qpwlkq qpwlkq 4096 7月 8 15:03 tinyhttpd-0.1.0/</p>
-<pre><code>第一个字符表示文件类型, 后面的9字符表示用户对该文件的操作权限, 9个字符分三份, 前三个表示拥有者权限,中间三个表示文件所属组用户的权限, 后三个表示其他人的权限
-`r`: 读权限  
-`w`: 写权限  
-`x`: 执行权限  
-`-`: 没有任何权限  
+<h4 id="4-命令提示行"><a href="#4-命令提示行" class="headerlink" title="4. 命令提示行"></a>4. 命令提示行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@qpwlkq-VirtualBox:&#x2F;#</span><br></pre></td></tr></table></figure>
 
-##### 属性2: 硬链接计数
-有多少别名, 共同指向磁盘上的同一块内存
+<p><code>qpwlkq-VirtualBox</code>: 主机名<br><code>root</code>: 用户名<br><code>#</code>: 表示当前用户是root永华<br><code>$</code>: 表示当前用户是普通用户<br><code>~</code>: 在当前用户的家目录中</p>
+<h4 id="5-命令行快捷键"><a href="#5-命令行快捷键" class="headerlink" title="5. 命令行快捷键"></a>5. 命令行快捷键</h4><p><code>Tab</code>: 命令自动补齐<br><code>Ctrl+p(↑)</code>: 显示输入的上一个历史命令<br><code>Ctrl+n(↓)</code>: 显示输入的下一个历史命令<br><code>Ctrl+a(home)</code>: 光标移动命命令行首<br><code>Ctrl+e(end)</code>: 光标移动命命令行尾<br><code>Ctrl+u</code>: 删除光标前的部分字符串<br><code>Ctrl+k</code>: 删除光标后的部分字符串<br><code>Backspace/Delete</code>: 删除光标前 / 后的一个字符</p>
+<h4 id="6-文件管理命令"><a href="#6-文件管理命令" class="headerlink" title="6. 文件管理命令"></a>6. 文件管理命令</h4><h5 id="6-1-cd"><a href="#6-1-cd" class="headerlink" title="6.1 cd"></a>6.1 cd</h5><p>进入指定目录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd 目录名(相对地址&#x2F;绝对地址)</span><br></pre></td></tr></table></figure>
 
-##### 属性3: 文件的所有者
+<p>后退回上一级目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ..</span><br></pre></td></tr></table></figure>
 
+<p>进入当前用户根目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd                    # 方式1</span><br><span class="line">$ cd ~                  # 方式2</span><br><span class="line">$ cd &#x2F;home&#x2F;用户名       # 方式3</span><br></pre></td></tr></table></figure>
+<p>最近使用的两个文件夹互相切换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd -</span><br></pre></td></tr></table></figure>
+<h5 id="6-2-mkdir"><a href="#6-2-mkdir" class="headerlink" title="6.2 mkdir"></a>6.2 mkdir</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 单层目录</span><br><span class="line">$ mkdir 新目录的名字</span><br><span class="line"></span><br><span class="line"># 多层目录, 需要加参数 -p</span><br><span class="line">$ mkdir parent&#x2F;child&#x2F;baby1&#x2F;baby2 -p</span><br></pre></td></tr></table></figure>
+<h5 id="6-3-rmdir-rm"><a href="#6-3-rmdir-rm" class="headerlink" title="6.3 rmdir/rm"></a>6.3 rmdir/rm</h5><p><code>rmdir</code>: 只能删除空目录，有点 low，不好用<br><code>rm</code>: 可以删除文件也可以删除目录，如果删除的的是目录，需要加参数 -r, 意思是递归 (recursion).<br><code>rm -i</code>: 删除的时候给出提示<br><code>rm -f</code>: 强制删除文件, 没有提示直接删除, 并且不能恢复  </p>
+<h5 id="6-4-cp"><a href="#6-4-cp" class="headerlink" title="6.4 cp"></a>6.4 cp</h5><p>拷贝文件: 文件B存在就被覆盖, 不存在就新建.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp 文件A 文件B</span><br></pre></td></tr></table></figure>
+<p>拷贝目录: 拷贝目录需要参数 -r, 目录B不存在就新建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 场景1: 目录A, 通过拷贝得到不存在的目录B</span><br><span class="line">$ cp 目录A 目录B -r</span><br><span class="line"></span><br><span class="line"># 场景2: 目录A存在的, 目录B也是存在的, 执行下边的拷贝 &#x3D;&#x3D;&gt; 目录A会被拷贝并将其放到目录B中</span><br><span class="line">$ cp 目录A 目录B -r</span><br><span class="line"></span><br><span class="line"># 场景3: 把A目录里的某一个或者多个文件拷贝到B目录中</span><br><span class="line">$ cp A&#x2F;a.txt B	# 拷贝 A目录中的 a.txt 到目录B中</span><br><span class="line">$ cp A&#x2F;* B -r	# 拷贝 A目录中的所有文件到目录B中, 不能确定A目录中是否有子目录, 因此需要加 -r</span><br></pre></td></tr></table></figure>
 
-##### 属性4: 用户所属组
-每个用户默认自己一组(但可以通过操作让多用户一组).
+<h5 id="6-5-mv"><a href="#6-5-mv" class="headerlink" title="6.5 mv"></a>6.5 mv</h5><ul>
+<li>文件的移动:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 语法: mv 要移动的文件  目录</span><br><span class="line"># 有一个文件A, 移动到目录B中</span><br><span class="line"># 其中A可以是文件也可以是目录, B必须是目录而且必须是存在的</span><br><span class="line">$ mv A B</span><br></pre></td></tr></table></figure></li>
+<li>文件改名:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 语法: mv 要改名的文件  新名字(原来是不存在的，这点很重要)</span><br><span class="line"># 其中A可以是文件也可以是目录，并且是存在的, B原来是不存在的</span><br><span class="line">$ mv A B</span><br></pre></td></tr></table></figure></li>
+<li>文件覆盖:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 语法: mv 存在文件A  存在的文件B</span><br><span class="line"># 其中A是文件（非目录）并且是存在的, B也是一个文件（非目录）并且也存在</span><br><span class="line"># A文件中的内容覆盖B文件中的内容, A文件被删除, 只剩下B文件</span><br><span class="line">$ mv A B</span><br></pre></td></tr></table></figure>
+<h5 id="6-6-查看文件内容"><a href="#6-6-查看文件内容" class="headerlink" title="6.6 查看文件内容"></a>6.6 查看文件内容</h5></li>
+<li><code>cat</code>: 将文件内容显示到终端</li>
+<li><code>more</code>: 比cat高级一点, 可以以翻屏(空格↑空格↓)的方式查看文件中的内容</li>
+<li><code>less</code>: 类似more</li>
+<li><code>head</code>: 默认前10行, <code>-行数</code> 可以指定行数</li>
+<li><code>tail</code>: 默认后10行, <code>-行数</code> 可以指定行数</li>
+</ul>
+<h5 id="6-7-链接的创建"><a href="#6-7-链接的创建" class="headerlink" title="6.7 链接的创建"></a>6.7 链接的创建</h5><ul>
+<li>软连接: 软连接相当于 windows 中的快捷方式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s 源文件路径 软链接文件的名字(可以带路径)</span><br></pre></td></tr></table></figure></li>
+<li>硬链接: 硬链接相当于起别名, 硬链接计数加一<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln 源文件(非目录) 硬链接文件的名字(可以带路径)</span><br></pre></td></tr></table></figure>
 
-##### 属性5: 文件/目录大小
-注意: 对于一个目录来说, 仅表示这个目录所占的空间大小, 而不包括目录内的文件大小.
-##### 属性6: 日期
-表示文件的修改日期</code></pre>
+</li>
+</ul>
+<h5 id="6-8-修改文件的权限"><a href="#6-8-修改文件的权限" class="headerlink" title="6.8 修改文件的权限"></a>6.8 修改文件的权限</h5><ul>
+<li>文字设定法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#chmod</span><br><span class="line"># 语法格式: chmod who [+|-|&#x3D;] mod 文件名</span><br><span class="line">	- who:</span><br><span class="line">		- u: user  -&gt; 文件所有者</span><br><span class="line">		- g: group -&gt; 文件所属组用户</span><br><span class="line">		- o: other -&gt; 其他</span><br><span class="line">		- a: all, 以上是三类人 u+g+o</span><br><span class="line">	- 对权限的操作:</span><br><span class="line">		+: 添加权限</span><br><span class="line">		-: 去除权限</span><br><span class="line">		&#x3D;: 权限的覆盖</span><br><span class="line">	- mod: 权限</span><br><span class="line">		r: read, 读</span><br><span class="line">		w: write, 写</span><br><span class="line">		x: execute, 执行</span><br><span class="line">		-: 没有权限</span><br></pre></td></tr></table></figure></li>
+<li>数字设定法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 语法格式: chmod [+|-|&#x3D;] mod 文件名</span><br><span class="line">	- 对权限的操作:</span><br><span class="line">		+: 添加权限</span><br><span class="line">		-: 去除权限</span><br><span class="line">		&#x3D;: 权限的覆盖, 等号可以不写</span><br><span class="line">	- mod: 权限描述, 所有权限都放开是 7</span><br><span class="line">		- 4: read, r</span><br><span class="line">		- 2: write, w</span><br><span class="line">		- 1: execute , x</span><br><span class="line">		- 0: 没有权限</span><br><span class="line">		</span><br><span class="line"># 分解: chmod 0567 a.txt</span><br><span class="line"></span><br><span class="line">    0           5           6             7</span><br><span class="line">  八进制     文件所有者  文件所属组用户    其他人</span><br><span class="line">              r + x       r + w         r+w+x</span><br></pre></td></tr></table></figure>
+<h5 id="修改文件所有者-所属组"><a href="#修改文件所有者-所属组" class="headerlink" title="修改文件所有者/所属组"></a>修改文件所有者/所属组</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 语法1-只修改所有者: </span><br><span class="line">$ sudo chown 新的所有者 文件名</span><br><span class="line"></span><br><span class="line"># 语法2-同时修改所有者和所属组: </span><br><span class="line">$ sudo chown 新的所有者:新的组名 文件名</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><ol>
+<li>tree命令<br><code>ubuntu: sudo apt install tree</code><br><code>centos: sudo yum install tree</code><br>tree [-L n] 显示多少层</li>
+<li>pwd命令<br>查看工作目录</li>
+<li>touch命令<br>创建新的文件, 如果文件已存在, 更新文件的修改日期</li>
+<li>which命令<br>查看要执行的命令所在的实际路径</li>
+<li>重定向命令<ol>
+<li><code>&gt;</code>: 将文件内容写入到指定文件中，如果文件中已有数据，则会使用新数据覆盖原数据</li>
+<li><code>&gt;&gt;</code>: 将输出的内容追加到指定的文件尾部  </li>
+</ol>
+</li>
+</ol>
+<h4 id="1-3-用户管理命令-ls"><a href="#1-3-用户管理命令-ls" class="headerlink" title="1.3 用户管理命令 ls"></a>1.3 用户管理命令 ls</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls [args]         # 查看当前目录</span><br><span class="line">$ ls [args] 目录名 	# 查看指定目录</span><br><span class="line">$ ls [args] 文件名 	# 查看某个文件的信息</span><br></pre></td></tr></table></figure>
+<h5 id="参数1-a"><a href="#参数1-a" class="headerlink" title="参数1: -a"></a>参数1: -a</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -a   #显示所有文件包括隐藏文件, 前面加&#39;.&#39;的是隐藏文件</span><br></pre></td></tr></table></figure>
+<h5 id="参数2-l"><a href="#参数2-l" class="headerlink" title="参数2: -l"></a>参数2: -l</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l   #显示文件的详细信息</span><br></pre></td></tr></table></figure>
+<h5 id="参数3-F"><a href="#参数3-F" class="headerlink" title="参数3: -F"></a>参数3: -F</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -F   #区分文件和文件夹, 文件夹后面跟&#39;&#x2F;&#39;</span><br></pre></td></tr></table></figure>
+<h5 id="参数4-h"><a href="#参数4-h" class="headerlink" title="参数4: -h"></a>参数4: -h</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -lh  #人性化表示, 文件大小不用字节数量表示, 转换为K等单位</span><br></pre></td></tr></table></figure>
+<h5 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls -laF #可以用ll表示</span><br><span class="line">$ ll</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h4><p><a href="https://imgtu.com/i/WiDli4" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/12/WiDli4.md.png" alt="WiDli4.md.png"></a>  </p>
+<p><code>-</code>: 普通文件, 在linux终端中, 没有执行权限的为白色, 压缩包为红色, 可执行程序为绿色.<br><code>d</code>: 目录, 在linux终端中显示为蓝色, 如果目录的所有权限都是开放的, 有绿色的背景色<br><code>l</code>: 软连接文件,相当于Windows中的快捷方式, 在linux中显示为淡蓝色.<br><code>c</code>: 字符设备, 亮黄色.<br><code>b</code>: 块设备, 亮黄色<br><code>p</code>: 管道文件, 棕黄色<br><code>s</code>: 本地套接字文件, 粉色  </p>
+<h5 id="用户类型"><a href="#用户类型" class="headerlink" title="用户类型"></a>用户类型</h5><p>三种类型都可能有部分权限</p>
+<ol>
+<li>文件所有者</li>
+<li>文件所属组用户</li>
+<li>其他人</li>
+</ol>
+<h5 id="属性1-文件访问权限"><a href="#属性1-文件访问权限" class="headerlink" title="属性1: 文件访问权限"></a>属性1: 文件访问权限</h5><p>抽出某一条分析:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x 3 qpwlkq qpwlkq 4096 7月 8 15:03 tinyhttpd-0.1.0&#x2F;</span><br></pre></td></tr></table></figure>
+<p>第一个字符表示文件类型, 后面的9字符表示用户对该文件的操作权限, 9个字符分三份, 前三个表示拥有者权限,中间三个表示文件所属组用户的权限, 后三个表示其他人的权限<br><code>r</code>: 读权限<br><code>w</code>: 写权限<br><code>x</code>: 执行权限<br><code>-</code>: 没有任何权限  </p>
+<h5 id="属性2-硬链接计数"><a href="#属性2-硬链接计数" class="headerlink" title="属性2: 硬链接计数"></a>属性2: 硬链接计数</h5><p>有多少别名, 共同指向磁盘上的同一块内存</p>
+<h5 id="属性3-文件的所有者"><a href="#属性3-文件的所有者" class="headerlink" title="属性3: 文件的所有者"></a>属性3: 文件的所有者</h5><h5 id="属性4-用户所属组"><a href="#属性4-用户所属组" class="headerlink" title="属性4: 用户所属组"></a>属性4: 用户所属组</h5><p>每个用户默认自己一组(但可以通过操作让多用户一组).</p>
+<h5 id="属性5-文件-目录大小"><a href="#属性5-文件-目录大小" class="headerlink" title="属性5: 文件/目录大小"></a>属性5: 文件/目录大小</h5><p>注意: 对于一个目录来说, 仅表示这个目录所占的空间大小, 而不包括目录内的文件大小.</p>
+<h5 id="属性6-日期"><a href="#属性6-日期" class="headerlink" title="属性6: 日期"></a>属性6: 日期</h5><p>表示文件的修改日期</p>
+
         </div>
 
         
