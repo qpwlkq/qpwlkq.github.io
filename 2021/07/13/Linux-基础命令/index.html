@@ -12,7 +12,7 @@
 
 
 
-<title>Linux下的多线程编程-2-函数 | Hexo</title>
+<title>Linux-基础命令 | Hexo</title>
 
 
 
@@ -144,73 +144,11 @@
             <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Linux下的多线程编程-2-函数</h1>
+            <h1 class="post-title">Linux-基础命令</h1>
             
                 <div class="post-meta">
                     
@@ -219,14 +157,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 11, 2021&nbsp;&nbsp;20:49:56</a>
+                        Date: <a href="#">July 13, 2021&nbsp;&nbsp;15:15:09</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/">多线程编程</a>
+                                <a href="/categories/Linux/">Linux</a>
                             
                         </span>
                     
@@ -235,19 +173,19 @@
         </header>
 
         <div class="post-content">
-            <h5 id="1-创建线程-pthread-create"><a href="#1-创建线程-pthread-create" class="headerlink" title="1. 创建线程 pthread_create()"></a>1. 创建线程 pthread_create()</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_create</span><span class="params">(<span class="keyword">pthread_t</span> *thread, <span class="keyword">pthread_attr_t</span> *attr, <span class="keyword">void</span> *(*start_routine)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数1</strong>: thread：指向pthread_create类型的指针，用于引用新创建的线程。<br><strong>参数2</strong>: attr：用于设置线程的属性，一般不需要特殊的属性，所以可以简单地设置为NULL。<br><strong>参数3</strong>: start_routine：传递新线程所要执行的函数地址。<br><strong>参数4</strong>: arg：新线程所要执行的函数的参数。<br><strong>return</strong>: 成功返回0, 失败返回错误代码</p>
-<h5 id="2-获取自己的线程ID-pthread-self"><a href="#2-获取自己的线程ID-pthread-self" class="headerlink" title="2. 获取自己的线程ID pthread_self()"></a>2. 获取自己的线程ID pthread_self()</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pthread_self(void);</span><br></pre></td></tr></table></figure>
-
-<h5 id="3-线程退出"><a href="#3-线程退出" class="headerlink" title="3. 线程退出"></a>3. 线程退出</h5><ol>
-<li>执行完成后隐式退出</li>
-<li>由线程本身显式调用pthread_exit函数<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pthread_exit(<span class="keyword">void</span> * retval);</span><br></pre></td></tr></table></figure></li>
-<li>被其他线程用pthread_cancel函数终止<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pthread_cancel(<span class="keyword">pthread_t</span> thread);</span><br></pre></td></tr></table></figure></li>
-<li>如果一个线程要等待另一个线程的终止，可以使用pthread_join函数，该函数的作用是调用pthread_join的线程将被挂起直到线程ID为参数thread的线程终止<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pthread_join(<span class="keyword">pthread_t</span> thread, <span class="keyword">void</span>** threadreturn);</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
+            <ol>
+<li>切换用户<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su + username   #仅切换用户</span><br><span class="line">su - username   #切换用户, 并切换工作目录</span><br></pre></td></tr></table></figure></li>
+<li>添加新用户<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser username   #添加新用户</span><br><span class="line">sudo useradd username   #CentOS</span><br><span class="line">sudo useradd -m -s &#x2F;bin&#x2F;bash username #Unbuntu 密码默认&quot;-p&quot;</span><br></pre></td></tr></table></figure></li>
+<li>删除用户<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo userdel username -r #添加&#39;-r&#39;一并删除家目录</span><br><span class="line">sudo deluser sabol       #未删除家目录, 不支持-r</span><br></pre></td></tr></table></figure></li>
+<li>添加/删除用户组<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd groupname</span><br><span class="line">sudo groupdel groupname</span><br></pre></td></tr></table></figure></li>
+<li>修改用户密码</li>
+</ol>
+<ul>
+<li>修改当前用户的密码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br></pre></td></tr></table></figure></li>
+<li>修改非当前用户/root的密码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd username&#x2F;root</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li></li>
 </ol>
 
         </div>
@@ -282,7 +220,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"># 多线程</a>
+                        <a href="/tags/Linux/"># Linux</a>
                     
                         
                 </span>
@@ -295,10 +233,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/12/Linux-%E5%9F%BA%E7%A1%801/">Linux基础与命令</a>
+                <a class="prev" rel="prev" href="/2021/07/14/Linux%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4/">Linux压缩命令</a>
             
             
-            <a class="next" rel="next" href="/2021/07/11/Linux%E4%B8%8B%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B-1/">Linux下的多线程编程-1-背景</a>
+            <a class="next" rel="next" href="/2021/07/12/Linux-%E5%9F%BA%E7%A1%801/">Linux基础与命令</a>
             
         </section>
 
