@@ -12,7 +12,7 @@
 
 
 
-<title>Redis学习笔记1 | Hexo</title>
+<title>Redis学习笔记1-安装启动 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis学习笔记1</h1>
+            <h1 class="post-title">Redis学习笔记1-安装启动</h1>
             
                 <div class="post-meta">
                     
@@ -161,12 +223,54 @@
                         </span>
                     
                     
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Redis/">Redis</a>
+                            
+                        </span>
+                    
                 </div>
             
         </header>
 
         <div class="post-content">
-            
+            <h4 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h4><p>redis是跑在linux上的, 官网说有微软的团队正在做windows版, 但显然不是我们关注的对象.</p>
+<p>因为大家用的虚拟机不同, 安装步骤也不太一样.<br>我是用的virtualBox, 安装虚拟机的过程请自行百度.(我的blog有Ubuntu), 学习redis用的是CentOS 8, 毕竟服务器系统大多用它, ubuntu有点学习linux玩具性质.</p>
+<p><strong>注意事项</strong>:</p>
+<ol>
+<li>安装软件也好, 系统也好, 选择最新版的话, 要针对性的搜索教程, 别搜成旧版.</li>
+<li>如果你用的东西和我一样, 那么请在虚拟机设置-网络中, 设置位桥接网卡, 这样你的虚拟机就会拥有固定IP, 我被网上多篇博客骗来骗去, 搞了好久, 其实很简单的一个事情.</li>
+<li>安装Xshell + Xftp, 非常好用, 小软件启动连接都很快, 我用centos还有点卡, 所以用ssh工具脸上就不用去系统里费劲了. 用Xftp直接将redis压缩包拖进去, 一个字: 爽.</li>
+<li>企业用都不用图形界面的, 我装了一个, 以防那天命令写错了要手动操作.</li>
+<li>centos不自带gcc, 以及make tool, 但是它有一个很好的功能, 没有的命令, 它会提示你直接安装.</li>
+<li>tar命令解压后make命令编译, 最后make install命令安装</li>
+</ol>
+<p><a href="https://imgtu.com/i/Wno7F0" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/15/Wno7F0.md.png" alt="Wno7F0.md.png"></a></p>
+<h4 id="目录-usr-local-bin"><a href="#目录-usr-local-bin" class="headerlink" title="目录 /usr/local/bin"></a>目录 /usr/local/bin</h4><ul>
+<li>redis-benchmark: 性能测试工具</li>
+<li>redis-check-aof: 修复有问题的aof文件</li>
+<li>redis-check-dump: 修复有问题的dump.rdb文件</li>
+<li>redis-sentinel: redis集群使用</li>
+<li>redis-server: redis服务器启动命令</li>
+<li>redis-cli: 客户端, 操作入口</li>
+</ul>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><ol>
+<li>前台启动:<br>直接用命令<code>redis-server</code>, 终端关了/ctrl+C服务就停了.</li>
+<li>后台启动:<ol>
+<li>将redis目录下的redis.conf复制到etc中:<br><code>cp redis.conf etc/redis.conf</code></li>
+<li>打开etc中的redis.conf:<br><code>vim redis.conf</code></li>
+<li>找到并修改daemonize, 将no改为yes.</li>
+<li>回到usr/local/bin目录下, 输入:<br><code>redis-server etc/redis.conf</code>.</li>
+<li>结束, 已启动</li>
+</ol>
+</li>
+</ol>
+<h4 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h4><ol>
+<li><code>ps -ef | grep redis</code>, <code>kill -9 + 进程号</code></li>
+<li><code>server-cli shutdown</code>.</li>
+</ol>
+
         </div>
 
         
@@ -198,6 +302,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/redis/"># redis</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -207,6 +315,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/15/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/">Redis-学习笔记2-五种数据类型</a>
             
             
             <a class="next" rel="next" href="/2021/07/14/c%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86/">c编程语言相关面试题整理</a>
