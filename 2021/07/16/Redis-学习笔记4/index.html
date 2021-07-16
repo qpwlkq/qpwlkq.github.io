@@ -12,7 +12,7 @@
 
 
 
-<title>常见协议/数据库默认端口号 | Hexo</title>
+<title>Redis-学习笔记4-发布和订阅 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">常见协议/数据库默认端口号</h1>
+            <h1 class="post-title">Redis-学习笔记4-发布和订阅</h1>
             
                 <div class="post-meta">
                     
@@ -157,14 +219,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 15, 2021&nbsp;&nbsp;18:52:59</a>
+                        Date: <a href="#">July 16, 2021&nbsp;&nbsp;14:27:30</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                                <a href="/categories/Redis/">Redis</a>
                             
                         </span>
                     
@@ -173,85 +235,7 @@
         </header>
 
         <div class="post-content">
-            <table>
-<thead>
-<tr>
-<th>协议</th>
-<th>端口号</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ftp</td>
-<td>21</td>
-<td>文件传输协议</td>
-</tr>
-<tr>
-<td>tftp</td>
-<td>69</td>
-<td>简单文件传送协议</td>
-</tr>
-<tr>
-<td>sftp</td>
-<td>22</td>
-<td>安全文件传送协议,</td>
-</tr>
-<tr>
-<td>ssh</td>
-<td>22</td>
-<td>SSH服务协议(安全登录)，可以通过ssh来访问Linux系统</td>
-</tr>
-<tr>
-<td>Pop3</td>
-<td>110</td>
-<td>它是因特网电子邮件的第一个离线协议标准</td>
-</tr>
-<tr>
-<td>Smtp</td>
-<td>25</td>
-<td>简单邮件传输协议</td>
-</tr>
-<tr>
-<td>http</td>
-<td>80</td>
-<td>超文本传输协议</td>
-</tr>
-<tr>
-<td>https</td>
-<td>443</td>
-<td>即HTTP下加入SSL层，简单讲是HTTP的安全版。</td>
-</tr>
-<tr>
-<td>Telnet</td>
-<td>23</td>
-<td>远程登录</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>数据库</th>
-<th>端口号</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Oracle</td>
-<td>1521</td>
-</tr>
-<tr>
-<td>Mysql</td>
-<td>3306</td>
-</tr>
-<tr>
-<td>Sqlserver</td>
-<td>1433</td>
-</tr>
-<tr>
-<td>Redis</td>
-<td>6379</td>
-</tr>
-</tbody></table>
-
+            <h3 id="什么是发布和订阅"><a href="#什么是发布和订阅" class="headerlink" title="什么是发布和订阅"></a>什么是发布和订阅</h3>
         </div>
 
         
@@ -284,7 +268,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/port/"># port</a>
+                        <a href="/tags/redis/"># redis</a>
                     
                         
                 </span>
@@ -297,10 +281,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/">Redis-学习笔记3</a>
+                <a class="prev" rel="prev" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B05/">Redis-学习笔记5-配置文件详解</a>
             
             
-            <a class="next" rel="next" href="/2021/07/15/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/">Redis-学习笔记2-KEY和五大数据类型</a>
+            <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/">Redis-学习笔记3</a>
             
         </section>
 
