@@ -12,7 +12,7 @@
 
 
 
-<title>Redis-学习笔记5-配置文件详解 | Hexo</title>
+<title>Redis-学习笔记5-Redis6的三个新数据类型 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis-学习笔记5-配置文件详解</h1>
+            <h1 class="post-title">Redis-学习笔记5-Redis6的三个新数据类型</h1>
             
                 <div class="post-meta">
                     
@@ -173,7 +235,34 @@
         </header>
 
         <div class="post-content">
-            
+            <h3 id="Bitmaps"><a href="#Bitmaps" class="headerlink" title="Bitmaps"></a>Bitmaps</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ol>
+<li>Bitmaps本身不是一种数据类型, 实际上它就是字符串.  </li>
+<li>Bitmaps单独提懂了一套命令, 所以在Redis中使用Bitmaps和使用字符串的方法不太相同, 可以把Bitmaps想象成一个以位为单位的数组, 每个单元只能存0和1, 数组的下标称为偏移量.</li>
+<li>第一次初始化Bitmaps, 假如偏移量很大, 整个初始化过程会很慢.</li>
+</ol>
+<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><ul>
+<li><code>setbit KEY OFFSET VALUE</code>: 设置某个偏移量的值</li>
+<li><code>getbit KEY OFFSET</code>: 取某个偏移量的值</li>
+<li><code>bitcount KEY [START END]</code>: 统计被设为1的bit数, START/END设为负数, -1表示最后一个字节, -2表示倒数第二字节. 注意!!!: 这里设置的是字节, 每个字节里8位, 统计的是位上的1的数量!</li>
+<li><code>bitop and(/or/not/xor) DESTKEY [KEY ...]</code>: and(交集), or(并集), not(非), xor(异或), 操作结果保存在DESTKEY中, 返回结果的bit为1的数量<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#例子: 获取两天都访问过网站的用户数量</span><br><span class="line">setbit users:20201103 0 1</span><br><span class="line">setbit users:20201103 3 1</span><br><span class="line">setbit users:20201103 6 1</span><br><span class="line"></span><br><span class="line">setbit users:20201104 1 1</span><br><span class="line">setbit users:20201104 4 1</span><br><span class="line">setbit users:20201104 6 1</span><br><span class="line"></span><br><span class="line">bitop and users:20201103_04 users:20201103 users:20201104</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="Bitmaps-和set的比较"><a href="#Bitmaps-和set的比较" class="headerlink" title="Bitmaps 和set的比较"></a>Bitmaps 和set的比较</h4><p>活跃用户很多的时候, Bitmaps可以大大节省空间.<br>活跃很少的时候, 那么Bitmaps占用内存较多, 因为大部分数据都是0.  </p>
+<h3 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h3><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><p>解决基数问题, 基数就是一个数组中去重的结果<br>解决基数问题的方案:<br>    1. 数据存在mysql中, 直接用distinct count统计.<br>    2. 使用Redis提供的hash, set, bitmaps等数据结构来处理.<br>以上的方案结果精确, 但是随着数据不断增加, 导致占用空间越来越大, 对于非常大的数据集是不切实际的.<br>能否降低精度来平衡存储空间? Redis推出了HyperLogLog.<br>HyperLogLog的优点是, 在输入元素的数量或者体积非常非常大的时, 计算基数所需的空间总是固定的, 并且是很小的.<br>它花费12KB, 就可以计算接近2^64个不同元素的基数.<br>它只能计算基数, 不能像set那样返回输入的各个元素, 给人的感觉是就是进去就消失了. </p>
+<h4 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h4><ul>
+<li><code>pfadd KEY ELEMENT1 ...</code>: 插入元素, 返回成功1, 不成功返回0, 有一个不重复即可成功.</li>
+<li><code>pfcount KEY</code>: 计算基数</li>
+<li><code>pfmerge DESTKEY KEY1 KEY2 ...</code>: 将一个或多个HLL合并, 结果存在DESTKEY中.  </li>
+</ul>
+<h3 id="Geospatial"><a href="#Geospatial" class="headerlink" title="Geospatial"></a>Geospatial</h3><h4 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h4><p>GEO, Geographic是地理信息的缩写, 该类型就是元素的二维坐标, 在地图上就是经纬度.</p>
+<h4 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h4><ul>
+<li><code>geoadd KEY LONGITUDE LATITUDE MEMBER</code>: 添加一个元素并设置经度, 维度, 两极无法添加有效精度(-180 ~ 180), 有效维度(-85.05112878 ~ 85.05112878)</li>
+<li><code>geopos KEY MEMBER ...</code>: 获取指定坐标的值.</li>
+<li><code>geodist KEY MEMBER1 MEMBER2 [m/km/ft/mi]</code>: 获取连个位置的直线距离, m表示米(默认), km是千米, mi是英里, ft是英尺.</li>
+<li><code>georadius KEY 经度 维度 半径 单位</code>: 给定的经纬度为中心, 找出某一半径内的元素, 这里的单位是必填的.</li>
+</ul>
+
         </div>
 
         
@@ -218,6 +307,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B06/">Redis-学习笔记6-使用Jedis(java)操作Redis</a>
             
             
             <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/">Redis-学习笔记4-发布和订阅</a>

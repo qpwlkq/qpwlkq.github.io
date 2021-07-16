@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>Redis-学习笔记6-使用Jedis(java)操作Redis | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Archives</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Archives</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Redis-学习笔记6-使用Jedis(java)操作Redis</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 16, 2021&nbsp;&nbsp;21:47:24</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Redis/">Redis</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>Jedis 2.1.0 API文档:<br><a href="https://tool.oschina.net/apidocs/apidoc?api=jedis-2.1.0" target="_blank" rel="noopener">https://tool.oschina.net/apidocs/apidoc?api=jedis-2.1.0</a></p>
+<p>Jedis 常用API整理:<br><a href="https://blog.csdn.net/fanbaodan/article/details/89047909" target="_blank" rel="noopener">https://blog.csdn.net/fanbaodan/article/details/89047909</a></p>
+<p>Redis类似JDBC, Java操作Redis</p>
+<p>在maven配置文件中添加依赖即可使用Jedis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;redis.clients&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;jedis&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;version&gt;3.2.0&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;&#x2F;dependencies&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Jedis对象中两个参数, 第一个虚拟机ip地址, 第二个端口号.<br><strong>如果连接失败</strong>:  </p>
+<ol>
+<li>请看第二篇redis配置文件, 需要的修改是否修改了.</li>
+<li>虚拟机防火墙是否关闭了, <code>systemctl stop firewalld</code><br>简单示例:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wakabaka;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">jedisDemo1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建一个Jedis对象</span></span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.31.65"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//测试</span></span><br><span class="line">        String value = jedis.ping();</span><br><span class="line">        System.out.println(value);</span><br><span class="line"></span><br><span class="line">        jedis.close();</span><br><span class="line">        demol();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//操作key</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">demol</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建Jedis对象</span></span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.31.65"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">        jedis.set(<span class="string">"name"</span>, <span class="string">"zhangsan"</span>);</span><br><span class="line"></span><br><span class="line">        String name = jedis.get(<span class="string">"name"</span>);</span><br><span class="line">        System.out.println(name);</span><br><span class="line"></span><br><span class="line">        jedis.mset(<span class="string">"k1"</span>, <span class="string">"v1"</span>, <span class="string">"k2"</span>, <span class="string">"v2"</span>);</span><br><span class="line">        List&lt;String&gt; mget = jedis.mget(<span class="string">"k1"</span>, <span class="string">"k2"</span>);</span><br><span class="line">        System.out.println(mget);</span><br><span class="line"></span><br><span class="line">        jedis.close();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        Set&lt;String&gt; keys = jedis.keys("*");</span></span><br><span class="line"><span class="comment">        for(String key : keys) &#123;</span></span><br><span class="line"><span class="comment">            System.out.println(key);</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        System.out.println(jedis.exists("k1"));</span></span><br><span class="line"><span class="comment">        System.out.println(jedis.ttl("k1"));</span></span><br><span class="line"><span class="comment">        System.out.println(jedis.);</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<p>前面详细整理过的命令在Jedis都有其对应的方法.</p>
+<p><strong>实例</strong>:</p>
+<ol>
+<li>输入手机号, 点击发送后生成6位数字, 2分钟有效</li>
+<li>输入验证码 , 点击验证, 返回成功或失败</li>
+<li>每个手机号每天只能输入三次<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wakabaka;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">jedisDemo1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//模拟验证码发送</span></span><br><span class="line"></span><br><span class="line">        verifyCode(<span class="string">"12362171139"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//getRedisCode("12362171139","146921");</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//验证</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getRedisCode</span><span class="params">(String phone, String code)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.31.65"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">        String codeKey = <span class="string">"VerifyCode"</span> + phone + <span class="string">":code"</span>;</span><br><span class="line">        String redisCode = jedis.get(codeKey);</span><br><span class="line">        <span class="comment">//判断</span></span><br><span class="line">        <span class="keyword">if</span>(redisCode.equals(code)) &#123;</span><br><span class="line">            System.out.println(<span class="string">"成功!"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"失败!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//生成6位验证码</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        String code = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> rand = random.nextInt(<span class="number">10</span>);</span><br><span class="line">            code += rand;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//让每个手机每天只能发送三次, 验证码放到redis中, 设置过期时间</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">verifyCode</span><span class="params">(String phone)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//连接redis</span></span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.31.65"</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//拼接key</span></span><br><span class="line">        <span class="comment">//手机发送次数key</span></span><br><span class="line">        String countKey = <span class="string">"VerifyCode"</span> + phone + <span class="string">":count"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//验证码key</span></span><br><span class="line">        String codeKey = <span class="string">"VerifyCode"</span> + phone + <span class="string">":code"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//每个手机每天只能发送三次</span></span><br><span class="line">        String count = jedis.get(countKey);</span><br><span class="line">        <span class="keyword">if</span>(count == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//第一次发送</span></span><br><span class="line">            <span class="comment">//设置发送次数为1</span></span><br><span class="line">            jedis.setex(countKey, <span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>, <span class="string">"1"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(Integer.parseInt(count) &lt;= <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="comment">//发送次数+1</span></span><br><span class="line">            jedis.incr(countKey);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(Integer.parseInt(count) &gt; <span class="number">2</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"发送次数已达上线"</span>);</span><br><span class="line">            jedis.close();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//发送的验证码放到redis中</span></span><br><span class="line">        String vcode = getCode();</span><br><span class="line">        jedis.setex(codeKey, <span class="number">120</span>, vcode);</span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/redis/"># redis</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B07/">Redis-学习笔记7-</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B05/">Redis-学习笔记5-Redis6的三个新数据类型</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

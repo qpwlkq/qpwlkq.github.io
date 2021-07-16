@@ -235,7 +235,14 @@
         </header>
 
         <div class="post-content">
-            <h3 id="什么是发布和订阅"><a href="#什么是发布和订阅" class="headerlink" title="什么是发布和订阅"></a>什么是发布和订阅</h3>
+            <h3 id="什么是发布和订阅"><a href="#什么是发布和订阅" class="headerlink" title="什么是发布和订阅"></a>什么是发布和订阅</h3><p>Redis 发布订阅(pub/sub)是一种消息通信模式, 发送者(pub) 发送消息, 订阅者(sub) 接收消息.<br>Redis客户端可以订阅任意数量的频道.</p>
+<h3 id="发布订阅-命令行实现"><a href="#发布订阅-命令行实现" class="headerlink" title="发布订阅-命令行实现"></a>发布订阅-命令行实现</h3><ol>
+<li>打开一个客户端1订阅 channel1<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subscribe channel1</span><br></pre></td></tr></table></figure></li>
+<li>打开另一个客户端2, 给channel1发送消息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">publish channel1 HELLO</span><br></pre></td></tr></table></figure>
+客户端1得到信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) &quot;message&quot;</span><br><span class="line">2) &quot;channel1&quot;</span><br><span class="line">3) &quot;HELLO&quot;</span><br></pre></td></tr></table></figure></li>
+<li>客户端只能收到订阅频道后, 频道发布的消息.</li>
+</ol>
+
         </div>
 
         
@@ -281,10 +288,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B05/">Redis-学习笔记5-配置文件详解</a>
+                <a class="prev" rel="prev" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B05/">Redis-学习笔记5-Redis6的三个新数据类型</a>
             
             
-            <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/">Redis-学习笔记3</a>
+            <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/">Redis-学习笔记3-配置文件详解</a>
             
         </section>
 
