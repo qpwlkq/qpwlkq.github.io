@@ -12,7 +12,7 @@
 
 
 
-<title>Redis-学习笔记2-五种数据类型 | Hexo</title>
+<title>Redis-学习笔记2-KEY和五大数据类型 | Hexo</title>
 
 
 
@@ -210,7 +210,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis-学习笔记2-五种数据类型</h1>
+            <h1 class="post-title">Redis-学习笔记2-KEY和五大数据类型</h1>
             
                 <div class="post-meta">
                     
@@ -342,9 +342,45 @@
 <li><code>sunion KEY1 KEY2</code>: 返回两个集合的并集</li>
 <li><code>sdiff KEY1 KEY2</code>: 返回两个集合的差集(KEY1中有的, KEY2中没有的)</li>
 </ul>
-<h5 id="Set-底层实现"><a href="#Set-底层实现" class="headerlink" title="Set 底层实现"></a>Set 底层实现</h5><p>dict字典, hash表实现<br>所有的value 指向同一个内部值</p>
-<h4 id="4-哈希-Hash"><a href="#4-哈希-Hash" class="headerlink" title="4. 哈希 Hash"></a>4. 哈希 Hash</h4><h5 id="基本介绍-3"><a href="#基本介绍-3" class="headerlink" title="基本介绍"></a>基本介绍</h5><p>hash是一个key-value.<br>hash是一个string类型的field和value的映射表</p>
-<h5 id="基本命令-1"><a href="#基本命令-1" class="headerlink" title="基本命令"></a>基本命令</h5><h5 id="Hash-底层实现"><a href="#Hash-底层实现" class="headerlink" title="Hash 底层实现"></a>Hash 底层实现</h5><h4 id="5-有序集合-Zset"><a href="#5-有序集合-Zset" class="headerlink" title="5. 有序集合 Zset"></a>5. 有序集合 Zset</h4><h5 id="基本介绍-4"><a href="#基本介绍-4" class="headerlink" title="基本介绍"></a>基本介绍</h5><h5 id="基本命令-2"><a href="#基本命令-2" class="headerlink" title="基本命令"></a>基本命令</h5><h5 id="Zset-底层实现"><a href="#Zset-底层实现" class="headerlink" title="Zset 底层实现"></a>Zset 底层实现</h5>
+<h5 id="Set-底层实现"><a href="#Set-底层实现" class="headerlink" title="Set 底层实现"></a>Set 底层实现</h5><p>dict字典, intset/hashtable实现<br>所有的value 指向同一个内部值</p>
+<h4 id="4-哈希-Hash"><a href="#4-哈希-Hash" class="headerlink" title="4. 哈希 Hash"></a>4. 哈希 Hash</h4><h5 id="基本介绍-3"><a href="#基本介绍-3" class="headerlink" title="基本介绍"></a>基本介绍</h5><p>hash是一个key-value.<br>hash是一个string类型的field和value的映射表, 特别适合存储对象. 类似java中的Map&lt;String, Object&gt;  </p>
+<p>value是一个映射关系, 套娃, 你搁这搁这呢</p>
+<h5 id="基本命令-1"><a href="#基本命令-1" class="headerlink" title="基本命令"></a>基本命令</h5><ul>
+<li><code>hset KEY FIELD VALUE</code>: 给KEY集合中的FIELD赋值VALUE</li>
+<li><code>hget KEY FIELD</code>: 从KEY集合取出VALUE</li>
+<li><code>hmset KEY1 FIELD1 VALUE1 ...</code>: 批量设置</li>
+<li><code>hexists KEY FIELD</code>: 查看哈希表中, 给定FIELD是否存在</li>
+<li><code>hkeys KEY</code>: 查看该hash集合所有的field</li>
+<li><code>hvals KEY</code>: 查看该hash集合所有的value</li>
+<li><code>hincrby KEY FIELD INCREMENT</code>: 为哈希表key中的域FIELD的值value + INCREMENT</li>
+<li><code>hsetnx KEY FIELD VALUE</code>: 将key中的FIELD的值value设为VALUE, 且当该FIELD不存在.</li>
+</ul>
+<h5 id="Hash-底层实现"><a href="#Hash-底层实现" class="headerlink" title="Hash 底层实现"></a>Hash 底层实现</h5><p>Hash对应的数据结构有两种:ziplist(压缩列表), hashtable(哈希表). 当field-value长度较短且个数较少的时候使用ziplist, 否则使用hashtable. </p>
+<h4 id="5-有序集合-Zset"><a href="#5-有序集合-Zset" class="headerlink" title="5. 有序集合 Zset"></a>5. 有序集合 Zset</h4><h5 id="基本介绍-4"><a href="#基本介绍-4" class="headerlink" title="基本介绍"></a>基本介绍</h5><p>Zset是没有重复元素的字符串集合<br>每个成员关联了一个评分(score). 这个评分被用来从最低分到最高分(从小到大)排序集合中的成员, 集合中的成员是唯一的, 但是评分是可以重复的.</p>
+<h5 id="基本命令-2"><a href="#基本命令-2" class="headerlink" title="基本命令"></a>基本命令</h5><ul>
+<li><code>zadd KEY SCORE1 VALUE1 SCORE2 VALUE2 ...</code>: 将一个或多个元素及其评分加入到KEY集合中.</li>
+<li><code>zrange KEY MIN MAX [withscores]</code>: 返回 MIN &lt;= score &lt;= MAX的成员, MAX是 -1 表示最大值, 可选参数withscores: 返回元素及其score</li>
+<li><code>zrangebyscore KEY MIN MAX [withscores] [limit offset count]</code>: 从小到大排序</li>
+<li><code>zrevrangebyscore KEY MAX MIN [withscores] [limit offset count]</code>: 从大到小排序, MAX和MIN写反了结果不一样的.</li>
+<li><code>zincrby KEY INCREMENT VALUE</code>: 为元素的score加上增量</li>
+<li><code>zrem KEY VALUE</code>: 删除该集合指定值的元素</li>
+<li><code>zcount KEY MIN MAX</code>: 计数,MIN &lt;= score &lt;= MAX的元素有几个</li>
+<li><code>zrank KEY VALUE</code>: 返回该值在集合中的排名, 从0开始的</li>
+</ul>
+<h5 id="Zset-底层实现"><a href="#Zset-底层实现" class="headerlink" title="Zset 底层实现"></a>Zset 底层实现</h5><p>how?  </p>
+<ol>
+<li><p>hash表, hash的field = value, hash的value = score</p>
+</li>
+<li><p>跳跃表, 目的在于给元素value排序, 根据score的范围获取元素列表.</p>
+</li>
+<li><p>对于有序集合的底层实现, 可以用数组, 平衡树, 链表等, 各有各的优点, 又有个的缺点.</p>
+</li>
+<li><p>跳跃表的效率堪比红黑树, 实现远比红黑树简单</p>
+</li>
+</ol>
+<p><a href="https://imgtu.com/i/WK5sB9" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/16/WK5sB9.md.png" alt="WK5sB9.md.png"></a>  </p>
+<p>看样子相当费空间</p>
+
         </div>
 
         
