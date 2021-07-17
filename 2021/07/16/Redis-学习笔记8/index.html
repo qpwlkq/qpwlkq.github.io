@@ -12,7 +12,7 @@
 
 
 
-<title>Redis-学习笔记8 | Hexo</title>
+<title>Redis-学习笔记8-持久化RDB/AOF | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis-学习笔记8</h1>
+            <h1 class="post-title">Redis-学习笔记8-持久化RDB/AOF</h1>
             
                 <div class="post-meta">
                     
@@ -173,7 +235,72 @@
         </header>
 
         <div class="post-content">
-            
+            <p>[TOC]</p>
+<p>RDB和AOF</p>
+<h4 id="RDB-Redis-DataBase"><a href="#RDB-Redis-DataBase" class="headerlink" title="RDB (Redis DataBase)"></a>RDB (Redis DataBase)</h4><p>在指定的时间间隔内将内存中的数据集快照写入磁盘</p>
+<h5 id="rdb文件以配置文件相关参数"><a href="#rdb文件以配置文件相关参数" class="headerlink" title="rdb文件以配置文件相关参数"></a>rdb文件以配置文件相关参数</h5><p>配置文件redis.conf:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">dbfilename dump.rdb</span><br><span class="line"># rdb文件名字</span><br><span class="line"></span><br><span class="line">dir .&#x2F;</span><br><span class="line">#从哪里启动, 就从哪里创建rdb文件.</span><br><span class="line"></span><br><span class="line"># save &quot;&quot;</span><br><span class="line"># save时只管保存, 其他不管, 全部阻塞, 手动保存不建议.</span><br><span class="line"># bgsave: Redis会在后台异步进行快照操作, 快照同时还可以响应客户端请求.</span><br><span class="line"></span><br><span class="line"># Unless specified otherwise, by default Redis will save the DB:</span><br><span class="line">#   * After 3600 seconds (an hour) if at least 1 key changed</span><br><span class="line">#   * After 300 seconds (5 minutes) if at least 100 keys changed</span><br><span class="line">#   * After 60 seconds if at least 10000 keys changed</span><br><span class="line">#</span><br><span class="line">#</span><br><span class="line"># save 3600 1</span><br><span class="line"># save 300 100</span><br><span class="line"># save 60 10000</span><br><span class="line"># 如果1h内至少1个key变动了, 那么就进行持久化</span><br><span class="line"># 如果300s内至少100个key变动了, 那么就进行持久化 </span><br><span class="line"># 如果60s内至少10000个key变动了, 那么就进行持久化</span><br><span class="line"># 改动后重启redis才生效.</span><br><span class="line"># 需要注意的是, 如果你在60s内变动了10001个key, 只有前10000个key会进行持久化, 然后重新开始计算间隔时间</span><br><span class="line"></span><br><span class="line">stop-writes-on-bgsave-error yes</span><br><span class="line"># Redis无法写入磁盘时, 就关闭写操作.</span><br><span class="line"></span><br><span class="line">rdbcompression yes</span><br><span class="line"># 是否压缩rdb文件, 默认开启, 使用LZF算法.</span><br><span class="line"></span><br><span class="line">rdbchecksum yes</span><br><span class="line"># 检查数据的完整性, 使用CRC64算法.</span><br></pre></td></tr></table></figure>
+
+<h5 id="备份是如何执行的"><a href="#备份是如何执行的" class="headerlink" title="备份是如何执行的"></a>备份是如何执行的</h5><p>Redis会单独创建(fork)一个子进程来进行持久化, 会先将数据写入到一个临时文件中, 待持久化过程都结束了, 在用这个临时文件替换上次持久化好的文件(写时复制技术), 整个过程中, 主进程是不进行任何IO操作的, 这就确保了极高的性能, 如果需要大规模的数据恢复, 且对于数据恢复的完整性不是非常敏感, 那RDB方式要比AOF方式更加的高效, RDB的缺点时最后一次持久化后的数据可能丢失.</p>
+<h5 id="使用RDB文件恢复数据"><a href="#使用RDB文件恢复数据" class="headerlink" title="使用RDB文件恢复数据"></a>使用RDB文件恢复数据</h5><p>直接将rdb文件保存好即可, 需要恢复的时候把旧的替换了就行了.</p>
+<h5 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h5><ul>
+<li>适合大规模的数据恢复</li>
+<li>对数据库完整性和一致性要求不高更适合使用</li>
+<li>节省磁盘空间</li>
+<li>恢复速度快</li>
+</ul>
+<h5 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h5><ul>
+<li>Fork的时候, 内存中的数据被克隆了一份, 大概2倍的膨胀需要考虑.</li>
+<li>虽然使用了写时拷贝技术, 但是如果数据庞大的时候还是比较耗费性能.</li>
+<li>周期性备份, 如果redis意外崩溃, 最后一次备份之后的数据会丢失.</li>
+</ul>
+<h4 id="AOF-Append-Of-File"><a href="#AOF-Append-Of-File" class="headerlink" title="AOF (Append Of File)"></a>AOF (Append Of File)</h4><h5 id="什么是AOF"><a href="#什么是AOF" class="headerlink" title="什么是AOF"></a>什么是AOF</h5><p>以日志的形式来记录每个写操作, 不记录读操作, 只允许追加文件但不可以改写文件, redis启动之初就会读取该文件, 重新构建数据, 换言之, redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作.</p>
+<h5 id="AOF的持久化流程"><a href="#AOF的持久化流程" class="headerlink" title="AOF的持久化流程"></a>AOF的持久化流程</h5><ol>
+<li>客户端的请求写命令会被append追加到aof缓冲区中.</li>
+<li>aof缓冲区根据aof持久化策略将操作syc同步到磁盘的aof文件中.</li>
+<li>aof文件超过重写策略或手动重写时, 会对aof文件rewrite重写, 压缩aof文件容量.</li>
+<li>redis服务重启后, 重新加载aof文件.</li>
+</ol>
+<h5 id="AOF默认不开启"><a href="#AOF默认不开启" class="headerlink" title="AOF默认不开启"></a>AOF默认不开启</h5><p>redis.conf:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">appendonly no</span><br><span class="line"># 改成yes, 即可开启</span><br><span class="line"></span><br><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br><span class="line"># 生成的aof文件的名字, 不用改.</span><br></pre></td></tr></table></figure>
+
+<h5 id="AOF和RDB都开启-听谁的"><a href="#AOF和RDB都开启-听谁的" class="headerlink" title="AOF和RDB都开启, 听谁的?"></a>AOF和RDB都开启, 听谁的?</h5><p>Redis听AOF的.<br>没啥好说的.<br>如果aof损坏了, 就启动不了, 而不是转去使用rdb.</p>
+<h5 id="使用RDB文件恢复数据-1"><a href="#使用RDB文件恢复数据-1" class="headerlink" title="使用RDB文件恢复数据"></a>使用RDB文件恢复数据</h5><p>和RDB一样, 直接把保存下来的aof文件, 直接放进指定的那个文件夹就可以了.(默认目录是启动目录, 前面有个参数写了可以改, 提醒一下), 重启生效.</p>
+<h5 id="异常恢复"><a href="#异常恢复" class="headerlink" title="异常恢复"></a>异常恢复</h5><p>如果在往aof文件追加时, aof坏了, 那么就要恢复它.<br>reids提供了一个命令:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-check-aof --fix appendonly.aof</span><br></pre></td></tr></table></figure>
+
+<h5 id="AOF同步频率设置"><a href="#AOF同步频率设置" class="headerlink" title="AOF同步频率设置"></a>AOF同步频率设置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">appendfsync always</span><br><span class="line"># always: 始终同步, 每次写入, 立刻记入日志, 性能较差但数据完整性很好.</span><br><span class="line"># everysec: 每秒同步, 每秒记入一次, 如果宕机, 可能会丢失1s内的数据.</span><br><span class="line"># no: 不主动进行同步, 把同步时机交给操作系统.</span><br></pre></td></tr></table></figure>
+
+<h5 id="Rewrite-压缩"><a href="#Rewrite-压缩" class="headerlink" title="Rewrite 压缩"></a>Rewrite 压缩</h5><ol>
+<li>是什么?<br> AOF采用文件追加方式, 文件越来越大, 为了避免出现此种情况, 新增了重写机制, 当AOF文件大小超过阈值的时候, Redis就会启动AOF文件的内容压缩, 只保留可以恢复数据的最小指令集, 可以使用命令bgrewriteaof.  </li>
+<li>如何实现?<br>AOF文件只需增长而过大时, 会fork出一条新进程来讲文件重写(也是先写临时文件最后再替换), redis40版本后的重写是指把rdb的快照, 以二进制的形式附在新的aof文件头部, 作为已有的历史数据, 替换掉原来的流水账操作.</li>
+</ol>
+<p>比如:<br>把set k1 v1, set k2, v2两条命令合成set k1 v1 k2 v2.  </p>
+<ol start="3">
+<li>触发条件  </li>
+</ol>
+<p>默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage: 设置重写的基准值, 比例: 100%</span><br><span class="line">auto-aof-rewrite-min-size: 设置重写的基准值, 大小:64MB</span><br></pre></td></tr></table></figure>
+
+<h5 id="重写过程"><a href="#重写过程" class="headerlink" title="重写过程"></a>重写过程</h5><ol>
+<li>触发重写, 判断是否有bgsave或bgwriteaof在运行, 如果有则等待它们结束后再执行.</li>
+<li>主进程fork出子进程执行重写操作, 保证主进程不会阻塞.</li>
+<li>子进程遍历redis内存中数据到临时文件, 客户端的写请求同时写入aof_buf缓冲区和aof_rewrite_buf重写缓冲区, 保证原aof文件完整以及新aof文件生成期间的新的数据修改动作不会丢失.</li>
+<li>子进程写完新的aof文件后, 向主进程发信号, 父进程更新统计信息, 主进程把aof_rewrite_buf中的数据写入到新的aof文件.</li>
+<li>使用新的aof文件替换旧的.</li>
+</ol>
+<h5 id="优势-1"><a href="#优势-1" class="headerlink" title="优势"></a>优势</h5><ul>
+<li>备份机制更稳健, 丢失数据概率低</li>
+<li>可读的日志文件, 通过操作AOF稳健, 可以处理误操作</li>
+</ul>
+<h5 id="劣势-1"><a href="#劣势-1" class="headerlink" title="劣势"></a>劣势</h5><ul>
+<li>相比RDB, 它不仅记录数据, 还要记录操作, 需要更多空间</li>
+<li>恢复备份速度要慢</li>
+<li>每次读写都同步的话, 有一定的性能压力</li>
+<li>存在潜在bug, 导致一些问题</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><h5 id="用哪个好"><a href="#用哪个好" class="headerlink" title="用哪个好"></a>用哪个好</h5><p>官方推荐两个都启用.<br>对数据不敏感, 可以单独使用RDB<br>不单独使用AOF, 因为它仍有bug.<br>如果只是做纯内存缓存, 可以都不用.</p>
+
         </div>
 
         
@@ -220,7 +347,7 @@
         <section class="post-nav">
             
             
-            <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B07/">Redis-学习笔记7-</a>
+            <a class="next" rel="next" href="/2021/07/16/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B07/">Redis-学习笔记7-事务</a>
             
         </section>
 
