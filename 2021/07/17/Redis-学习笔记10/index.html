@@ -144,6 +144,68 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
@@ -173,7 +235,46 @@
         </header>
 
         <div class="post-content">
-            
+            <h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>容量不够了, Redis如何扩容?<br>并发写操作, Redis如何分摊?</p>
+<p>论是什么模式, 主服务器炸了, 导致了ip地址发生变化, 应用程序中配置需要修改对应的主机地址,端口等信息, 之前要通过代理主机来解决, 但是redis3.0开始提供了解决方案: 无中心化集群配置.<br>无中心化集群中任何一台服务器都可以作为集群的入口, 它们直接互相连通.</p>
+<h4 id="什么是集群"><a href="#什么是集群" class="headerlink" title="什么是集群"></a>什么是集群</h4><p>Redis集群实现了水平扩容, 即启动N个redis节点, 将整个数据库分布存储到N个节点中, 每个节点存储1/N数据.  </p>
+<p>Redis集群通过分区来提供一定程度的可用性, 即使集群中有一部分节点失效或无法进行通信, 集群也可以继续处理命令</p>
+<h4 id="搭建集群"><a href="#搭建集群" class="headerlink" title="搭建集群"></a>搭建集群</h4><ol>
+<li>删除rdb,aof文件.</li>
+<li>制作6个实例.</li>
+</ol>
+<p>redisXXXX.conf后追加以下内容:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cluster-enabled yes</span><br><span class="line">cluster-config-file nodes-6379.conf</span><br><span class="line">cluster-node-timeout 15000</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>启动6个服务.  </li>
+<li>将6个节点合成一个集群<br>下面是一行命令, 写服务器ip和设定的端口号, 不能写127.0.0.1<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create --cluster-replicas 1</span><br><span class="line">192.168.xxx.xxx:6379</span><br><span class="line">192.168.xxx.xxx:6380</span><br><span class="line">192.168.xxx.xxx:6381</span><br><span class="line">192.168.xxx.xxx:6389</span><br><span class="line">192.168.xxx.xxx:6390</span><br><span class="line">192.168.xxx.xxx:6391</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>成功:<br><a href="https://imgtu.com/i/W8SgpV" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8SgpV.png" alt="W8SgpV.png"></a><br>把最后的值记下来: 16384, 还要用的.</p>
+<ol start="5">
+<li>测试<br>连接集群. 用集群中的任一端口均可.<br><code>redis-cli -c -p 6379</code>  </li>
+</ol>
+<p><code>cluster nodes</code>: 查看集群中节点信息.<br>主从自动设置. 一个集群至少要有三个主节点.<br><code>--cluster-replicas 1</code>表示从库最小分配.<br>分配原则: 尽量保证每个主数据库运行在不同的IP地址, 每个从库和主库不在一个IP地址上.</p>
+<ol start="6">
+<li>什么是slots<br>slots译为插槽.<br>一个redis集群包含16384个插槽, 数据库中的每个键都属于这16384个插槽中的一个.<br>集群使用公式CRC16(key) % 16384 来计算key属于哪个槽, 其CRC16(key)语句用于计算key的CRC16校验和.<br>集群中的一个节点负责一些插槽.<br>如图所示, 0-5460, 5461-10922, 10923-16383.<br><a href="https://imgtu.com/i/W8C9Qf" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8C9Qf.md.png" alt="W8C9Qf.md.png"></a>  </li>
+</ol>
+<p>插入一个key, 让我们来看返回什么:<br><a href="https://imgtu.com/i/W8CZYn" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8CZYn.png" alt="W8CZYn.png"></a></p>
+<p>也就是说, 我们这个集群, 不论从那个入口进入, key插入位置都要经过计算slot后才插入. 那么一个问题来了, 如果我们用批量插入命令呢?  </p>
+<p><a href="https://imgtu.com/i/W8CB0e" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8CB0e.png" alt="W8CB0e.png"></a></p>
+<p>报错了!<br>我们想要批量插入就要这么写:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mset name&#123;user&#125; lucy age&#123;user&#125; 20</span><br></pre></td></tr></table></figure>
+
+<h4 id="其他基本命令"><a href="#其他基本命令" class="headerlink" title="其他基本命令"></a>其他基本命令</h4><ul>
+<li><code>cluster keyslot KEY</code>: 返回KEY的slot槽值</li>
+<li><code>cluster countkeysinslot SLOT</code>: 返回插槽中键的数量, 注意只能看本服务器负责的插槽的值. </li>
+<li><code>cluster getkeysinslot SLOT COUNT</code>: 返回count个slot槽中的键. </li>
+</ul>
+<h4 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h4><p>某一个主机挂了, 其他从机立刻升级为主机, 当挂掉的主机重启, 它变为了从机.  </p>
+<p>如果某一段插槽的主从节点都宕机了, redis服务是否还能继续?  </p>
+<p>配置文件参数:<br><code>cluster-require-full-coverge</code>.<br>如果是yes, 那么整个集群都挂了.<br>如果是no, 那么只有那一段不能用.</p>
+<h4 id="集群的Jedis开发"><a href="#集群的Jedis开发" class="headerlink" title="集群的Jedis开发"></a>集群的Jedis开发</h4><p>emmmmmm.<br>真没什么特别的.</p>
+
         </div>
 
         
@@ -219,7 +320,7 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B011/">Redis-学习笔记11</a>
+                <a class="prev" rel="prev" href="/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B011/">Redis-学习笔记11-缓存击穿/穿透/雪崩</a>
             
             
             <a class="next" rel="next" href="/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B09/">Redis-学习笔记9-主从分离</a>

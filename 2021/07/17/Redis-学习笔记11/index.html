@@ -12,7 +12,7 @@
 
 
 
-<title>Redis-学习笔记11 | Hexo</title>
+<title>Redis-学习笔记11-缓存击穿/穿透/雪崩 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis-学习笔记11</h1>
+            <h1 class="post-title">Redis-学习笔记11-缓存击穿/穿透/雪崩</h1>
             
                 <div class="post-meta">
                     
@@ -173,7 +235,53 @@
         </header>
 
         <div class="post-content">
-            
+            <h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><h5 id="问题特征"><a href="#问题特征" class="headerlink" title="问题特征"></a>问题特征</h5><ol>
+<li>应用服务器压力突然变大了(非双十一的平常).</li>
+<li>redis命中率降低(缓存获取查不到数据)</li>
+<li>一直查询数据库.</li>
+</ol>
+<h5 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h5><ol>
+<li>redis查询不到数据库.</li>
+<li>大量非正常URL访问. 比如黑客乱修dom的值进行访问, 我没有这个数据项, 就一直访问数据库.</li>
+</ol>
+<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><ol>
+<li>对空值缓存: 数据库中查不到的数据null也缓存, 设定较短的过期时间. 临时方法.</li>
+<li>设置可访问的名单(白名单): 使用bitmaps类型定义一个可以访问的名单, 效率不太高.</li>
+<li>采用布隆过滤器: 1970年布隆提出的一个方法, 一个很长的二进制向量和一系列随机映射函数(哈希函数), 是对bitmaps的一种优化.</li>
+<li>进行实时监控(黑名单), 跟运维人员配合, 设置不能访问的对象.</li>
+</ol>
+<h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4><h5 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h5><ol>
+<li>数据库访问压力突然增大.</li>
+<li>redis并没有出现大量的key过期.</li>
+<li>redis正常平稳运行, 而数据库挂了.</li>
+</ol>
+<h5 id="可能情况"><a href="#可能情况" class="headerlink" title="可能情况"></a>可能情况</h5><ol>
+<li>redis某个key过期了, 而此大量访问使用这个key.</li>
+</ol>
+<h5 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h5><ol>
+<li>预先设置热门数据, 提前添加这些输入到redis中.</li>
+<li>实时调整, 现场监控哪些热门书, 实时调整key的过期时间</li>
+<li>使用锁:<ol>
+<li>在缓存失效的时候, 不是立刻去load db.</li>
+<li>先使用缓存工具的某些带成功操作返回值的操作(比如redis的setnx).</li>
+<li>当操作成功时, 在进行load db呃的操作, 并回设缓存, 最后删除mutex key.</li>
+<li>当操作返回失败, 证明有线程在load db, 当前线程睡眠一段时间再重试整个get缓存的方法.</li>
+</ol>
+</li>
+</ol>
+<h4 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h4><h5 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h5><ol>
+<li>数据库压力变大, 服务器崩溃</li>
+</ol>
+<h5 id="现象-1"><a href="#现象-1" class="headerlink" title="现象"></a>现象</h5><ol>
+<li>在极少时间段, 出现大量key集中过期的情况.</li>
+</ol>
+<h5 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h5><ol>
+<li>构建多级缓存架构, nginx + redis + 其他缓存.</li>
+<li>使用锁或队列: 最有效, 但是效率也极低, 不适合高并发情况.</li>
+<li>设置过期标志更新缓存: 缓存快过期时触发另外的线程, 让它去更新key的缓存.</li>
+<li>让缓存失效时间分散开.</li>
+</ol>
+
         </div>
 
         
