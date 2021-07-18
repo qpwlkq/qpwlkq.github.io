@@ -12,7 +12,7 @@
 
 
 
-<title>Redis-学习笔记12-Redis6新功能 | Hexo</title>
+<title>版本控制&amp;git | Hexo</title>
 
 
 
@@ -210,7 +210,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis-学习笔记12-Redis6新功能</h1>
+            <h1 class="post-title">版本控制&amp;git</h1>
             
                 <div class="post-meta">
                     
@@ -219,14 +219,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 18, 2021&nbsp;&nbsp;19:04:16</a>
+                        Date: <a href="#">July 18, 2021&nbsp;&nbsp;21:02:46</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Redis/">Redis</a>
+                                <a href="/categories/%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88/">经验之谈</a>
                             
                         </span>
                     
@@ -235,36 +235,74 @@
         </header>
 
         <div class="post-content">
-            <h4 id="ACL"><a href="#ACL" class="headerlink" title="ACL"></a>ACL</h4><p>ACL时Access Control List(范文控制列表)的缩写, 该共鞥你允许根据可执行的命令和可以访问的键来限制某些连接.<br>Redis5之前, Redis安全规则只有密码控制, 和rename来调整高危命令.<br>Redis 6 则提供ACL的功能对用户进行更细粒度的权限控制:  </p>
-<ol>
-<li>接入权限: 用户名,密码</li>
-<li>可以执行的命令</li>
-<li>可以操作的key</li>
-</ol>
-<h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h5><ul>
-<li><p><code>acl list</code> : 展现用户操作权限列表.<br><a href="https://imgtu.com/i/W8VdC4" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8VdC4.png" alt="W8VdC4.png"></a>  </p>
-</li>
-<li><p><code>acl cat</code>: 查看具体的操作命令.</p>
-</li>
-<li><p><code>acl whoami</code>: 查看当前用户</p>
-</li>
-<li><p><code>acl setuser NAME</code>: 添加用户, 默认off</p>
-</li>
-<li><p><code>acl setuser User2 on &gt;password ~cached:* +get</code>. 启动用户, 对cached开头的key有get权限.</p>
-</li>
+            <p>相信每一个CS专业的学生都听说过这么一个网站, 全球最大的同性交友网站–GitHub, 也知道git这么一个词, 他们究竟是干嘛的呢? 且听我娓娓道来</p>
+<h4 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h4><p>版本控制是一种再开发过程中用于管理我们对于文件, 目录或工程等内容的修改历史, 方便查看更改历史记录, 备份以及恢复以前版本的软件工程技术.</p>
+<h5 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h5><ul>
+<li>实现跨区域多人协同开发</li>
+<li>追踪和记录一个或多个文件的历史记录</li>
+<li>组织和保护代码和文档</li>
+<li>统计工作量</li>
+<li>并行开发, 提高开发效率</li>
+<li>等等</li>
 </ul>
-<p>了解即可, 还是很灵活的.  </p>
-<h4 id="IO多线程"><a href="#IO多线程" class="headerlink" title="IO多线程"></a>IO多线程</h4><p>执行命令依然是单线程.<br>多线程只不过处理网络数据读写和协议解析.  </p>
-<p>默认关闭<br>配置文件中开启:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">io-threads-do-reads yes</span><br><span class="line"></span><br><span class="line">io-threads 4</span><br></pre></td></tr></table></figure>
-
-<h4 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h4><p>redis 5开始, 不需要单独安装ruby环境了,<br>redis-trib.rb的功能已经集成到了redis-cli, 可以直接进行集群的搭建了, 前面文章已经说了, 不再赘述.</p>
-<h4 id="其他新功能"><a href="#其他新功能" class="headerlink" title="其他新功能"></a>其他新功能</h4><ol>
-<li>RESP3 新的Redis通信协议.</li>
-<li>Client side caching客户端缓存</li>
-<li>Proxy 集群代理模式</li>
-<li>Modules API</li>
+<p>如果多人开发必须要使用版本控制, 否则容易管理混乱.</p>
+<h5 id="主流的版本控制器"><a href="#主流的版本控制器" class="headerlink" title="主流的版本控制器"></a>主流的版本控制器</h5><ul>
+<li>Git</li>
+<li>SVN</li>
+<li>CVS</li>
+<li>VSS</li>
+<li>TFS</li>
+<li>BitKeeper</li>
+<li>等等</li>
+</ul>
+<h5 id="三种分类"><a href="#三种分类" class="headerlink" title="三种分类"></a>三种分类</h5><ol>
+<li>本地版本控制, 代表:RCS, 本地进行记录</li>
+<li>集中版本控制, 代表:SVN, 版本信息保存在服务器上, 本地只有旧的版本, 需要联网去服务器请求, 最大的缺点是服务器坏了大家就没法工作了.</li>
+<li>分布式版本控制, 代表:GIT, 每个人都有一个版本控制中心, 有全部的代码, 缺点是一个人可以全偷走, 优点是不会因为服务器损坏而不能工作.</li>
 </ol>
+<h4 id="Git和SVN的区别"><a href="#Git和SVN的区别" class="headerlink" title="Git和SVN的区别"></a>Git和SVN的区别</h4><p>SVN需要有中央服务器, 必须联网从服务器获取最新版本后, 才能工作.<br>Git没有中央服务器, 每个人的电脑就是一个完整的版本库, 工作的时候不需要联网了, git可以直接看到别人更改的东西.<br>Git是最先进的分布式版本控制工具.  </p>
+<h4 id="Git的发展历史"><a href="#Git的发展历史" class="headerlink" title="Git的发展历史"></a>Git的发展历史</h4><p>Git和Linux是分不开的.<br>Linux之父linus创造了Linux之后, 全球有大量的程序员为其贡献了代码, 整整十年linus没有版本控制工具, 在系统维护和归档上花费了大量时间, 2002年开始使用BitKeeper, 但是很快在2005, 人家要收费了.<br>linus可谓是天才, 总结经验, 吸取教训, 一怒之下, 花了两周时间, 开发了Git??????<br>Git和linus一样, 免费, 开源.  </p>
+<h4 id="git的安装"><a href="#git的安装" class="headerlink" title="git的安装"></a>git的安装</h4><p>问度娘吧.<br>毁灭吧</p>
+<h4 id="linux基本命令"><a href="#linux基本命令" class="headerlink" title="linux基本命令"></a>linux基本命令</h4><p>平时一定要多使用这些基础的命令！</p>
+<ul>
+<li><code>cd</code>: 改变目录。</li>
+<li><code>cd ..</code>: 回退到上一个目录，直接cd进入默认目录</li>
+<li><code>pwd</code>: 显示当前所在的目录路径。</li>
+<li><code>ls(ll)</code>: 都是列出当前目录中的所有文件，只不过ll(两个ll)列出的内容更为详细。</li>
+<li><code>touch</code> : 新建一个文件 如 touch index.js 就会在当前目录下新建一个index.js文件。</li>
+<li><code>rm</code>:  删除一个文件, rm index.js 就会把index.js文件删除。</li>
+<li><code>mkdir</code>:  新建一个目录,就是新建一个文件夹。</li>
+<li><code>rm -r</code>:  删除一个文件夹, rm -r src 删除src目录</li>
+<li><code>mv</code>: 移动文件, mv index.html src index.html 是我们要移动的文件, src 是目标文件夹,当然, 这样写,必须保证文件和目标文件夹在同一目录下。</li>
+<li><code>reset</code>: 重新初始化终端/清屏。</li>
+<li><code>clear</code>: 清屏。</li>
+<li><code>history</code>: 查看命令历史。</li>
+<li><code>help</code>: 帮助。</li>
+<li><code>exit</code>: 退出。</li>
+<li><code>#</code>: 表示注释</li>
+</ul>
+<h4 id="git必要配置"><a href="#git必要配置" class="headerlink" title="git必要配置"></a>git必要配置</h4><p>查看配置:<br><code>git config -l</code>: 本文件下配置<br><code>git config --system -l</code>: 系统配置 git根目录/etc/gitconfig<br><code>git config --global --list</code>: 当前用户配置 文档/.gitconfig</p>
+<p><code>git config --global user.name &quot;XXX&quot;</code>: 配置用户名<br><code>git config --global user.email &quot;XXX&quot;</code>: 配置邮箱</p>
+<h4 id="git基本理论"><a href="#git基本理论" class="headerlink" title="git基本理论"></a>git基本理论</h4><p>Git本地有三个工作区域:  </p>
+<ol>
+<li>工作目录  </li>
+<li>暂存区Stage, 只是一个文件  </li>
+<li>资源库<br><a href="https://imgtu.com/i/W8NgCd" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8NgCd.png" alt="W8NgCd.png"></a>  </li>
+</ol>
+<h4 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h4><ul>
+<li><code>git add .</code>: 将所有文件提交到暂存区.  </li>
+<li><code>git commit</code>: 将文件提交到本地仓库</li>
+<li><code>git push</code>: 提交到远程仓库</li>
+</ul>
+<p><a href="https://imgtu.com/i/W8UjWd" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W8UjWd.md.png" alt="W8UjWd.md.png"></a></p>
+<p>本地仓库搭建:<br><code>git init</code>: 初始化本地仓库<br><code>git clone</code>: 克隆远程仓库到本地</p>
+<h4 id="git文件操作"><a href="#git文件操作" class="headerlink" title="git文件操作"></a>git文件操作</h4><p>文件有四种状态:  </p>
+<ul>
+<li>Untracked: 未跟踪, 此文件在文件夹中, 但没有加入git库, 不参与版本控制, 通过<code>git add</code>状态变为<code>Staged</code>.</li>
+<li>Unmodify: 文件已入库, 未修改, 即版本库中的文件快照内容与文件夹中完全一致, 这种类型的文件有两种去处, 如果它被修改, 而变为<code>Modified</code>, 如果使用<code>git rm</code>移出版本库, 则变为<code>Untracked</code>文件.</li>
+<li>Modified: 文件已蟹盖, 仅仅是修改, 并没有进行其他的操作, 这个文件也有两个去处, 通过<code>git add</code>可进入暂存<code>Staged</code>状态, 使用<code>git checkout</code>则丢弃修改过, 返回到<code>unmodify</code>状态, 这个<code>git checkout</code>即从库中取出文件, 覆盖当前修改.</li>
+<li>Staged: 暂存状态, 执行<code>git commit</code>则将修改同步到库中, 这时库中文件和本地文件又变为一致, 文件为<code>Unmodify</code>状态, 执行<code>git reset HEAD filename</code>取消暂存, 文件状态为Modified.</li>
+</ul>
 
         </div>
 
@@ -298,7 +336,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/redis/"># redis</a>
+                        <a href="/tags/git/"># git</a>
                     
                         
                 </span>
@@ -311,10 +349,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/18/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6-git/">版本控制&git</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/17/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E6%A8%A1%E6%9D%BF%E9%A2%98/">线段树-模板题</a>
+            <a class="next" rel="next" href="/2021/07/18/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B012/">Redis-学习笔记12-Redis6新功能</a>
             
         </section>
 
