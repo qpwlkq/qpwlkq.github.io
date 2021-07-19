@@ -303,6 +303,21 @@
 <li>Modified: 文件已蟹盖, 仅仅是修改, 并没有进行其他的操作, 这个文件也有两个去处, 通过<code>git add</code>可进入暂存<code>Staged</code>状态, 使用<code>git checkout</code>则丢弃修改过, 返回到<code>unmodify</code>状态, 这个<code>git checkout</code>即从库中取出文件, 覆盖当前修改.</li>
 <li>Staged: 暂存状态, 执行<code>git commit</code>则将修改同步到库中, 这时库中文件和本地文件又变为一致, 文件为<code>Unmodify</code>状态, 执行<code>git reset HEAD filename</code>取消暂存, 文件状态为Modified.</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#查看指定文件状态</span><br><span class="line">git status [filename]</span><br><span class="line"></span><br><span class="line">#查看所有文件状态</span><br><span class="line">git status</span><br><span class="line"></span><br><span class="line"># git add .                  添加所有文件到暂存区</span><br><span class="line"># git commit -m &quot;消息内容&quot;    提交暂存区中的内容到本地仓库 -m 提交信息</span><br></pre></td></tr></table></figure>
+
+<h4 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h4><p>有些时候我们不想把某些文件纳入版本控制中，比如数据库文件，临时文件，设计文件等.<br>在主目录下建立”.gitignore”文件，此文件有如下规则：  </p>
+<ul>
+<li>忽略文件中的空行或以井号（#）开始的行将会被忽略。</li>
+<li>可以使用Linux通配符。例如：星号（*）代表任意多个字符，问号（？）代表一个字符，方括号（[abc]）代表可选字符范围，大括号（{string1,string2,…}）代表可选的字符串等。</li>
+<li>如果名称的最前面有一个感叹号（!），表示例外规则，将不被忽略。</li>
+<li>如果名称的最前面是一个路径分隔符（/），表示要忽略的文件在此目录下，而子目录中的文件不忽略。</li>
+<li>如果名称的最后面是一个路径分隔符（/），表示要忽略的是此目录下该名称的子目录，而非文件（默认文件或目录都忽略）。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*.txt        #忽略所有 .txt结尾的文件,这样的话上传就不会被选中！</span><br><span class="line">!lib.txt     #但lib.txt除外</span><br><span class="line">&#x2F;temp        #仅忽略项目根目录下的TODO文件,不包括其它目录temp</span><br><span class="line">build&#x2F;       #忽略build&#x2F;目录下的所有文件</span><br><span class="line">doc&#x2F;*.txt    #会忽略 doc&#x2F;notes.txt 但不包括 doc&#x2F;server&#x2F;arch.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 列出所有本地分支</span><br><span class="line">git branch</span><br><span class="line"></span><br><span class="line"># 列出所有远程分支</span><br><span class="line">git branch -r</span><br><span class="line"></span><br><span class="line"># 新建一个分支，但依然停留在当前分支</span><br><span class="line">git branch [branch-name]</span><br><span class="line"></span><br><span class="line"># 新建一个分支，并切换到该分支</span><br><span class="line">git checkout -b [branch]</span><br><span class="line"></span><br><span class="line"># 合并指定分支到当前分支</span><br><span class="line">$ git merge [branch]</span><br><span class="line"></span><br><span class="line"># 删除分支</span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line"></span><br><span class="line"># 删除远程分支</span><br><span class="line">$ git push origin --delete [branch-name]</span><br><span class="line">$ git branch -dr [remote&#x2F;branch]</span><br></pre></td></tr></table></figure>
+
+<p>如果同一个文件在合并分支时都被修改了则会引起冲突：解决的办法是我们可以修改冲突文件后重新提交！选择要保留他的代码还是你的代码！</p>
 
         </div>
 
