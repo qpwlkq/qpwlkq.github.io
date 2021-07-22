@@ -180,6 +180,8 @@
 <p>突然恍然大悟, 人都麻了. 我为什么总是想要模糊删除呢? 我先模糊查询, 再批量删除不就完事了吗, 我是菜比.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; keys &#x3D; jedis.keys(&quot;*&quot;);</span><br><span class="line">for(String key : keys) &#123;</span><br><span class="line">    jedis.del(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>已经操作过了, 成功了, 显然.  </p>
+<p>menter要我写一个接口, 让他测试, 我憋了一个上午也没整明白, 疯狂百度, 有一点点思路, 将java程序打包成jar包, 然后在linux中运行.  </p>
+<p>下午大体做了一下, jar包可以正常运行, 然后把它注册为服务, 但是一直有一个问题, 搜也搜不到, 没法指定端口, 或者说制定了也无效, 经过分析, 我感觉是tcp的问题, 使用端口无非是tcp/udp通信, 但是我的程序只是运行, 里面确实有连接redis的语句执行了, 但是在jar运行层面没有啥关系, 人都麻了, 让我再想想.  </p>
 
         </div>
 
