@@ -12,7 +12,7 @@
 
 
 
-<title>浪潮实习日志Day-2 | Hexo</title>
+<title>软件提高生产力的设置-必改 | Hexo</title>
 
 
 
@@ -210,7 +210,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">浪潮实习日志Day-2</h1>
+            <h1 class="post-title">软件提高生产力的设置-必改</h1>
             
                 <div class="post-meta">
                     
@@ -219,14 +219,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 21, 2021&nbsp;&nbsp;18:15:00</a>
+                        Date: <a href="#">July 22, 2021&nbsp;&nbsp;10:00:37</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97/">实习日志</a>
+                                <a href="/categories/%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88/">经验之谈</a>
                             
                         </span>
                     
@@ -235,24 +235,12 @@
         </header>
 
         <div class="post-content">
-            <p>上午9点终于拿到了电脑, 一台破破烂烂的联想商务本, 甚至分辨率13XX*7XX ???<br>相当离谱.</p>
-<p>还有就是, 终于知道了域用户有啥用, 无非就是把一起工作的人连起来, 统一管理, 我网上搜了一下, 如果想要加入域, 就要修改dns, 把dns改为公司的服务器地址, 看来就是联网走公司的服务器, 毕竟信息安全是非常重要的, 发的破本受不了, 想要自己电脑创建一个域用户, but需要管理员同意, 早知道上午去信息中心安装电脑的时候就问一下了.</p>
-<p>下午monster给了任务.  </p>
-<h4 id="今日任务"><a href="#今日任务" class="headerlink" title="今日任务"></a>今日任务</h4><ol>
-<li>搭建一个redis<br>要求: 不能使用yum安装, 端口不能使用默认端口, 需要有密码.</li>
-<li>编写一个java程序, 通过调用接口的方式操作redis<br>要求: 能进行查询缓存, 删除缓存(精确删除, 模糊删除),<br>redis连接信息在服务内单独一个配置文件保存.</li>
+            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>说实话, 生产力工具好不好真的很难说, 类似VS, idea这一类比较大的软件都有相当多的复杂设置, 对于初次使用确实不太友好, 并且现有文章会告诉你如何修改它们的配置, 以提高使用舒适度.</p>
+<p>我平时使用idea, 也是傻傻直接用, 甚至也算用过一些时间, 但从没改过什么, 直到前几天我看B站上黑马出的一套HarmonyOS的开发视频, 才知道原来还能这样(比如取消代码提示的大小写敏感, 这样敲个string就能出来String了, 巨舒服).  </p>
+<p><em>HarmonyOS开发工具DevEco是从idea的基础上开发的, 我说怎么这么眼熟呢.</em></p>
+<h4 id="idea"><a href="#idea" class="headerlink" title="idea"></a>idea</h4><ol>
+<li>取消代码提示的大小写敏感:<br>File -&gt; Settings -&gt; Editor -&gt; General -&gt; Code Completion -&gt; Match case取消选择</li>
 </ol>
-<p>本以为很轻松, 结果捣鼓了一下午, 时间全浪费在安装ide上了.<br>eclipse真的很讨厌, maven项目总是建不成, 提示某个文件坏了.<br>最后还是下载了一个idea 社区版, 然后才顺利建成.  </p>
-<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题:"></a>遇到的问题:</h4><ol>
-<li>连接不上服务器, 有两个参数是必须要改的:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">protected-mode yes</span><br><span class="line"># 本地保护模式, 把他关掉.</span><br><span class="line"></span><br><span class="line">bind 127.0.0.0 -::1</span><br><span class="line"># 把他注释掉!</span><br></pre></td></tr></table></figure>
-我想到了第一个参数, 但是第二个参数忘记了, 因为之前用的都是本地虚拟机, 但是这次我用的是本地去连接公司远程服务器, 把他搞混淆了, 改了就能连上了.  </li>
-<li>eclipse无法创建maven项目<br>尝试了某些方法, 都不行, 气炸了, 估计要重装了.</li>
-</ol>
-<h4 id="简单写写操作流程"><a href="#简单写写操作流程" class="headerlink" title="简单写写操作流程"></a>简单写写操作流程</h4><p>将文件复制入linux服务器中, 然后tar命令解压, make命令编译, make install命令安装.  </p>
-<p>cp redis.conf到别的地方(/etc/redis.conf), 然后改新复制的配置文件.  </p>
-<p>密码有一个参数requirepass “”, 取消注释就行了, 而修改端口的参数port 6379直接改了就行了.</p>
-<p>还有几个远程连接必要修改的参数不要忘了改.  </p>
-<p><code>systemctl stop firewalld</code>, 把防火墙关了, monster给的服务器肯定是公司的, 能不能这么干我也不知道, 不关防火墙连不上.</p>
 
         </div>
 
@@ -286,7 +274,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E5%AE%9E%E4%B9%A0/"># 实习</a>
+                        <a href="/tags/%E7%94%9F%E4%BA%A7%E5%8A%9B/"># 生产力</a>
                     
                         
                 </span>
@@ -299,10 +287,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/22/%E6%B5%AA%E6%BD%AE%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97Day-3/">浪潮实习日志Day-3</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/21/%E6%B5%AA%E6%BD%AE%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97Day-1/">浪潮实习日志Day-1</a>
+            <a class="next" rel="next" href="/2021/07/22/%E6%B5%AA%E6%BD%AE%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97Day-3/">浪潮实习日志Day-3</a>
             
         </section>
 
