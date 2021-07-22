@@ -223,6 +223,13 @@
                         </span>
                     
                     
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97/">实习日志</a>
+                            
+                        </span>
+                    
                 </div>
             
         </header>
@@ -240,8 +247,11 @@
 我想到了第一个参数, 但是第二个参数忘记了, 因为之前用的都是本地虚拟机, 但是这次我用的是本地去连接公司远程服务器, 把他搞混淆了, 改了就能连上了.  </li>
 <li>eclipse无法创建maven项目<br>尝试了某些方法, 都不行, 气炸了, 估计要重装了.</li>
 </ol>
-<h4 id="简单些操作流程"><a href="#简单些操作流程" class="headerlink" title="简单些操作流程"></a>简单些操作流程</h4><p>将文件复制入linux服务器中, 然后tar命令解压, make命令编译, make install命令安装.  </p>
-<p>必要修改的参数不要忘了改.  </p>
+<h4 id="简单写写操作流程"><a href="#简单写写操作流程" class="headerlink" title="简单写写操作流程"></a>简单写写操作流程</h4><p>将文件复制入linux服务器中, 然后tar命令解压, make命令编译, make install命令安装.  </p>
+<p>cp redis.conf到别的地方(/etc/redis.conf), 然后改新复制的配置文件.  </p>
+<p>密码有一个参数requirepass “”, 取消注释就行了, 而修改端口的参数port 6379直接改了就行了.</p>
+<p>还有几个远程连接必要修改的参数不要忘了改.  </p>
+<p>防火墙关了, monster给的服务器肯定是公司的, 能不能这么干我也不知道, 不关防火墙连不上.</p>
 
         </div>
 
@@ -274,6 +284,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/%E5%AE%9E%E4%B9%A0/"># 实习</a>
+                    
+                        
                 </span>
             </div>
             <div>
