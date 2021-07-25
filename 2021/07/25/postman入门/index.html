@@ -12,7 +12,7 @@
 
 
 
-<title>浪潮实习日志Day-4 | Hexo</title>
+<title>postman入门 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">浪潮实习日志Day-4</h1>
+            <h1 class="post-title">postman入门</h1>
             
                 <div class="post-meta">
                     
@@ -157,14 +219,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 23, 2021&nbsp;&nbsp;9:01:43</a>
+                        Date: <a href="#">July 25, 2021&nbsp;&nbsp;15:12:55</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97/">实习日志</a>
+                                <a href="/categories/%E6%B5%8B%E8%AF%95/">测试</a>
                             
                         </span>
                     
@@ -173,14 +235,16 @@
         </header>
 
         <div class="post-content">
-            <p>another day. 周五.  </p>
-<p>postman一个接口测试软件.</p>
-<p>书接上文, 我又冥思苦想了许久, 突然好像明白了一点, java去写一个服务器程序, 使用套接字等待请求大概可以.</p>
-<p>马上下班, 上面的思想基本实现了, 但是只能模糊删除指定的一个字符串, 我想要获取url的参数列表, 这样把url参数作为程序执, 就能够操控了, 但是问题是: 如何让java程序获取到url的参数呢? 我不仅需要它, 我还希望能够返回json格式数据, 删除的key和总数. </p>
-<p>百度了一下, 发现servlet封装了我需要的方法, 看来有必要学一学, 然后就是搜了大量的blog, 有很多人使用了json-lib, 但是它在我这里用不了, 提示没有这个依赖, 搜了一些方法怎么都不行, 还是想办法解决传url参数的问题吧.</p>
-<p>下班的时候问了一下, 我人傻了, 右边有一个选项点开之后, 各种语言的多种库(接受数据)都提供了接受的模板, 整了半天, 复制黏贴过去应该就可以了, 我还想要从套接字开始写, 人麻了.</p>
-<p><a href="https://imgtu.com/i/Wg5xfS" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/25/Wg5xfS.md.png" alt="Wg5xfS.md.png"></a></p>
-<p>经过大量查询资料, 发现springboot可以, 找到了一个几乎完全相同的例子, 只不过他操作的是mysql, 我是redis, 但是我不想直接用, 还是想要从套接字开始写, 然后接收数据, 写个大模拟, 取出请求体</p>
+            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>事情的起因我不想重复了, 写在实习日记中了, postman是一个接口测试软件, 自不必说.</p>
+<p>它的主要思想就是通过http传输参数罢了, 刚开始学的时候, 我总是想如何接收数据, 后来才发现提供了接收模板(库)代码.  </p>
+<p>我用的是java, 它提供了两种, 我使用的是okhttp, 它是maven里的, 直接从pom.xml里添加它, 就很方便.  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.squareup.okhttp3&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;okhttp&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.9.0&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>需要简单学一下怎么用:<br><a href="https://square.github.io/okhttp" target="_blank" rel="noopener">https://square.github.io/okhttp</a></p>
+<h4 id="接口-what-how-why"><a href="#接口-what-how-why" class="headerlink" title="接口 what?how?why?"></a>接口 what?how?why?</h4><ol>
+<li>软件为什么需要接口?<br>接口可以让内部的数据被外部修改.</li>
+<li></li>
+</ol>
 
         </div>
 
@@ -214,7 +278,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E5%AE%9E%E4%B9%A0/"># 实习</a>
+                        <a href="/tags/postman/"># postman</a>
                     
                         
                 </span>
@@ -227,10 +291,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/25/postman%E5%85%A5%E9%97%A8/">postman入门</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/22/%E8%BD%AF%E4%BB%B6%E6%8F%90%E9%AB%98%E7%94%9F%E4%BA%A7%E5%8A%9B%E7%9A%84%E8%AE%BE%E7%BD%AE-%E5%BF%85%E6%94%B9/">软件提高生产力的设置-必改</a>
+            <a class="next" rel="next" href="/2021/07/23/%E6%B5%AA%E6%BD%AE%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97Day-4/">浪潮实习日志Day-4</a>
             
         </section>
 
