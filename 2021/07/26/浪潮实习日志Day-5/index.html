@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+
+
+
+<title>浪潮实习日志Day-5 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">QPWLKQ&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Archives</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">QPWLKQ&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Archives</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">浪潮实习日志Day-5</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 26, 2021&nbsp;&nbsp;11:36:17</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97/">实习日志</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>7-26 第五天</p>
+<p>终于把postman的测试搞定了<br>其实就是使用java内置类:HttpServer, 然后构建一个简易的能接收post请求的http服务器, 然后接收参数, 执行函数.</p>
+<p>HttpServerStarter类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">package com.wakabaka;</span><br><span class="line"></span><br><span class="line">import com.sun.net.httpserver.HttpServer;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.net.InetSocketAddress;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line">public class HttpServerStarter &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        &#x2F;&#x2F;创建一个HttpServer实例，并绑定到指定的IP地址和端口号</span><br><span class="line">        HttpServer httpServer &#x3D; HttpServer.create(new InetSocketAddress(8080), 0);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;创建一个HttpContext，将路径为&#x2F;myserver请求映射到MyHttpHandler处理器</span><br><span class="line">        httpServer.createContext(&quot;&#x2F;myserver&quot;, new MyHttpHandler());</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;设置服务器的线程池对象</span><br><span class="line">        httpServer.setExecutor(Executors.newFixedThreadPool(10));</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;启动服务器</span><br><span class="line">        httpServer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>myHttpHandler类:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><span class="line">package com.wakabaka;</span><br><span class="line"></span><br><span class="line">import com.sun.net.httpserver.Headers;</span><br><span class="line">import com.sun.net.httpserver.HttpExchange;</span><br><span class="line">import com.sun.net.httpserver.HttpHandler;</span><br><span class="line">import redis.clients.jedis.Jedis;</span><br><span class="line">import redis.clients.jedis.ScanParams;</span><br><span class="line">import redis.clients.jedis.ScanResult;</span><br><span class="line"></span><br><span class="line">import java.io.BufferedReader;</span><br><span class="line">import java.io.InputStreamReader;</span><br><span class="line">import java.io.OutputStream;</span><br><span class="line">import java.util.List;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 处理&#x2F;myserver路径请求的处理器类</span><br><span class="line"> *&#x2F;</span><br><span class="line">public class MyHttpHandler implements HttpHandler &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void handle(HttpExchange httpExchange) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            StringBuilder responseText &#x3D; new StringBuilder();</span><br><span class="line">            responseText.append(&quot;请求方法：&quot;).append(httpExchange.getRequestMethod()).append(&quot;&lt;br&#x2F;&gt;&quot;);</span><br><span class="line">            responseText.append(&quot;请求参数：&quot;).append(getRequestParam(httpExchange)).append(&quot;&lt;br&#x2F;&gt;&quot;);</span><br><span class="line">            responseText.append(&quot;请求头：&lt;br&#x2F;&gt;&quot;).append(getRequestHeader(httpExchange));</span><br><span class="line">            handleResponse(httpExchange, responseText.toString());</span><br><span class="line">        &#125; catch (Exception ex) &#123;</span><br><span class="line">            ex.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取请求头</span><br><span class="line">     * @param httpExchange</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private String getRequestHeader(HttpExchange httpExchange) &#123;</span><br><span class="line">        Headers headers &#x3D; httpExchange.getRequestHeaders();</span><br><span class="line">        return headers.entrySet().stream()</span><br><span class="line">                .map((Map.Entry&lt;String, List&lt;String&gt;&gt; entry) -&gt; entry.getKey() + &quot;:&quot; + entry.getValue().toString())</span><br><span class="line">                .collect(Collectors.joining(&quot;&lt;br&#x2F;&gt;&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 获取请求参数</span><br><span class="line">     * @param httpExchange</span><br><span class="line">     * @return</span><br><span class="line">     * @throws Exception</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private String getRequestParam(HttpExchange httpExchange) throws Exception &#123;</span><br><span class="line">        String paramStr &#x3D; &quot;&quot;;</span><br><span class="line"></span><br><span class="line">        if (httpExchange.getRequestMethod().equals(&quot;GET&quot;)) &#123;</span><br><span class="line">            &#x2F;&#x2F;GET请求读queryString</span><br><span class="line">            paramStr &#x3D; httpExchange.getRequestURI().getQuery();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            &#x2F;&#x2F;非GET请求读请求体</span><br><span class="line">            BufferedReader bufferedReader &#x3D; new BufferedReader(new InputStreamReader(httpExchange.getRequestBody(), &quot;utf-8&quot;));</span><br><span class="line">            StringBuilder requestBodyContent &#x3D; new StringBuilder();</span><br><span class="line">            String line &#x3D; null;</span><br><span class="line">            String x &#x3D; null;</span><br><span class="line"></span><br><span class="line">            while ((line &#x3D; bufferedReader.readLine()) !&#x3D; null) &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                x &#x3D; decodeURL(line);</span><br><span class="line">                System.out.println(x);</span><br><span class="line">                requestBodyContent.append(x);</span><br><span class="line"></span><br><span class="line">                int index &#x3D; x.indexOf(&quot;&amp;&quot;);</span><br><span class="line">                &#x2F;&#x2F;System.out.println(index);</span><br><span class="line">                &#x2F;&#x2F;根据第一个点的位置 获得第二个点的位置</span><br><span class="line">                String result &#x3D; x.substring(index);</span><br><span class="line">                index &#x3D; result.indexOf(&quot;&#x3D;&quot;);</span><br><span class="line">                String tmp &#x3D; result.substring(index + 1);</span><br><span class="line">                System.out.println(tmp);</span><br><span class="line">                if(x.charAt(3) &#x3D;&#x3D; &#39;n&#39;) &#123;</span><br><span class="line">                    jingquedel(tmp);</span><br><span class="line">                &#125;</span><br><span class="line">                else &#123;</span><br><span class="line">                    mohudel(tmp);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            paramStr &#x3D; requestBodyContent.toString();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return paramStr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 处理响应</span><br><span class="line">     * @param httpExchange</span><br><span class="line">     * @param responsetext</span><br><span class="line">     * @throws Exception</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private void handleResponse(HttpExchange httpExchange, String responsetext) throws Exception &#123;</span><br><span class="line">        &#x2F;&#x2F;生成html</span><br><span class="line">        StringBuilder responseContent &#x3D; new StringBuilder();</span><br><span class="line">        responseContent.append(&quot;&lt;html&gt;&quot;)</span><br><span class="line">                .append(&quot;&lt;body&gt;&quot;)</span><br><span class="line">                .append(responsetext)</span><br><span class="line">                .append(&quot;&lt;&#x2F;body&gt;&quot;)</span><br><span class="line">                .append(&quot;&lt;&#x2F;html&gt;&quot;);</span><br><span class="line">        String responseContentStr &#x3D; responseContent.toString();</span><br><span class="line">        byte[] responseContentByte &#x3D; responseContentStr.getBytes(&quot;utf-8&quot;);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;设置响应头，必须在sendResponseHeaders方法之前设置！</span><br><span class="line">        httpExchange.getResponseHeaders().add(&quot;Content-Type:&quot;, &quot;text&#x2F;html;charset&#x3D;utf-8&quot;);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;设置响应码和响应体长度，必须在getResponseBody方法之前调用！</span><br><span class="line">        httpExchange.sendResponseHeaders(200, responseContentByte.length);</span><br><span class="line"></span><br><span class="line">        OutputStream out &#x3D; httpExchange.getResponseBody();</span><br><span class="line">        out.write(responseContentByte);</span><br><span class="line">        out.flush();</span><br><span class="line">        out.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static String decodeURL(String url)&#123;</span><br><span class="line">        return url.replace(&quot;%2B&quot;, &quot;+&quot;).replace(&quot;%20&quot;, &quot; &quot;)</span><br><span class="line">                .replace(&quot;%2F&quot;, &quot;&#x2F;&quot;).replace(&quot;%3F&quot;, &quot;?&quot;)</span><br><span class="line">                .replace(&quot;%23&quot;, &quot;#&quot;).replace(&quot;%26&quot;, &quot;&amp;&quot;)</span><br><span class="line">                .replace(&quot;%3D&quot;, &quot;&#x3D;&quot;).replace(&quot;%25&quot;, &quot;%&quot;)</span><br><span class="line">                .replace(&quot;%3A&quot;, &quot;:&quot;).replace(&quot;%2A&quot;, &quot;*&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void jingquedel(String s) &#123;</span><br><span class="line">        &#x2F;&#x2F;Jedis jedis &#x3D; new Jedis(&quot;192.168.43.116&quot;, 6379);</span><br><span class="line">        Jedis jedis &#x3D; new Jedis(&quot;172.22.56.65&quot;, 6380);</span><br><span class="line">        jedis.auth(&quot;123456&quot;);</span><br><span class="line"></span><br><span class="line">        jedis.del(s);</span><br><span class="line"></span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void mohudel(String s)&#123;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;Jedis jedis &#x3D; new Jedis(&quot;192.168.43.116&quot;, 6379);</span><br><span class="line">        Jedis jedis &#x3D; new Jedis(&quot;172.22.56.65&quot;, 6380);</span><br><span class="line">        jedis.auth(&quot;123456&quot;);</span><br><span class="line"></span><br><span class="line">        ScanParams scanParams &#x3D; new ScanParams();</span><br><span class="line">        scanParams.match(s);</span><br><span class="line">        scanParams.count(5);</span><br><span class="line"></span><br><span class="line">        ScanResult&lt;String&gt; scan &#x3D; jedis.scan(&quot;0&quot;, scanParams);</span><br><span class="line">        List&lt;String&gt; keys &#x3D; scan.getResult();</span><br><span class="line">        int num &#x3D; 0;</span><br><span class="line">        for(String key : keys) &#123;</span><br><span class="line">            jedis.del(key);</span><br><span class="line">            &#x2F;&#x2F;System.out.println(key);</span><br><span class="line">            num++;</span><br><span class="line">        &#125;</span><br><span class="line">        jedis.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%AE%9E%E4%B9%A0/"># 实习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/07/25/postman%E5%85%A5%E9%97%A8/">postman入门</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
