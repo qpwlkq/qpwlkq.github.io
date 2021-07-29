@@ -12,7 +12,7 @@
 
 
 
-<title>浪潮实习日志第二周 | Hexo</title>
+<title>mongodb入门2-权限控制 | Hexo</title>
 
 
 
@@ -144,73 +144,11 @@
             <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">浪潮实习日志第二周</h1>
+            <h1 class="post-title">mongodb入门2-权限控制</h1>
             
                 <div class="post-meta">
                     
@@ -219,14 +157,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 29, 2021&nbsp;&nbsp;14:19:37</a>
+                        Date: <a href="#">July 29, 2021&nbsp;&nbsp;21:51:42</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/%E5%AE%9E%E4%B9%A0%E6%97%A5%E5%BF%97/">实习日志</a>
+                                <a href="/categories/mongodb/">mongodb</a>
                             
                         </span>
                     
@@ -235,25 +173,9 @@
         </header>
 
         <div class="post-content">
-            <h4 id="no-title"><a href="#no-title" class="headerlink" title="no title"></a>no title</h4><p><a href="https://imgtu.com/i/WHXVEj" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/29/WHXVEj.png" alt="WHXVEj.png"></a>  </p>
-<p>mysql学校学的, 也有项目, redis我大概花了一周系统学了一遍, java操作也没有太大问题, mongodb一直没空学, 没来得及学实习就开始了, 必须提上日程了. </p>
-<p><code>基础组件：jdk、zookeeper、cmsp、kafka、nginx</code></p>
-<p>一头雾水???<br>只知道jdk, nginx的大名说实话我已经听烂了, 还是没学过.</p>
-<p>在搜索资料的时候发现一个很好的贴子:<br><a href="https://www.runoob.com/w3cnote/github-tools.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/github-tools.html</a></p>
-<p>就是讲什么软件干什么事情的.<br>推荐的书籍最后是: 弗洛伊德的&lt;&lt;精神分析引论&gt;&gt;❓</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4><ul>
-<li><p><code>Nginx</code>: 是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务</p>
-</li>
-<li><p><code>ZooKeeper</code>: 可靠的分布式协调的开源项目</p>
-</li>
-<li><p><code>cmsp</code>: ????</p>
-</li>
-<li><p><code>Kafka</code>: 高吞吐量的分布式消息队列系统</p>
-</li>
-<li><p><code>cmsp</code>: CMSP是云和大数据时代的一种高性能消息中间件，以云服务和集群方式对外提供高性能和高可靠的消息队列服务，支撑大数据采集、传输、汇聚、交换和存储，大数据实时处理和微服务处理架构。</p>
-</li>
-</ul>
-<p>人麻了, cmsp是浪潮的软件.💢</p>
+            <p>前篇我们知道了如果bind_ip设置为0.0.0.0, 那么所有ip都可以访问, 这是一个非常非常不好的行为, 常年有黑客广撒网肆意删库勒索, 也总是有人偷懒, 不对访问ip加以限制, 总有人中招, 黑客乐了.  </p>
+<p>总之, 是个IT人就清楚数据的重要性.  </p>
+<p>ps: 如果某一天你被勒索了, 请不要支付赎金, 黑客谎称可以恢复, 其实只是骗钱, 它们100%直接删库了.</p>
 
         </div>
 
@@ -287,7 +209,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/%E5%AE%9E%E4%B9%A0/"># 实习</a>
+                        <a href="/tags/mongodb/"># mongodb</a>
                     
                         
                 </span>
@@ -300,10 +222,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/29/mongodb%E5%85%A5%E9%97%A81-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">mongodb入门1-安装配置</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/26/%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E4%B8%BAjava%E7%A8%8B%E5%BA%8F%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1/">快速在linux系统下为java程序注册服务</a>
+            <a class="next" rel="next" href="/2021/07/29/mongodb%E5%85%A5%E9%97%A81-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">mongodb入门1-安装配置</a>
             
         </section>
 
