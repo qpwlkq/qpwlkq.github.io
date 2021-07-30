@@ -12,7 +12,7 @@
 
 
 
-<title>Nginx-1-安装配置 | Hexo</title>
+<title>zookeeper从入门到放弃 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Nginx-1-安装配置</h1>
+            <h1 class="post-title">zookeeper从入门到放弃</h1>
             
                 <div class="post-meta">
                     
@@ -157,14 +219,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 30, 2021&nbsp;&nbsp;14:52:31</a>
+                        Date: <a href="#">July 30, 2021&nbsp;&nbsp;17:03:16</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Nginx/">Nginx</a>
+                                <a href="/categories/zookeeper/">zookeeper</a>
                             
                         </span>
                     
@@ -173,10 +235,13 @@
         </header>
 
         <div class="post-content">
-            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 解压</span><br><span class="line">tar -zxvf nginx-1.20.1.tar.gz</span><br><span class="line"></span><br><span class="line"># 进入nginx目录</span><br><span class="line">cd nginx-1.20.1</span><br><span class="line"></span><br><span class="line"># 运行配置脚本</span><br><span class="line">.&#x2F;congfigure</span><br><span class="line"></span><br><span class="line"># 编译</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># 安装</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-
-<p>直接通过浏览器输入ip:port进行访问, 默认抢占端口80(80可以省略).</p>
-<p><em>不要忘了关闭防火墙.</em></p>
+            <h4 id="三个作用"><a href="#三个作用" class="headerlink" title="三个作用"></a>三个作用</h4><ol>
+<li>配置中心</li>
+<li>分布式锁</li>
+<li>集群管理</li>
+</ol>
+<p>果然那句话说得好: 如果一层解决不了, 那就给他加一层, 加一层不行, 就加两层.</p>
+<p>前面reids集群篇中, 我们在本地建立集群, 直接使用不同的端口, 启动多个进程, 然后配置成集群, 我们思考一个问题,</p>
 
         </div>
 
@@ -210,7 +275,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/Nginx/"># Nginx</a>
+                        <a href="/tags/zookeeper/"># zookeeper</a>
                     
                         
                 </span>
@@ -223,10 +288,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/07/30/zookeeper%E5%85%A5%E9%97%A8/">zookeeper从入门到放弃</a>
             
-            
-            <a class="next" rel="next" href="/2021/07/29/mongodb%E5%85%A5%E9%97%A82-%E6%9D%83%E9%99%90/">mongodb入门2-权限控制和用户管理</a>
+            <a class="next" rel="next" href="/2021/07/30/Nginx-1-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">Nginx-1-安装配置</a>
             
         </section>
 
