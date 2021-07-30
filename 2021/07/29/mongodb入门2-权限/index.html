@@ -12,7 +12,7 @@
 
 
 
-<title>mongodb入门2-权限控制 | Hexo</title>
+<title>mongodb入门2-权限控制和用户管理 | Hexo</title>
 
 
 
@@ -144,11 +144,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">mongodb入门2-权限控制</h1>
+            <h1 class="post-title">mongodb入门2-权限控制和用户管理</h1>
             
                 <div class="post-meta">
                     
@@ -173,10 +235,81 @@
         </header>
 
         <div class="post-content">
-            <p>前篇我们知道了如果bind_ip设置为0.0.0.0, 那么所有ip都可以访问, 这是一个非常非常不好的行为, 常年有黑客广撒网肆意删库勒索, 也总是有人偷懒, 不对访问ip加以限制, 总有人中招, 黑客乐了.  </p>
-<p>总之, 是个IT人就清楚数据的重要性.  </p>
+            <p>前篇我们知道了如果bind_ip设置为0.0.0.0, 那么所有ip都可以访问, 这是一个非常非常不好的行为, 常年有黑客广撒网肆意删库勒索, 也总是有人偷懒, 不对访问ip加以限制, 总有人中招, 黑客乐了. 总之, 数据的重要性不言而喻.  </p>
 <p>ps: 如果某一天你被勒索了, 请不要支付赎金, 黑客谎称可以恢复, 其实只是骗钱, 它们100%直接删库了.</p>
+<p>提高安全性的三种方式:  </p>
+<ol>
+<li>身份认证</li>
+<li>不允许远程访问</li>
+<li>添加ip访问限制</li>
+</ol>
+<h4 id="常用权限"><a href="#常用权限" class="headerlink" title="常用权限"></a>常用权限</h4><table>
+<thead>
+<tr>
+<th>权限</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read</td>
+<td>允许用户读取数据库</td>
+</tr>
+<tr>
+<td>readWrite</td>
+<td>允许用户读写指定数据库</td>
+</tr>
+<tr>
+<td>userAdmin</td>
+<td>允许用户向system.users集合写入, 可以在指定数据库创建, 删除和管理用户</td>
+</tr>
+<tr>
+<td>dbAdmin</td>
+<td>允许用户在指定数据库中执行管理函数或访问system.profile</td>
+</tr>
+<tr>
+<td>clusterAdmin</td>
+<td>必须在admin数据库中定义, 赋予用户所有分片和复制集相关函数的管理权限</td>
+</tr>
+<tr>
+<td>readAnyDatabase</td>
+<td>必须在admin数据库中定义, 赋予用户所有数据库的读权限</td>
+</tr>
+<tr>
+<td>readWriteAnyDatabase</td>
+<td>必须在admin数据库中定义, 赋予用户所有数据库的读写权限</td>
+</tr>
+<tr>
+<td>userAdminAnyDatabase</td>
+<td>必须在admin数据库中定义, 赋予用户所有数据库的userAdmin权限</td>
+</tr>
+<tr>
+<td>dbAdminAnyDatabase</td>
+<td>必须在admin数据库中定义, 赋予用户所有数据库的dbAdmin权限</td>
+</tr>
+<tr>
+<td>root</td>
+<td>必须在admin数据库中定义, 超级账号, 超级权限</td>
+</tr>
+</tbody></table>
+<h4 id="查看-创建用户"><a href="#查看-创建用户" class="headerlink" title="查看/创建用户"></a>查看/创建用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line"># 查看用户</span><br><span class="line">show users</span><br><span class="line"># 用户信息是json格式</span><br><span class="line">db.createUser(用户信息)</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(</span><br><span class="line">    &#123;</span><br><span class="line">        user:&quot;uaad&quot;,</span><br><span class="line">        pwd:&quot;uaad&quot;,</span><br><span class="line">        roles:[</span><br><span class="line">            &#123;</span><br><span class="line">                role:&quot;userAdminAnyDatabase&quot;,</span><br><span class="line">                db:&quot;admin&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加认证"><a href="#添加认证" class="headerlink" title="添加认证"></a>添加认证</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;mongodb.conf</span><br></pre></td></tr></table></figure>
+<p>添加:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auth &#x3D; true</span><br></pre></td></tr></table></figure>
+<p>启动:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mongod -f &#x2F;etc&#x2F;mongodb.conf </span><br><span class="line">mongo</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; use admin</span><br><span class="line">&gt; show dbs</span><br><span class="line"># 此时会提示没有权限</span><br></pre></td></tr></table></figure>
+<p>验证:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; db.auth(</span><br><span class="line">    &quot;uaad&quot;,</span><br><span class="line">    &quot;uaad&quot;</span><br><span class="line">)</span><br><span class="line"># 用户名 + 密码</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新用户"><a href="#更新用户" class="headerlink" title="更新用户"></a>更新用户</h4><h5 id="更新角色"><a href="#更新角色" class="headerlink" title="更新角色"></a>更新角色</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">db.updateUser(</span><br><span class="line">    &quot;uaad&quot;,</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;roles&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                role: &quot;userAdminAnyDatabase&quot;,</span><br><span class="line">                db: &quot;admin&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                role: &quot;readWriteAnyDatabase&quot;,</span><br><span class="line">                db: &quot;admin&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                role: &quot;dbAdminAnyDatabase&quot;,</span><br><span class="line">                db: &quot;admin&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="更改密码"><a href="#更改密码" class="headerlink" title="更改密码"></a>更改密码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.changeUserPassword(&quot;用户名&quot;, &quot;新密码&quot;);</span><br><span class="line">db.updateUser(&quot;用户名&quot;, &#123;&quot;pwd&quot;: &quot;新密码&quot;&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h4><p>注意: 需要使用狙有userAdmin或userAdminDatabase或root角色的用户才可以删除其他用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.dropUser(&quot;用户名&quot;)</span><br></pre></td></tr></table></figure>
         </div>
 
         
