@@ -12,7 +12,7 @@
 
 
 
-<title>zookeeper从入门到放弃 | Hexo</title>
+<title>zookeeper常用命令 | Hexo</title>
 
 
 
@@ -210,7 +210,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">zookeeper从入门到放弃</h1>
+            <h1 class="post-title">zookeeper常用命令</h1>
             
                 <div class="post-meta">
                     
@@ -219,7 +219,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">July 30, 2021&nbsp;&nbsp;17:03:16</a>
+                        Date: <a href="#">August 2, 2021&nbsp;&nbsp;9:05:37</a>
                         </span>
                     
                     
@@ -235,32 +235,26 @@
         </header>
 
         <div class="post-content">
-            <p>[toc]</p>
-<h4 id="三个作用"><a href="#三个作用" class="headerlink" title="三个作用"></a>三个作用</h4><ol>
-<li>配置中心</li>
-<li>分布式锁</li>
-<li>集群管理</li>
-</ol>
-<p>果然那句话说得好: 如果一层解决不了, 那就给他加一层, 加一层不行, 就加两层.</p>
-<p>前面reids集群篇中, 我们在本地建立集群, 直接使用不同的端口, 启动多个进程, 然后配置成集群的时候使用的建立多个配置文件, 并且通过”include”共享一个总的配置文件, 它们只需要写一点不同的参数即可, 但是如果我们有多台服务器, 想要达到相同的效果, 就需要zookeeper来管理大家相同的参数, 所以叫配置中心.</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ol>
-<li>下载压缩包并解压, 务必下载<strong>最新&amp;稳定</strong>版</li>
-</ol>
-<p><code>http://zookeeper.apache.org/releases.html</code></p>
-<p>都用zookeeper了, 不可能不会Linux吧, 不赘述了.</p>
-<p>我第一次下载了3.7.0 最新版, 不是最新稳定版, 结果javaAPI没有更新到最新, 我人都傻了, 还好, 我的zookeeper没有任何配置, 删了旧的文件夹, 下个新的就完事了.  </p>
-<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>进入zookeeper目录下:<br><code>./bin/zkServer.sh start</code></p>
-<p>查看状态:<br><code>./bin/zkServer.sh status</code></p>
-<h4 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h4><p>树形目录服务, 拥有一个层次目录, 每个节点被称为Znode, 每个节点上都会保存自己的数据和节点信息.  </p>
-<p>节点可以有子节点, 同时也允许少量(1MB)数据存储在该节点之下.</p>
-<p>节点可以分为四种:</p>
-<ol>
-<li>persistent 持久化节点</li>
-<li>ephemeral 临时节点: -e (客户端关了就没了)</li>
-<li>persistent_sequential 持久化顺序节点: -s</li>
-<li>ephemeral_sequential 临时顺序节点 -es</li>
-</ol>
-<p><a href="https://imgtu.com/i/fSwNLt" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/08/02/fSwNLt.png" alt="fSwNLt.png"></a>  </p>
+            <h4 id="常用服务端命令"><a href="#常用服务端命令" class="headerlink" title="常用服务端命令"></a>常用服务端命令</h4><ul>
+<li><code>./zkServer.sh start</code>: 启动  </li>
+<li><code>./zkServer.sh status</code>: 查看状态  </li>
+<li><code>./zkServer.sh stop</code>: 停止  </li>
+<li><code>./zkServer.sh restart</code>: 重启  </li>
+</ul>
+<h4 id="常用客户端命令"><a href="#常用客户端命令" class="headerlink" title="常用客户端命令"></a>常用客户端命令</h4><ul>
+<li><code>./zkCli.sh -server IP:PORT</code>: 指定连接的ip端口号.</li>
+<li><code>ls /...</code>: 查看某个节点下的子节点, 必须要加’/‘</li>
+<li><code>create [-e/-s/-es] /... [可选-数据]</code>: 在目录…下创建节点</li>
+<li><code>get /...</code>: 获取某个节点的数据, 空返回null</li>
+<li><code>set /... data</code>: 为某个节点设置节点</li>
+<li><code>delete /...</code>: 删除某个无子节点的节点</li>
+<li><code>deleteall /...</code>: 删除某个节点以及其所有子节点</li>
+<li><code>help</code>: 帮助</li>
+<li><code>quit</code>: 退出  </li>
+</ul>
+<ul>
+<li><code>ls -s /...</code>: 查看某个节点的各种信息, 老版本是<code>ls2</code>命令<br><a href="https://imgtu.com/i/fSyQot" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/08/02/fSyQot.md.png" alt="fSyQot.md.png"></a></li>
+</ul>
 
         </div>
 
@@ -307,10 +301,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/08/02/zookeeper%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C/">zookeeper常用命令</a>
+                <a class="prev" rel="prev" href="/2021/08/02/zookeeperJAVA%E5%AE%A2%E6%88%B7%E7%AB%AF/">zookeeperJAVA客户端</a>
             
             
-            <a class="next" rel="next" href="/2021/07/30/Nginx-1-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">Nginx-1-安装配置</a>
+            <a class="next" rel="next" href="/2021/07/30/zookeeper%E5%85%A5%E9%97%A8/">zookeeper从入门到放弃</a>
             
         </section>
 
