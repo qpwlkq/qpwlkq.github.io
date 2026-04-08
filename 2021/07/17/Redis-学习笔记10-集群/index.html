@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>Redis-学习笔记10-集群 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Redis-学习笔记10-集群</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 17, 2021&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Redis/">Redis</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>容量不够了, Redis如何扩容?<br>并发写操作, Redis如何分摊?</p>
+<p>论是什么模式, 主服务器炸了, 导致了ip地址发生变化, 应用程序中配置需要修改对应的主机地址,端口等信息, 之前要通过代理主机来解决, 但是redis3.0开始提供了解决方案: 无中心化集群配置.<br>无中心化集群中任何一台服务器都可以作为集群的入口, 它们直接互相连通.</p>
+<h4 id="什么是集群"><a href="#什么是集群" class="headerlink" title="什么是集群"></a>什么是集群</h4><p>Redis集群实现了水平扩容, 即启动N个redis节点, 将整个数据库分布存储到N个节点中, 每个节点存储1&#x2F;N数据.</p>
+<p>Redis集群通过分区来提供一定程度的可用性, 即使集群中有一部分节点失效或无法进行通信, 集群也可以继续处理命令</p>
+<h4 id="搭建集群"><a href="#搭建集群" class="headerlink" title="搭建集群"></a>搭建集群</h4><ol>
+<li>删除rdb,aof文件.</li>
+<li>制作6个实例.</li>
+</ol>
+<p>redisXXXX.conf后追加以下内容:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cluster-enabled yes</span><br><span class="line">cluster-config-file nodes-6379.conf</span><br><span class="line">cluster-node-timeout 15000</span><br></pre></td></tr></table></figure>
+
+
+<ol start="3">
+<li>启动6个服务.</li>
+<li>将6个节点合成一个集群<br>下面是一行命令, 写服务器ip和设定的端口号, 不能写127.0.0.1</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create --cluster-replicas 1</span><br><span class="line">192.168.xxx.xxx:6379</span><br><span class="line">192.168.xxx.xxx:6380</span><br><span class="line">192.168.xxx.xxx:6381</span><br><span class="line">192.168.xxx.xxx:6389</span><br><span class="line">192.168.xxx.xxx:6390</span><br><span class="line">192.168.xxx.xxx:6391</span><br></pre></td></tr></table></figure>
+
+
+<p>成功:<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/W8SgpV"><img src="https://z3.ax1x.com/2021/07/18/W8SgpV.png" alt="W8SgpV.png"></a><br>把最后的值记下来: 16384, 还要用的.</p>
+<ol start="5">
+<li>测试<br>连接集群. 用集群中的任一端口均可.<br><code>redis-cli -c -p 6379</code></li>
+</ol>
+<p><code>cluster nodes</code>: 查看集群中节点信息.<br>主从自动设置. 一个集群至少要有三个主节点.<br><code>--cluster-replicas 1</code>表示从库最小分配.<br>分配原则: 尽量保证每个主数据库运行在不同的IP地址, 每个从库和主库不在一个IP地址上.</p>
+<ol start="6">
+<li>什么是slots<br>slots译为插槽.<br>一个redis集群包含16384个插槽, 数据库中的每个键都属于这16384个插槽中的一个.<br>集群使用公式CRC16(key) % 16384 来计算key属于哪个槽, 其CRC16(key)语句用于计算key的CRC16校验和.<br>集群中的一个节点负责一些插槽.<br>如图所示, 0-5460, 5461-10922, 10923-16383.<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/W8C9Qf"><img src="https://z3.ax1x.com/2021/07/18/W8C9Qf.md.png" alt="W8C9Qf.md.png"></a></li>
+</ol>
+<p>插入一个key, 让我们来看返回什么:<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/W8CZYn"><img src="https://z3.ax1x.com/2021/07/18/W8CZYn.png" alt="W8CZYn.png"></a></p>
+<p>也就是说, 我们这个集群, 不论从那个入口进入, key插入位置都要经过计算slot后才插入. 那么一个问题来了, 如果我们用批量插入命令呢?</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W8CB0e"><img src="https://z3.ax1x.com/2021/07/18/W8CB0e.png" alt="W8CB0e.png"></a></p>
+<p>报错了!<br>我们想要批量插入就要这么写:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mset name&#123;user&#125; lucy age&#123;user&#125; 20</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="其他基本命令"><a href="#其他基本命令" class="headerlink" title="其他基本命令"></a>其他基本命令</h4><ul>
+<li><code>cluster keyslot KEY</code>: 返回KEY的slot槽值</li>
+<li><code>cluster countkeysinslot SLOT</code>: 返回插槽中键的数量, 注意只能看本服务器负责的插槽的值.</li>
+<li><code>cluster getkeysinslot SLOT COUNT</code>: 返回count个slot槽中的键.</li>
+</ul>
+<h4 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h4><p>某一个主机挂了, 其他从机立刻升级为主机, 当挂掉的主机重启, 它变为了从机.</p>
+<p>如果某一段插槽的主从节点都宕机了, redis服务是否还能继续?</p>
+<p>配置文件参数:<br><code>cluster-require-full-coverge</code>.<br>如果是yes, 那么整个集群都挂了.<br>如果是no, 那么只有那一段不能用.</p>
+<h4 id="集群的Jedis开发"><a href="#集群的Jedis开发" class="headerlink" title="集群的Jedis开发"></a>集群的Jedis开发</h4><p>emmmmmm.<br>真没什么特别的.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B010-%E9%9B%86%E7%BE%A4/">https://qpwlkq.github.io/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B010-%E9%9B%86%E7%BE%A4/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/redis/"># redis</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/18/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6&amp;git/">版本控制&amp;git</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B011-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%A9%BF%E9%80%8F-%E9%9B%AA%E5%B4%A9/">Redis-学习笔记11-缓存击穿/穿透/雪崩</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

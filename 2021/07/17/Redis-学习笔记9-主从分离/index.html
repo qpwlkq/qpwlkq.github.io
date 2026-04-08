@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>Redis-学习笔记9-主从分离 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Redis-学习笔记9-主从分离</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 17, 2021&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Redis/">Redis</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h4 id="主从分离是什么"><a href="#主从分离是什么" class="headerlink" title="主从分离是什么"></a>主从分离是什么</h4><p>主机数据更新后根据配置和策略, 自动同步到备机的master&#x2F;slaver机制, Master以写为主, Slave以读为主</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><ol>
+<li>读写分离, 读和写使用不同的服务器</li>
+<li>容灾快速恢复, 某一个服务器宕机了, 其他的服务器可以补上, 不会影响业务, 一般是一主多从, 注意: 只能有一个主服务器. 解决一台主机问题”集群”</li>
+</ol>
+<h4 id="搭建一主多从"><a href="#搭建一主多从" class="headerlink" title="搭建一主多从"></a>搭建一主多从</h4><ol>
+<li>创建一个新的文件夹 &#x2F;myredis</li>
+<li>复制redis.conf到创建的文件夹中.</li>
+<li>配置一主多从, 创建三个配置文件:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">include /myredis/redis.conf</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">port 6379</span><br><span class="line">dbfilename dump6379.rdb</span><br></pre></td></tr></table></figure>
+
+
+<ol start="4">
+<li>启动三个redis服务</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-server /myredis/redis6379.conf</span><br><span class="line">redis-server /myredis/redis6380.conf</span><br><span class="line">redis-server /myredis/redis6381.conf</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>[![W1yPIK.png](https://z3.ax1x.com/2021/07/17/W1yPIK.png)](https://imgtu.com/i/W1yPIK)
+</code></pre>
+<p><code>info replication</code>: 查看当前主机运行状况<br><code>redis-cli -p 6379</code>: 通过端口号连接</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1yyQJ"><img src="https://z3.ax1x.com/2021/07/17/W1yyQJ.md.png" alt="W1yyQJ.md.png"></a></p>
+<ol start="5">
+<li>配从库, 不配主库<br><code>slaveof IP PORT</code>: 成为某个库的从服务器.</li>
+</ol>
+<p>挺有意思, 从服务器如果执行写操作会直接报错.</p>
+<h4 id="三种方式"><a href="#三种方式" class="headerlink" title="三种方式"></a>三种方式</h4><h5 id="一主二仆"><a href="#一主二仆" class="headerlink" title="一主二仆"></a>一主二仆</h5><p>如果一个从服务器坏了, 但是在此时主服务器依然有写操作, 会发生什么?<br>从服务器重启后变成了主服务器. 要再次将它设为从服务器.</p>
+<p>如果主服务器挂了, 从服务器还是从服务器, 并且知道主服务器挂了, 参数master_link_status: down. 主服务器重启后, 一切如常.</p>
+<h5 id="薪火相传"><a href="#薪火相传" class="headerlink" title="薪火相传"></a>薪火相传</h5><p>主服务器一个从服务器, 从服务器还有从服务器.</p>
+<h5 id="反客为主"><a href="#反客为主" class="headerlink" title="反客为主"></a>反客为主</h5><p>主服务器挂了, 某个从服务器晋升为主服务器.<br><code>slaveof no one</code>: 不仅仅作为从服务器, 可以当作主服务器.</p>
+<h4 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h4><ol>
+<li>从服务器连接上主服务器后, 从服务器向主服务器发送进行数据同步的消息.</li>
+<li>Master接收到Slaver发送过来的同步消息, 先把数据进行持久化rdb文件, 然后把rdb文件发送给Slaver, Slaver哪到rdb进行读取.</li>
+<li>每次主服务器进行写操作之后, 和Slaver进行数据同步.</li>
+</ol>
+<p>全量复制: slaver收到rdb文件后, 将其加载到内存中.<br>增量复制: master继续将新的所有收集到的修改命令依次传给slaver, 完成同步.</p>
+<h4 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h4><p>自动化的反客为主</p>
+<p>在&#x2F;myredis目录下新建sentinel.conf文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 127.0.0.1 1</span><br></pre></td></tr></table></figure>
+
+
+<p>最后的1表示, 有多少个哨兵同意.</p>
+<p>启动:<br><code>redis-sentinel /myredis/sentinel.conf</code></p>
+<p>根据优先级: slave-priority.<br>原主机重启后变为从机.</p>
+<p><strong>复制延时</strong>:<br>由于所有的写操作都是在master上进行, 然后同步到slaver上, 所以这个过程有一定的延迟.</p>
+<h5 id="新主登基"><a href="#新主登基" class="headerlink" title="新主登基"></a>新主登基</h5><p>根据条件将从服务器升级为主服务器.</p>
+<p>选择条件<strong>依次</strong>为:</p>
+<ol>
+<li>选择优先级靠前的.</li>
+<li>选择偏移量最大的.</li>
+<li>选择runid最小的从服务器.</li>
+</ol>
+<ul>
+<li>优先级在redis.conf中默认: <code>slave-priority 100</code>, 数值越小优先级越高.</li>
+<li>偏移量最大是指获得原主服务器数据最全的.</li>
+<li>每个redis实例启动后都会随机生成一runid, 所以实际上就是随机选择了.</li>
+</ul>
+<h5 id="群仆俯首"><a href="#群仆俯首" class="headerlink" title="群仆俯首"></a>群仆俯首</h5><p>挑选出新的主服务器之后, sentinel向原主服务的从服务发送slaveof命令.</p>
+<h5 id="旧主称臣"><a href="#旧主称臣" class="headerlink" title="旧主称臣"></a>旧主称臣</h5><p>当已下线的主服务重新上线时, sentinel会向其发送slaveof命令, 让它成为新主的slaver.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B09-%E4%B8%BB%E4%BB%8E%E5%88%86%E7%A6%BB/">https://qpwlkq.github.io/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B09-%E4%B8%BB%E4%BB%8E%E5%88%86%E7%A6%BB/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/redis/"># redis</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/17/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B011-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF-%E7%A9%BF%E9%80%8F-%E9%9B%AA%E5%B4%A9/">Redis-学习笔记11-缓存击穿/穿透/雪崩</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/17/%E7%BA%BF%E6%AE%B5%E6%A0%91-%E6%A8%A1%E6%9D%BF%E9%A2%98/">线段树-模板题</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

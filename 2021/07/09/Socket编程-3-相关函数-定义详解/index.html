@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>Socket编程-3-相关函数/定义详解 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Socket编程-3-相关函数/定义详解</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 9, 2021&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Linux%E4%B8%8B%E7%9A%84Socket%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Linux下的Socket网络编程</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>上一篇实现了一个简单web服务器, 他只能相应一次请求, 发送一条信息, 虽然简单, 但总算迈出了第一步, 我们的服务器功能还相当匮乏, 这一篇我们要详细学习相关函数&#x2F;定义</p>
+<h4 id="1-函数-socket"><a href="#1-函数-socket" class="headerlink" title="1. 函数 socket()"></a>1. 函数 socket()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int socket(int af, int type, int protocol);</span><br></pre></td></tr></table></figure>
+
+<p><strong>作用</strong>: 创建套接字</p>
+<p><strong>参数1</strong>: af为IP地址类型: AF_INET(表示IPv4), AF_INET6(表示IPv6), PF_INET(&#x3D;AF_INET), PF_INET6(&#x3D;AF_INET6), 等</p>
+<p><strong>参数2</strong>: type: 数据传输方式&#x2F;套接字类型: SOCK_STREAM（流格式套接字&#x2F;面向连接的套接字), SOCK_DGRAM（数据报套接字&#x2F;无连接的套接字, 等</p>
+<p><strong>参数3</strong>: protocol: IPPROTO_TCP(TCP), IPPTOTO_UDP(UDP), 0(如果设为0, 意思是使用的协议可以通过参数1和2推断出来, 比如tcp和udp)</p>
+<p><strong>return</strong>: 成功就返回新建的socket的文件描述符, 失败返回-1</p>
+<h4 id="2-函数-bind"><a href="#2-函数-bind" class="headerlink" title="2. 函数 bind()"></a>2. 函数 bind()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int bind(int sock, struct sockaddr *addr, socklen_t addrlen);</span><br></pre></td></tr></table></figure>
+
+<p><strong>作用</strong>: 将指定了通信协议的套接字文件与自己的IP和端口绑定起来.<br><strong>参数1</strong>: sock: socket文件描述符<br><strong>参数2</strong>: addr: sockaddr结构体变量的指针<br><strong>参数3</strong>: addrlen: addr变量的大小<br><strong>return</strong>: 成功返回0, 失败返回-1</p>
+<h4 id="3-结构体-sockaddr-in"><a href="#3-结构体-sockaddr-in" class="headerlink" title="3. 结构体 sockaddr_in"></a>3. 结构体 sockaddr_in</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>&#123;</span></span><br><span class="line">    <span class="type">sa_family_t</span>     sin_family;   <span class="comment">//地址族(Address Family),也就是地址类型</span></span><br><span class="line">    <span class="type">uint16_t</span>        sin_port;     <span class="comment">//16位的端口号</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>  <span class="title">sin_addr</span>;</span>     <span class="comment">//32位IP地址</span></span><br><span class="line">    <span class="type">char</span>            sin_zero[<span class="number">8</span>];  <span class="comment">//不使用，一般用0填充</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>参数1</strong>: sin_family: 地址族<br><strong>参数2</strong>: sin_port: 端口号, 理论取值065536, 但是01023一般由系统分配给特定服务程序, 所以尽量取一个大一点的值<br><strong>参数3</strong>: sin_addr: 32位IP地址, in_addr结构体类型, 是为了适应旧版本代码, 具体往后看<br><strong>参数4</strong>: sin_zero[8]: 没有意义, 一般填充为0</p>
+<h4 id="4-结构体-in-addr"><a href="#4-结构体-in-addr" class="headerlink" title="4. 结构体 in_addr"></a>4. 结构体 in_addr</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>&#123;</span></span><br><span class="line">    <span class="type">in_addr_t</span>  s_addr;  <span class="comment">//32位的IP地址</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li><p>in_addr_t 在头文件 &lt;netinet&#x2F;in.h&gt; 中定义，等价于 unsigned long，长度为4个字节.</p>
+</li>
+<li><p>s_addr 是一个整数，而IP地址是一个字符串，所以需要 inet_addr() 函数进行转换:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsigned long ip = inet_addr(&quot;127.0.0.1&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这样设计是为了为了兼容前面的代码</p>
+</li>
+</ol>
+<h4 id="5-结构体-sockaddr"><a href="#5-结构体-sockaddr" class="headerlink" title="5. 结构体 sockaddr"></a>5. 结构体 sockaddr</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>&#123;</span></span><br><span class="line">    <span class="type">sa_family_t</span>  sin_family;   <span class="comment">//地址族（Address Family），也就是地址类型</span></span><br><span class="line">    <span class="type">char</span>         sa_data[<span class="number">14</span>];  <span class="comment">//IP地址和端口号</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li>sockaddr 和 sockaddr_in可以相互转换, 他们所占的字节数量是相同的.</li>
+<li>可以认为sockaddr是通用的, 而sockaddr_in是专门存放IPv4地址的结构体, 定义时使用sockaddr_in, 使用时将它强制转换为sockaddr.</li>
+</ol>
+<h4 id="6-函数-connect"><a href="#6-函数-connect" class="headerlink" title="6. 函数 connect()"></a>6. 函数 connect()</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">connect</span><span class="params">(<span class="type">int</span> sock, <span class="keyword">struct</span> sockaddr *serv_addr, <span class="type">socklen_t</span> addrlen)</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>各个参数的说明和 bind() 相同，不再赘述.<br>作用: 请求连接服务器</p>
+<h4 id="7-函数-write-read"><a href="#7-函数-write-read" class="headerlink" title="7. 函数 write() &amp; read()"></a>7. 函数 write() &amp; read()</h4><h6 id="write"><a href="#write" class="headerlink" title="write():"></a>write():</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> fd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> nbytes)</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>参数1</strong>: fd: 要写入的文件的描述符<br><strong>参数2</strong>: buf: 要写入的数据的缓冲区地址<br><strong>参数3</strong>: nbytes: 要写入的数据的字节数<br><strong>return</strong>:write() 函数会将缓冲区 buf 中的 nbytes 个字节写入文件 fd，成功则返回写入的字节数，失败则返回 -1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">size_t 是通过 typedef 声明的 unsigned int 类型；</span><br><span class="line">ssize_t 在 &quot;size_t&quot; 前面加了一个&quot;s&quot;，代表 signed，</span><br><span class="line">即 ssize_t 是通过 typedef 声明的 signed int 类型。</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>:</p>
+<ol>
+<li>TCP协议独立于 write()函数，数据有可能刚被写入缓冲区就发送到网络，也可能在缓冲区中不断积压，多次写入的数据被一次性发送到网络，这取决于当时的网络情况、当前线程是否空闲等诸多因素，不由程序员控制。</li>
+</ol>
+<h6 id="read"><a href="#read" class="headerlink" title="read()"></a>read()</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> fd, <span class="type">void</span> *buf, <span class="type">size_t</span> nbytes)</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>参数1</strong>: fd: 要读取的文件的描述符<br><strong>参数2</strong>: buf: 要接受的数据的缓冲区地址<br><strong>参数3</strong>: nbytes: 要读取的数据的字节数</p>
+<p><strong>注意</strong>:</p>
+<ol>
+<li>read()也是从输入缓冲区中读取数据，而不是直接从网络中读取.</li>
+</ol>
+<h4 id="8-函数-linsten"><a href="#8-函数-linsten" class="headerlink" title="8. 函数 linsten()"></a>8. 函数 linsten()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int listen(int sock, int backlog);</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数1</strong>: sock: 需要进入监听状态的套接字<br><strong>参数2</strong>: backlog: 请求队列的最大长度, SOMAXCONN可以设为最大值.</p>
+<ol>
+<li>当套接字正在处理客户端请求时，如果有新的请求进来，套接字是没法处理的，只能把它放进缓冲区，待当前请求处理完毕后，再从缓冲区中读取出来处理。如果不断有新的请求进来，它们就按照先后顺序在缓冲区中排队，直到缓冲区满。这个缓冲区，就称为请求队列(Request Queue).</li>
+<li>缓冲区满了, 客户端会收到ECONNREFUSED错误</li>
+</ol>
+<h4 id="9-accpet"><a href="#9-accpet" class="headerlink" title="9. accpet()"></a>9. accpet()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int accept(int sock, struct sockaddr *addr, socklen_t *addrlen);</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数1</strong>: sock: 服务器端套接字<br><strong>参数2</strong>: addr: sockaddr_in结构体变量<br><strong>参数3</strong>: addrlen: addr的长度</p>
+<h4 id="9-转换函数-htonl-htons-ntohl-ntohs"><a href="#9-转换函数-htonl-htons-ntohl-ntohs" class="headerlink" title="9. 转换函数 htonl(), htons(), ntohl(), ntohs()"></a>9. 转换函数 htonl(), htons(), ntohl(), ntohs()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HBO和NBO的概念:</span><br><span class="line">主机字节顺序HBO（Host Byte Order）</span><br><span class="line">网络字节顺序NBO（Network Byte Order）</span><br><span class="line">先转换再用</span><br><span class="line"></span><br><span class="line">四个转换函数:</span><br><span class="line">htonl()--&quot;Host to Network Long&quot;</span><br><span class="line">htons()--&quot;Host to Network Short&quot;</span><br><span class="line">ntohl()--&quot;Network to Host Long&quot;</span><br><span class="line">ntohs()--&quot;Network to Host Short&quot;</span><br><span class="line">INADDR_ANY 泛指本机</span><br><span class="line">作用: 如果有多个网卡, 只需要管理一个套接字, **接受某端口传输的数据就可以了**</span><br></pre></td></tr></table></figure>
+
+<h4 id="socket缓冲区"><a href="#socket缓冲区" class="headerlink" title="socket缓冲区"></a>socket缓冲区</h4><p><strong>特性</strong>:</p>
+<ol>
+<li>I&#x2F;O缓冲区在每个TCP套接字中单独存在；</li>
+<li>I&#x2F;O缓冲区在创建套接字时自动生成；</li>
+<li>即使关闭套接字也会继续传送输出缓冲区中遗留的数据；</li>
+<li>关闭套接字将丢失输入缓冲区中的数据。</li>
+</ol>
+<p>输入输出缓冲区的默认大小一般都是 8K，可以通过 getsockopt() 函数获取：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> optVal;</span><br><span class="line"><span class="type">int</span> optLen = <span class="keyword">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">getsockopt(servSock, SOL_SOCKET, SO_SNDBUF, (<span class="type">char</span>*)&amp;optVal, &amp;optLen);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Buffer length: %d\n&quot;</span>, optVal);</span><br><span class="line"></span><br><span class="line"><span class="comment">//结果 8192</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="TCP套接字的阻塞模式"><a href="#TCP套接字的阻塞模式" class="headerlink" title="TCP套接字的阻塞模式"></a>TCP套接字的阻塞模式</h4><p>对于TCP套接字（默认情况下），当使用 write()发送数据时：</p>
+<ol>
+<li><p>首先会检查缓冲区，如果缓冲区的可用空间长度小于要发送的数据，那么 write() 会被阻塞（暂停执行），直到缓冲区中的数据被发送到目标机器，腾出足够的空间，才唤醒 write()函数继续写入数据。</p>
+</li>
+<li><p>如果TCP协议正在向网络发送数据，那么输出缓冲区会被锁定，不允许写入，write()也会被阻塞，直到数据发送完毕缓冲区解锁，write() 才会被唤醒。</p>
+</li>
+<li><p>如果要写入的数据大于缓冲区的最大长度，那么将分批写入。</p>
+</li>
+<li><p>直到所有数据被写入缓冲区 write() 才能返回。</p>
+</li>
+</ol>
+<p><strong>当使用 read()读取数据时</strong>：</p>
+<ol>
+<li><p>首先会检查缓冲区，如果缓冲区中有数据，那么就读取，否则函数会被阻塞，直到网络上有数据到来。</p>
+</li>
+<li><p>如果要读取的数据长度小于缓冲区中的数据长度，那么就不能一次性将缓冲区中的所有数据读出，剩余数据将不断积压，直到有 read()函数再次读取。</p>
+</li>
+<li><p>直到读取到数据后 read()函数才会返回，否则就一直被阻塞。</p>
+</li>
+</ol>
+<p>这就是TCP套接字的阻塞模式。<strong>所谓阻塞，就是上一步动作没有完成，下一步动作将暂停，直到上一步动作完成后才能继续，以保持同步性</strong>。</p>
+<h4 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h4><p>不知不觉第三篇结束了, 扎实了基础之后, 下一篇让我们继续改进第二篇文章讲的web服务器程序</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2021/07/09/Socket%E7%BC%96%E7%A8%8B-3-%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0-%E5%AE%9A%E4%B9%89%E8%AF%A6%E8%A7%A3/">https://qpwlkq.github.io/2021/07/09/Socket%E7%BC%96%E7%A8%8B-3-%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0-%E5%AE%9A%E4%B9%89%E8%AF%A6%E8%A7%A3/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/socket/"># socket</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/10/Socket%E7%BC%96%E7%A8%8B-6-%E5%9F%BA%E4%BA%8EUDP%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8(%E6%9C%89%E5%BE%85%E5%A1%AB%E5%9D%91)/">Socket编程-6-基于UDP的客户端和服务器(有待填坑)</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/09/Socket%E7%BC%96%E7%A8%8B-4-%E6%94%B9%E8%BF%9B%E4%B9%8B%E5%9B%9E%E5%A3%B0%E5%AE%A2%E6%88%B7%E7%AB%AFv2.0/">Socket编程-4-改进之回声客户端v2.0</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

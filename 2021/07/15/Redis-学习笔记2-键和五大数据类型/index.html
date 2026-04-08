@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>Redis-学习笔记2-键和五大数据类型 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Redis-学习笔记2-键和五大数据类型</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 15, 2021&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Redis/">Redis</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="一点散的知识"><a href="#一点散的知识" class="headerlink" title="一点散的知识"></a>一点散的知识</h3><ol>
+<li><p>默认端口号: 6379</p>
+<p>why? 6379在是手机按键上MERZ对应的号码，而MERZ取自意大利歌女Alessia Merz的名字。MERZ长期以来被Redis作者antirez及其朋友当作愚蠢的代名词。后来Redis作者在开发Redis时就选用了这个, 总之就是大佬自己乐意.</p>
+</li>
+<li><p>默认16个数据库, 类似数组下标从0开始, 默认用0号库, 共用相同密码<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/WnqIPI"><img src="https://z3.ax1x.com/2021/07/15/WnqIPI.md.png" alt="WnqIPI.md.png"></a></p>
+</li>
+<li><p>注意redis是不遵循标准SQL的.</p>
+</li>
+<li><p>redis是单线程 + 多路IO复用技术</p>
+</li>
+<li><p>redis与memecached不同:</p>
+<ol>
+<li>redis支持多种数据类型</li>
+<li>redis支持持久化</li>
+<li>redis实现方式是单线程+IO复用, memcached用的是多线程+锁</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><code>select NUM</code>: 切换库</li>
+<li><code>dasize</code>: 查看当前数据库key的数量</li>
+<li><code>flushdb</code>: 清空当前库</li>
+<li><code>flushall</code>: 通杀全部库</li>
+</ul>
+<h3 id="关于键key的基本操作"><a href="#关于键key的基本操作" class="headerlink" title="关于键key的基本操作"></a>关于键key的基本操作</h3><p>大写KEY是要进行操作的键名</p>
+<ul>
+<li><code>set KEY VALUE</code>: 设置键值对, 对key重复设置value会覆盖</li>
+<li><code>keys *</code>: 查看当前库所有key, 也可以模糊匹配: <code>keys k*</code>, 查看所有k开头的键.</li>
+<li><code>exists KEY</code>: 查询某key受否存在, 存在返回1, 否则返回0</li>
+<li><code>type KEY</code>: 查看某个key的类型</li>
+<li><code>del KEY</code>: 立刻删除某个key, 成功返回1, 不存在返回0.</li>
+<li><code>unlink KEY</code>: 根据value选择非阻塞删除, 仅将key从keyspace元数据中删除, 真正的删除会在后续异步删除.</li>
+<li><code>expire KEY SECONDS</code>: 设置key的过期时间</li>
+<li><code>ttl KEY</code>: 查看key还有多久过期, -1表示永不国企, -2表示已经过期(没有这个key也是-2), &gt;&#x3D; 0就表示还有多少秒过期</li>
+</ul>
+<h3 id="五大数据类型"><a href="#五大数据类型" class="headerlink" title="五大数据类型"></a>五大数据类型</h3><h4 id="1-字符串-String"><a href="#1-字符串-String" class="headerlink" title="1. 字符串 String"></a>1. 字符串 String</h4><h5 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h5><ol>
+<li><p>可以理解成与memacached一模一样的类型, 一个key对应一个value</p>
+</li>
+<li><p>String类型是二进制安全的, 意味着它可以包含任何数据, 比如jpg图片或者序列化的对象, 只要能变成一个字符串就能存进去.</p>
+</li>
+<li><p>一个Redis中字符串value最大是512MB</p>
+<h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h5></li>
+</ol>
+<ul>
+<li><p><code>get KEY</code>: 取值</p>
+</li>
+<li><p><code>append KEY</code>: 追加到value后, 返回value长度(改后)</p>
+</li>
+<li><p><code>strlen KEY</code>: 获取value的长度</p>
+</li>
+<li><p><code>setnx KEY VALUE</code>: 只有key不存在的时候, 才能设置, 成功返回1, 失败返回0</p>
+</li>
+<li><p><code>incr KEY</code>: 将key中存储的数字值(value)+1, 返回value.</p>
+</li>
+<li><p><code>decr KEY</code>: 将key中存储的数字值(value)-1, 返回value.</p>
+</li>
+<li><p><code>incrby/decrby KEY 步长</code>: 将key中存储的数字值(value)+&#x2F;-步长, 返回value, 它是原子操作, 所谓原子操作是指不会被线程调度机制打断的操作.</p>
+</li>
+<li><p><code>mset KEY1 VALUE1 KEY2 VALUE2 ...</code>: 设置多个键值对.</p>
+</li>
+<li><p><code>mget KEY1 KEY2 KEY3 ...</code>: 获取多个key的value.</p>
+</li>
+<li><p><code>msetnx</code>: 设置多个键值对, 类似setnx, 但是如果有一个不成功(重复设置), 所有的都不会被设置.</p>
+</li>
+<li><p><code>getrange KEY START END</code>: 获取范围值[START, END]</p>
+</li>
+<li><p><code>setrange KEY OFFSET VALUE</code>: 从第OFFSET位置用VALUE值覆盖原value, 非常灵活, 测试了一下, 甚至可以超出当前的长度, 中间的未设置的位置被填充为’&#x2F;00’.</p>
+</li>
+<li><p><code>setex KEY TIME VALUE</code>: 设置键值对的同时, 设置过期时间.</p>
+</li>
+<li><p><code>getset KEY VALUE</code>: 设置了新值, 同时获取旧值</p>
+</li>
+</ul>
+<h5 id="String-底层实现"><a href="#String-底层实现" class="headerlink" title="String 底层实现"></a>String 底层实现</h5><p>简单动态字符串(Simple Dynamic String).<br>是可以修改的字符串, 内部结构实现上类似Java的ArrayList, 采用分配冗余空间的方式来减少内存的频繁分配.<br>当字符串长度小于1M时, 倍增方式扩容, 但是如果超过1M, 每次扩容1M.</p>
+<h4 id="2-列表-List"><a href="#2-列表-List" class="headerlink" title="2. 列表 List"></a>2. 列表 List</h4><h5 id="基本介绍-1"><a href="#基本介绍-1" class="headerlink" title="基本介绍"></a>基本介绍</h5><p>类似双向链表, 对两端操作性能高, 对索引下标操作中间的节点性能较差.</p>
+<h5 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h5><p>有的l表示list, 有个l表示left左边, 没有r的别自己造, 没有的事.</p>
+<ul>
+<li><code>lpush/rpush KEY VALUE1 VALUE2</code>: 从左边&#x2F;右边添加一个或多个值, 注意下标的变动, value可重复</li>
+<li><code>lrange KEY START STOP</code>: 按照索引下标获得元素, 从左到右, STOP设为-1, 表示右边第一个value(就是最后一个)</li>
+<li><code>lpop/rpop KEY</code>: 从左边&#x2F;右边取出来一个值.</li>
+<li><code>rpoplpush KEY1 KEY2</code>: 从KEY1列表右边取出一个, 插到KEY2列表左边.</li>
+<li><code>lindex KEY INDEX</code>: 根据索引下标获取单个元素</li>
+<li><code>llen</code>: 获取列表长度</li>
+<li><code>linsert KEY before/after VALUE NEWVALUE</code>: 在VALUE的前面&#x2F;后面插入NEWVALUE. 从0开始扫, 扫到第一个VALUE执行后停止, 多个相同的VALUE不会都被加NEWVALUE.</li>
+<li><code>lrem KEY N VALUE</code>: 从左边删除N个VALUE(不够N个也没事), 返回删除了几个.</li>
+<li><code>lset KEY INDEX VALUE</code>: 将列表KEY下标为INDEX的值替换成VALUE.</li>
+</ul>
+<h5 id="List-底层实现"><a href="#List-底层实现" class="headerlink" title="List 底层实现"></a>List 底层实现</h5><p>快速链表quicklist.<br>首先在列表元素比较少的时候, 会使用一块连续的内存存储, 它将所有的元素紧挨着存储, 这个结构是ziplist, 压缩列表.<br>当数据比较多的时候, 多个ziplist用链表形式组合起来, 形成quicklist. 也就是说每个ziplist才有两个个额外的指针prev和next, 大大节省空间</p>
+<h4 id="3-集合-Set"><a href="#3-集合-Set" class="headerlink" title="3. 集合 Set"></a>3. 集合 Set</h4><h5 id="基本介绍-2"><a href="#基本介绍-2" class="headerlink" title="基本介绍"></a>基本介绍</h5><ol>
+<li>跟list的区别:<ol>
+<li>无序</li>
+<li>自动去重</li>
+</ol>
+</li>
+<li>它底层是一个value为null的hash表, 所以添加, 删除, 查找的复杂度都是O(1).</li>
+</ol>
+<h5 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h5><ul>
+<li><code>sadd KEY VALUE1 VALUE2 ...</code>: 将一个或多个member元素加入到集合key中, 已经存在的member元素将被忽略(不是失败, 和msetnx不一样哦)</li>
+<li><code>smembers KEY</code>: 取所有值</li>
+<li><code>sismember KEY VALUE</code>: 判断KEY是否含有该VALUE值, 有返回1, 没有返回0</li>
+<li><code>scard KEY</code>: 返回该集合的元素个数</li>
+<li><code>srem KEY VALUE1 VALUE2 ...</code>: 删除集合中的某些元素, 返回成功删除掉的元素的数量</li>
+<li><code>spop KEY</code>: 随机吐出一个值, 吐出来就没了</li>
+<li><code>srandmember KEY N</code>: 随机取出N个值, 集合里还有, 不是删除</li>
+<li><code>smove SOURCE DESTINATION VALUE</code>:将一个集合中一个值挪到另一个集合</li>
+<li><code>sinter KEY1 KEY2</code>: 返回两个集合的交集元素</li>
+<li><code>sunion KEY1 KEY2</code>: 返回两个集合的并集</li>
+<li><code>sdiff KEY1 KEY2</code>: 返回两个集合的差集(KEY1中有的, KEY2中没有的)</li>
+</ul>
+<h5 id="Set-底层实现"><a href="#Set-底层实现" class="headerlink" title="Set 底层实现"></a>Set 底层实现</h5><p>dict字典, intset&#x2F;hashtable实现<br>所有的value 指向同一个内部值</p>
+<h4 id="4-哈希-Hash"><a href="#4-哈希-Hash" class="headerlink" title="4. 哈希 Hash"></a>4. 哈希 Hash</h4><h5 id="基本介绍-3"><a href="#基本介绍-3" class="headerlink" title="基本介绍"></a>基本介绍</h5><p>hash是一个key-value.<br>hash是一个string类型的field和value的映射表, 特别适合存储对象. 类似java中的Map&lt;String, Object&gt;</p>
+<p>value是一个映射关系, 套娃, 你搁这搁这呢</p>
+<h5 id="基本命令-1"><a href="#基本命令-1" class="headerlink" title="基本命令"></a>基本命令</h5><ul>
+<li><code>hset KEY FIELD VALUE</code>: 给KEY集合中的FIELD赋值VALUE</li>
+<li><code>hget KEY FIELD</code>: 从KEY集合取出VALUE</li>
+<li><code>hmset KEY1 FIELD1 VALUE1 ...</code>: 批量设置</li>
+<li><code>hexists KEY FIELD</code>: 查看哈希表中, 给定FIELD是否存在</li>
+<li><code>hkeys KEY</code>: 查看该hash集合所有的field</li>
+<li><code>hvals KEY</code>: 查看该hash集合所有的value</li>
+<li><code>hincrby KEY FIELD INCREMENT</code>: 为哈希表key中的域FIELD的值value + INCREMENT</li>
+<li><code>hsetnx KEY FIELD VALUE</code>: 将key中的FIELD的值value设为VALUE, 且当该FIELD不存在.</li>
+</ul>
+<h5 id="Hash-底层实现"><a href="#Hash-底层实现" class="headerlink" title="Hash 底层实现"></a>Hash 底层实现</h5><p>Hash对应的数据结构有两种:ziplist(压缩列表), hashtable(哈希表). 当field-value长度较短且个数较少的时候使用ziplist, 否则使用hashtable.</p>
+<h4 id="5-有序集合-Zset"><a href="#5-有序集合-Zset" class="headerlink" title="5. 有序集合 Zset"></a>5. 有序集合 Zset</h4><h5 id="基本介绍-4"><a href="#基本介绍-4" class="headerlink" title="基本介绍"></a>基本介绍</h5><p>Zset是没有重复元素的字符串集合<br>每个成员关联了一个评分(score). 这个评分被用来从最低分到最高分(从小到大)排序集合中的成员, 集合中的成员是唯一的, 但是评分是可以重复的.</p>
+<h5 id="基本命令-2"><a href="#基本命令-2" class="headerlink" title="基本命令"></a>基本命令</h5><ul>
+<li><code>zadd KEY SCORE1 VALUE1 SCORE2 VALUE2 ...</code>: 将一个或多个元素及其评分加入到KEY集合中.</li>
+<li><code>zrange KEY MIN MAX [withscores]</code>: 返回 MIN &lt;&#x3D; score &lt;&#x3D; MAX的成员, MAX是 -1 表示最大值, 可选参数withscores: 返回元素及其score</li>
+<li><code>zrangebyscore KEY MIN MAX [withscores] [limit offset count]</code>: 从小到大排序</li>
+<li><code>zrevrangebyscore KEY MAX MIN [withscores] [limit offset count]</code>: 从大到小排序, MAX和MIN写反了结果不一样的.</li>
+<li><code>zincrby KEY INCREMENT VALUE</code>: 为元素的score加上增量</li>
+<li><code>zrem KEY VALUE</code>: 删除该集合指定值的元素</li>
+<li><code>zcount KEY MIN MAX</code>: 计数,MIN &lt;&#x3D; score &lt;&#x3D; MAX的元素有几个</li>
+<li><code>zrank KEY VALUE</code>: 返回该值在集合中的排名, 从0开始的</li>
+</ul>
+<h5 id="Zset-底层实现"><a href="#Zset-底层实现" class="headerlink" title="Zset 底层实现"></a>Zset 底层实现</h5><p>how?</p>
+<ol>
+<li><p>hash表, hash的field &#x3D; value, hash的value &#x3D; score</p>
+</li>
+<li><p>跳跃表, 目的在于给元素value排序, 根据score的范围获取元素列表.</p>
+</li>
+<li><p>对于有序集合的底层实现, 可以用数组, 平衡树, 链表等, 各有各的优点, 又有个的缺点.</p>
+</li>
+<li><p>跳跃表的效率堪比红黑树, 实现远比红黑树简单</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WK5sB9"><img src="https://z3.ax1x.com/2021/07/16/WK5sB9.md.png" alt="WK5sB9.md.png"></a></p>
+<p>看样子相当费空间</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2021/07/15/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02-%E9%94%AE%E5%92%8C%E4%BA%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">https://qpwlkq.github.io/2021/07/15/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02-%E9%94%AE%E5%92%8C%E4%BA%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/redis/"># redis</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/15/Redis-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01-%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8/">Redis-学习笔记1-安装启动</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/15/%E5%B8%B8%E8%A7%81%E5%8D%8F%E8%AE%AE-%E6%95%B0%E6%8D%AE%E5%BA%93%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3%E5%8F%B7/">常见协议/数据库默认端口号</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

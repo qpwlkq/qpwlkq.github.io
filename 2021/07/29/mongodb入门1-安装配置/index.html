@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>mongodb入门1-安装配置 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">mongodb入门1-安装配置</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 29, 2021&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/mongodb/">mongodb</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            
+#### 前言
+
+实习真的挺忙的, 主要是人多我又不熟, 不够自在, 笔记本小屏幕也不好操作, 只能看看视频学习, 不能方便操作.  
+redis我猛学1周, 已经基本可以了, 细节之处需要以后再慢慢修炼, 是时候了, 1天解决mongodb!(我在想peach, 叉腰)
+
+#### 下载, 安装
+
+官网选择taz压缩文件for Linux(Centos), 然后下载即可  
+通过xftp之类的软件把它放到linux虚拟机某个目录中, 然后解压:  
+`tar -zxvf 目录 -C 解压目录`
+
+我的是:  
+`tar -zxvf mongodb-linux-x86_64-rhel80-5.0.1.tgz -C /usr/local`
+
+然后建议改名, 毕竟它名字太长了:  
+`mv /usr/local/mongodb-linux-x86_64-rhel80-5.0.1/ /usr/local/mongodb`
+
+创建几个必要文件(夹):
+
+1.  创建数据存放文件夹  
+    `mkdir -p /usr/local/mongodb/data/db`
+2.  创建日志存放文件夹  
+    `mkdir -p /usr/local/mongodb/logs`
+3.  创建日志记录文件  
+    `touch /usr/local/mongodb/logs/mongodb.log`
+
+#### 启动
+
+##### 前台启动
+
+前台启动命令:
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 切换至mongodb目录</span><br><span class="line">cd /usr/local/mongodb</span><br><span class="line"># 前台启动</span><br><span class="line">bin/mongod --dbpath /usr/local/mongodb/db/ --logpath /usr/local/mongodb/logs/monodb.log --logappend --port 27017 --bind_ip 0.0.0.0</span><br></pre></td></tr></table></figure>
+
+
+-   `--dbpath ...`: 指定数据文件存放目录
+-   `--logpath ...`: 指定日志文件, 注意是文件不是目录
+-   `--logappend`: 用追加的方式记录日志
+-   `--port ...`: 端口号
+-   `--bing_ip ...`: 绑定服务ip, 若绑定127.0.01, 则只能本机访问.
+-   `--fork`: 后台启动, 不阻塞控制台.
+-   `--shutdown`: 关闭
+
+##### 后台启动
+
+不是–fork, 而是用配置文件启动
+
+1.  创建配置文件  
+    `vim /etc/mongodb.conf`
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dbpath = /usr/local/mongodb/data/db</span><br><span class="line">logpath = /usr/local/mongodb/logs/mongodb.log</span><br><span class="line">logappend = true</span><br><span class="line">port = 27017</span><br><span class="line">bind_ip = 0.0.0.0</span><br><span class="line">fork = true</span><br></pre></td></tr></table></figure>
+
+
+2.  启动
+
+真的np, 一开始就遇到问题了, 我尝试多种方法运行, 肯定要先关掉打开的mongodb吧, 我直接kill -9, 结果再启动启动不了了, 百度了一下, mongodb有点娇贵, 要用kill -15或者正常用–shutdown, 不然有可能文件损坏, 人麻了.
+
+我中间有个环节文件夹建错了, 索性直接删了重装.
+
+`bin/mongod -f /etc/mongodb.conf`  
+启动成功
+
+看的教程这人用kill -9, 最后了才说不要用这种方式, 人麻了.
+
+#### 配置环境变量
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+
+
+profile:
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export MONGODB_HOME=/usr/local/mongodb</span><br><span class="line">export PATH=$PATH:$MONGODB_HOME/bin</span><br></pre></td></tr></table></figure>
+
+
+#### 什么你想要精通mongodb?
+
+`db.help()`:
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">db.adminCommand(nameOrDocument) - switches to &#x27;admin&#x27; db, and runs command [just calls db.runCommand(...)]</span><br><span class="line">	db.aggregate([pipeline], &#123;options&#125;) - performs a collectionless aggregation on this database; returns a cursor</span><br><span class="line">	db.auth(username, password)</span><br><span class="line">	db.commandHelp(name) returns the help for the command</span><br><span class="line">	db.createUser(userDocument)</span><br><span class="line">	db.createView(name, viewOn, [&#123;$operator: &#123;...&#125;&#125;, ...], &#123;viewOptions&#125;)</span><br><span class="line">	db.currentOp() displays currently executing operations in the db</span><br><span class="line">	db.dropDatabase(writeConcern)</span><br><span class="line">	db.dropUser(username)</span><br><span class="line">	db.eval() - deprecated</span><br><span class="line">	db.fsyncLock() flush data to disk and lock server for backups</span><br><span class="line">	db.fsyncUnlock() unlocks server following a db.fsyncLock()</span><br><span class="line">	db.getCollection(cname) same as db[&#x27;cname&#x27;] or db.cname</span><br><span class="line">	db.getCollectionInfos([filter]) - returns a list that contains the names and options of the db&#x27;s collections</span><br><span class="line">	db.getCollectionNames()</span><br><span class="line">	db.getLastError() - just returns the err msg string</span><br><span class="line">	db.getLastErrorObj() - return full status object</span><br><span class="line">	db.getLogComponents()</span><br><span class="line">	db.getMongo() get the server connection object</span><br><span class="line">	db.getMongo().setSecondaryOk() allow queries on a replication secondary server</span><br><span class="line">	db.getName()</span><br><span class="line">	db.getProfilingLevel() - deprecated</span><br><span class="line">	db.getProfilingStatus() - returns if profiling is on and slow threshold</span><br><span class="line">	db.getReplicationInfo()</span><br><span class="line">	db.getSiblingDB(name) get the db at the same server as this one</span><br><span class="line">	db.getWriteConcern() - returns the write concern used for any operations on this db, inherited from server object if set</span><br><span class="line">	db.hostInfo() get details about the server&#x27;s host</span><br><span class="line">	db.isMaster() check replica primary status</span><br><span class="line">	db.hello() check replica primary status</span><br><span class="line">	db.killOp(opid) kills the current operation in the db</span><br><span class="line">	db.listCommands() lists all the db commands</span><br><span class="line">	db.loadServerScripts() loads all the scripts in db.system.js</span><br><span class="line">	db.logout()</span><br><span class="line">	db.printCollectionStats()</span><br><span class="line">	db.printReplicationInfo()</span><br><span class="line">	db.printShardingStatus()</span><br><span class="line">	db.printSecondaryReplicationInfo()</span><br><span class="line">	db.rotateCertificates(message) - rotates certificates, CRLs, and CA files and logs an optional message</span><br><span class="line">	db.runCommand(cmdObj) run a database command.  if cmdObj is a string, turns it into &#123;cmdObj: 1&#125;</span><br><span class="line">	db.serverStatus()</span><br><span class="line">	db.setLogLevel(level,&lt;component&gt;)</span><br><span class="line">	db.setProfilingLevel(level,slowms) 0=off 1=slow 2=all</span><br><span class="line">	db.setVerboseShell(flag) display extra information in shell output</span><br><span class="line">	db.setWriteConcern(&lt;write concern doc&gt;) - sets the write concern for writes to the db</span><br><span class="line">	db.shutdownServer()</span><br><span class="line">	db.stats()</span><br><span class="line">	db.unsetWriteConcern(&lt;write concern doc&gt;) - unsets the write concern for writes to the db</span><br><span class="line">	db.version() current version of the server</span><br><span class="line">	db.watch() - opens a change stream cursor for a database to report on all  changes to its non-system collections.</span><br></pre></td></tr></table></figure>
+
+
+多不多? 其实用多了就会了  
+monogdb是C++写的, 这些都是它的内置函数
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2021/07/29/mongodb%E5%85%A5%E9%97%A81-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">https://qpwlkq.github.io/2021/07/29/mongodb%E5%85%A5%E9%97%A81-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/mongodb/"># mongodb</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/30/zookeeper%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/">zookeeper从入门到放弃</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/29/mongodb%E5%85%A5%E9%97%A82-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E5%92%8C%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/">mongodb入门2-权限控制和用户管理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

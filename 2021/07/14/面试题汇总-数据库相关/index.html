@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>面试题汇总-数据库相关 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">面试题汇总-数据库相关</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 14, 2021&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E9%9D%A2%E8%AF%95/">面试</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h4 id="关系型数据库（主要为-Mysql）"><a href="#关系型数据库（主要为-Mysql）" class="headerlink" title="关系型数据库（主要为 Mysql）"></a>关系型数据库（主要为 Mysql）</h4><ol>
+<li>数据库三范式</li>
+<li>分别说一下范式和反范式的优缺点</li>
+<li>Mysql 数据库索引。B+ 树和 B 树的区别</li>
+<li>为什么 B+ 树比 B 树更适合应用于数据库索引，除了数据库索引，还有什么地方用到了（操作系统的文件索引）</li>
+<li>聚簇索引和非聚簇索引</li>
+<li>前缀索引和覆盖索引</li>
+<li>介绍一下数据库的事务</li>
+<li>Mysql 有哪些隔离级别</li>
+<li>Mysql 什么情况会造成脏读、可重复度、幻读？如何解决</li>
+<li>Mysql 在可重复度的隔离级别下会不会有幻读的情况，为什么？</li>
+<li>Mysql 事务是如何实现的</li>
+<li>Binlog 和 Redo log 的区别是什么，分别是什么用？</li>
+<li>谈一谈 MVCC 多版本并发控制</li>
+<li>Innodb 和 MyISAM 的区别是什么</li>
+<li>Innodb 的默认加锁方式是什么，是怎么实现的</li>
+<li>如何高效处理大库 DDL</li>
+<li>Mysql 索引重建</li>
+<li>对于多列索引，哪些情况下能用到索引，哪些情况用不到索引</li>
+<li>为什么使用数据库索引可以提高效率，在什么情况下会用不到数据库索引？</li>
+<li>共享锁和排他锁的使用场景</li>
+<li>关系型数据库和非关系数据库的优缺点</li>
+<li>Mysql 什么情况会造成慢查，如何查看慢查询</li>
+<li>如何处理慢查询，你一般是怎么处理慢查询的</li>
+<li>Mysql 中 varchar 和 char 的区别</li>
+<li>数据库外键的优缺点</li>
+<li>有没有使用过数据库的视图</li>
+<li>Mysql 中插入数据使用自增 id 好还是使用 uuid，为什么？</li>
+<li>Mysql 有哪些数据类型，使用的时候有没有什么注意点</li>
+<li>Mysql 集群有哪几种方式，分别适用于什么场景</li>
+<li>Mysql 主从模式如何保证主从强一致性</li>
+<li>Mysql 集群如何保证主从可用性</li>
+<li>Mysql 读写分离有哪些解决办法</li>
+</ol>
+<h4 id="非关系型数据库"><a href="#非关系型数据库" class="headerlink" title="非关系型数据库"></a>非关系型数据库</h4><ol>
+<li>redis 的底层数据结构有哪些</li>
+<li>redis 中的 SDS 和 C 语言中的字符串有什么区别，优点是什么</li>
+<li>redis 中的字典是如何实现的，如何解决冲突和扩容</li>
+<li>redis 的跳表的使用场景是什么，可以实现一下吗</li>
+<li>redis 缓存穿透，缓存击穿，缓存雪崩，热点数据集中失效 （常问）</li>
+<li>redis 的淘汰策略，来写一下 LRU 吧</li>
+<li>redis 的持久化方式，RDB 和 AOF 分别的使用场景</li>
+<li>redis 如何处理事务</li>
+<li>redis 为什么那么快？</li>
+<li>redis 是单线程为什么还那么快？</li>
+<li>redis 的操作为什么是原子性的，如何保证原子性</li>
+<li>redis 集群用过哪些方案，分别怎么做。讲一下一致性哈希</li>
+<li>redis 什么情况下会出现性能问题，有什么处理办法？</li>
+<li>有没有使用过 redis 的分布式锁，有什么优缺点</li>
+<li>说一下 redis 的内存模型</li>
+<li>说一下 redis 和 memcache 的区别</li>
+<li>你用 redis 做过什么？（这里尽量不要讲只做过缓存，可以说一下队列，排行榜&#x2F;计数器，发布&#x2F;订阅）</li>
+<li>你用过哪些非关系型数据库，都有什么特点，使用场景分别是什么（</li>
+<li>Mongodb 相对于 Mysql 有哪些优势，底层索引使用的数据结构是什么，为什么要使用这个</li>
+<li>Mongodb 中的分片是什么意思</li>
+</ol>
+<p>作者：resara<br>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/circle/discuss/6xECGC/">https://leetcode-cn.com/circle/discuss/6xECGC/</a><br>来源：力扣（LeetCode）</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2021/07/14/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3/">https://qpwlkq.github.io/2021/07/14/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E9%9D%A2%E8%AF%95/"># 面试</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/07/14/c%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98%E6%95%B4%E7%90%86/">c编程语言相关面试题整理</a>
+            
+            
+            <a class="next" rel="next" href="/2021/07/13/Linux-%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">Linux-基础命令</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>我常用的快捷键 | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">我常用的快捷键</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 29, 2020&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%BB%8F%E9%AA%8C%E4%B9%8B%E8%B0%88/">经验之谈</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>百度他不香吗?</p>
+<p>快捷键学会常用的就行, 快速提高使用舒适度和速度<br>尽可能脱离鼠标, 毕竟电脑最开始么有鼠标这玩意, 并且你是专业的 .</p>
+<p>最后列举了几个常用的Windows快捷键. 有些快捷键我也不用, 不管<br>有的功能可能描述不太准确, 自己动手用过之后才能知道到底怎么用</p>
+<h2 id="想不想玩转computer"><a href="#想不想玩转computer" class="headerlink" title="想不想玩转computer?"></a>想不想玩转computer?</h2><h3 id="想不想让人直呼内行"><a href="#想不想让人直呼内行" class="headerlink" title="想不想让人直呼内行?"></a>想不想让人直呼内行?</h3><h4 id="想不想被大家顶礼膜拜"><a href="#想不想被大家顶礼膜拜" class="headerlink" title="想不想被大家顶礼膜拜?"></a>想不想被大家顶礼膜拜?</h4><h2 id="那就学些快捷键吧"><a href="#那就学些快捷键吧" class="headerlink" title="那就学些快捷键吧!!!"></a>那就学些快捷键吧!!!</h2><h2 id="1-最常用"><a href="#1-最常用" class="headerlink" title="1. 最常用"></a>1. 最常用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CTRL + F 查找</span><br><span class="line">CTRL + R 替换</span><br><span class="line">CTRL + C/V/X 复制/粘贴/剪切</span><br><span class="line">CTRL + A 全选</span><br><span class="line">CTRL + X 剪切</span><br><span class="line"></span><br><span class="line">CTRL + Shift + C/X 注释一行或者选中行/取消注释</span><br><span class="line">CTRL + 滚轮(鼠标中间) 放大缩小</span><br><span class="line">CTRL + D 向下复制一行</span><br><span class="line"></span><br><span class="line">ALT + ↑/↓ 上移/下移代码</span><br><span class="line">CTRL + L 剪切, 但是我把它当作删除一行使用...................滑稽</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面的快捷键几乎对于所有的软件通用, 和Windows系统</strong></p>
+<h2 id="2-关于编译器"><a href="#2-关于编译器" class="headerlink" title="2. 关于编译器"></a>2. 关于编译器</h2><h3 id="2-1-code-blocks"><a href="#2-1-code-blocks" class="headerlink" title="2.1 code::blocks:"></a>2.1 code::blocks:</h3><p>CTRL + F9 编译<br><strong>右键可以格式化代码</strong><br>太白了, 虽然可以更换主题, 但是主程序上面的工具栏无法更改, 好用是好用, 晚上对眼不好</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ctrl + C 终止程序(开启编译后再黑色运行框框中)</span><br><span class="line">ctrl + Z 终止输入</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-Visual-studios"><a href="#2-2-Visual-studios" class="headerlink" title="2.2 Visual studios :"></a>2.2 Visual studios :</h3><p>Shift + F5 编译<br><strong>ctrl + A 全选之后, 按下Ctrl + K , 松开, 再按Ctrl + F, 格式化代码!!!</strong></p>
+<p>黑色主题比较好看, 还算比较好用, 总体比较大, 写工程用的, 其实有点小题大做<br>时候的时候, 要关掉安全开发周期<br>注意不是标准的C++版本!!!<br>常常与CB输出不一样.<br>微软nb呗</p>
+<h3 id="CLion-Dev-…"><a href="#CLion-Dev-…" class="headerlink" title="CLion, Dev, …"></a>CLion, Dev, …</h3><p>不知道<br>其他编译器不管</p>
+<h3 id="4-Windows-10系统快捷键"><a href="#4-Windows-10系统快捷键" class="headerlink" title="4. Windows 10系统快捷键"></a>4. Windows 10系统快捷键</h3><h2 id="强烈推荐"><a href="#强烈推荐" class="headerlink" title="强烈推荐!!! :"></a>强烈推荐!!! :</h2><p>Win + ←&#x2F;→&#x2F;↑&#x2F;↓ 能够分屏!<br>Win + I 设置<br>ALT + TAB 切换当前窗口<br>Win + X 开始菜单<br>Win + D 最小化所有窗口, 返回桌面<br>Win + L 锁屏防偷窥<br>Win + E 文件资源管理器<br>Win + T&#x2F;数字键 选择任务栏<br>CTRL + Shift + Esc 任务管理器<br>ALT + F4 关闭<br>windows + W 截屏</p>
+<h2 id="5-浏览器快捷键-浏览器太多了-自己百度吧-同等重要"><a href="#5-浏览器快捷键-浏览器太多了-自己百度吧-同等重要" class="headerlink" title="5. 浏览器快捷键, 浏览器太多了, 自己百度吧(同等重要)"></a>5. 浏览器快捷键, 浏览器太多了, 自己百度吧(同等重要)</h2>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2020/09/29/%E6%88%91%E5%B8%B8%E7%94%A8%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/">https://qpwlkq.github.io/2020/09/29/%E6%88%91%E5%B8%B8%E7%94%A8%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/09/29/HDU-6739-Invoker-%E7%BA%BF%E6%80%A7DP/">HDU-6739-Invoker-线性DP</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/22/Java%E5%A4%A7%E6%95%B0%E7%B1%BB/">Java大数类</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
