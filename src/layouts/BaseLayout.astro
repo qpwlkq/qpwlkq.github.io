@@ -1,0 +1,52 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Qinpeng",
+  description = "A personal site for writing, work, experiments, and changing states.",
+} = Astro.props;
+
+const navItems = [
+  ["Archive", "/archives"],
+  ["Writing", "/writing"],
+  ["Works", "/works"],
+  ["Lab", "/lab"],
+  ["Now", "/now"],
+  ["About", "/about"],
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Qinpeng home">
+        <span class="brand-mark"></span>
+        <span>Qinpeng</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        {navItems.map(([label, href]) => <a href={href}>{label}</a>)}
+      </nav>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <span>Built with Astro. Legacy Hexo archives preserved.</span>
+      <span>Writing, missions, lab notes, and whatever comes next.</span>
+    </footer>
+  </body>
+</html>

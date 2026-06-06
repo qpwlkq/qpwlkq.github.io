@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const labs = [
+  ["Interface sketches", "Fragments for tools, dashboards, and tiny interaction systems."],
+  ["Generative visuals", "Canvas, WebGL, procedural motion, and visual identity experiments."],
+  ["AI workflows", "Prompt systems, agents, local prototypes, and automation notes."],
+];
+---
+
+<BaseLayout title="Lab | Qinpeng">
+  <main class="page-shell">
+    <section class="page-hero compact">
+      <p class="section-kicker">Lab</p>
+      <h1>Small experiments with sharp edges.</h1>
+      <p>Public enough to share, unfinished enough to keep changing.</p>
+    </section>
+    <section class="list-grid">
+      {labs.map(([title, copy]) => (
+        <article class="mini-card">
+          <h2>{title}</h2>
+          <p>{copy}</p>
+        </article>
+      ))}
+    </section>
+  </main>
+</BaseLayout>

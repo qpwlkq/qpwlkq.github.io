@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const works = [
+  {
+    title: "Personal Site System",
+    meta: "Astro / MDX / Three.js",
+    copy: "The site itself becomes the first project: fast, expressive, and ready to evolve.",
+  },
+  {
+    title: "Project Archive",
+    meta: "Coming next",
+    copy: "A curated record of shipped work, prototypes, and internal experiments.",
+  },
+  {
+    title: "Visual Lab",
+    meta: "Ongoing",
+    copy: "A place for small interface studies, AI experiments, and interactive sketches.",
+  },
+];
+---
+
+<BaseLayout title="Works | Qinpeng">
+  <main class="page-shell">
+    <section class="page-hero compact">
+      <p class="section-kicker">Works</p>
+      <h1>Projects as evidence of taste.</h1>
+      <p>Not everything needs to be polished forever, but each piece should explain why it mattered.</p>
+    </section>
+    <section class="work-list">
+      {works.map((work) => (
+        <article class="work-row">
+          <div>
+            <span>{work.meta}</span>
+            <h2>{work.title}</h2>
+          </div>
+          <p>{work.copy}</p>
+        </article>
+      ))}
+    </section>
+  </main>
+</BaseLayout>

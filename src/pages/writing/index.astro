@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("writing"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Writing | Qinpeng">
+  <main class="page-shell">
+    <section class="page-hero compact">
+      <p class="section-kicker">Writing</p>
+      <h1>Notes with enough room to breathe.</h1>
+      <p>Essays, project logs, technical notes, and fragments that are worth returning to.</p>
+    </section>
+    <section class="post-list">
+      {posts.map((post) => (
+        <a class="post-row" href={`/writing/${post.id}`}>
+          <time datetime={post.data.date.toISOString()}>
+            {post.data.date.toLocaleDateString("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" })}
+          </time>
+          <div>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <span>{post.data.tags.join(" / ")}</span>
+          </div>
+        </a>
+      ))}
+    </section>
+  </main>
+</BaseLayout>

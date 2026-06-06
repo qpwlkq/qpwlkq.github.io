@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CrimsonEyeIntro from "../components/CrimsonEyeIntro";
+
+const paths = [
+  {
+    name: "Writing",
+    href: "/writing",
+    kicker: "Scrolls / essays / field notes",
+    copy: "Long-form thoughts, technical notes, and fragments that deserve to be sealed into the archive.",
+  },
+  {
+    name: "Works",
+    href: "/works",
+    kicker: "Missions / builds / artifacts",
+    copy: "A living index of shipped projects, prototypes, internal tools, and battle-tested experiments.",
+  },
+  {
+    name: "Lab",
+    href: "/lab",
+    kicker: "Jutsu lab / AI / interfaces",
+    copy: "Small public experiments with motion, agents, interfaces, and strange little systems.",
+  },
+];
+---
+
+<BaseLayout title="Qinpeng | Personal Site">
+  <CrimsonEyeIntro client:load />
+  <main>
+    <section class="hero">
+      <div class="hero-sigil" aria-hidden="true">
+        <div class="sigil-ring ring-one"></div>
+        <div class="sigil-ring ring-two"></div>
+        <div class="sigil-mark mark-one"></div>
+        <div class="sigil-mark mark-two"></div>
+        <div class="sigil-mark mark-three"></div>
+      </div>
+      <div class="hero-content">
+        <p class="eyebrow">Personal scroll / missions / hidden lab</p>
+        <h1>Qinpeng</h1>
+        <p class="hero-copy">
+          A personal site shaped like a field archive: writing, projects, experiments, and the traces left after each mission.
+        </p>
+        <div class="hero-actions" aria-label="Primary links">
+          <a class="button primary" href="/works">View missions</a>
+          <a class="button secondary" href="/writing">Open scrolls</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-band">
+      <div>
+        <p class="section-kicker">Signal</p>
+        <h2>A site with a seal, not a theme.</h2>
+      </div>
+      <p>
+        The first screen opens like a technique being released. After that, the site becomes a calmer archive
+        for essays, project logs, visual systems, tools, and experiments worth preserving.
+      </p>
+    </section>
+
+    <section class="path-grid" aria-label="Site sections">
+      {paths.map((item) => (
+        <a class="path-card" href={item.href}>
+          <span>{item.kicker}</span>
+          <strong>{item.name}</strong>
+          <p>{item.copy}</p>
+        </a>
+      ))}
+    </section>
+  </main>
+</BaseLayout>
