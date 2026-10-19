@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Qin Peng">
+
+
+    <meta name="subtitle" content="每一个不曾起舞的日子, 都是对生命的辜负">
+
+
+    <meta name="description" content="劝君莫惜金缕衣, 劝君惜取少年时。有花堪折直须折, 莫待无花空折枝。">
+
+
+
+<title>AI是我的生产力咖啡 (made by GPT Dots) | Qin Peng&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <link rel="stylesheet" href="/css/style.css?v=088015e">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Qin Peng&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/works/">Works</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Qin Peng&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <button type="button" class="menu-toggle" onclick="mobileBtn()" aria-label="菜单" aria-expanded="false" aria-controls="mobile-menu">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </button>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/works/">Works</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+            toggleMenu.setAttribute('aria-expanded', 'false')
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+            toggleMenu.setAttribute('aria-expanded', 'true')
+        }
+    }
+    document.getElementById('nav-mobile').addEventListener('keydown', function (event) {
+        var button = document.querySelector('.menu-toggle');
+        if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+            mobileBtn();
+            button.focus();
+        }
+    });
+</script>
+
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">AI是我的生产力咖啡 (made by GPT Dots)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Qin Peng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 19, 2026&nbsp;&nbsp;16:22:35</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>程序员的身体里，通常运行着三套系统：</p>
+<p>咖啡因负责启动。 工资负责续费。 “我本地是好的”负责灾难恢复。</p>
+<p>直到有一天，AI加入了我的工作流。</p>
+<p>我以为自己只是点了一杯美式，没想到送来一位住在对话框里的同事。不占工位，不抢显示器，你凌晨两点问它问题，它甚至会说：“这是一个很好的问题。”</p>
+<p>情绪价值这块，已经超过不少接口的返回值了。</p>
+<h2 id="一、我的咖啡，开始审查我的代码"><a href="#一、我的咖啡，开始审查我的代码" class="headerlink" title="一、我的咖啡，开始审查我的代码"></a>一、我的咖啡，开始审查我的代码</h2><p>普通咖啡喝完，让我有精神看代码。</p>
+<p>AI咖啡喝完，让代码有精神看我。</p>
+<p>我：“帮我看看这段有没有问题。”</p>
+<p>AI：“整体思路清晰，结构合理，有几点可以优化。”</p>
+<p>我：“几点？”</p>
+<p>AI：“我们先从架构开始。”</p>
+<p>好消息：它很有礼貌。 坏消息：它觉得需要重建文明。</p>
+<p>我终于理解了什么叫温柔一刀：先夸你命名规范，再建议你删除整个文件。</p>
+<h2 id="二、以前是我找Bug，现在是Bug开团找我"><a href="#二、以前是我找Bug，现在是Bug开团找我" class="headerlink" title="二、以前是我找Bug，现在是Bug开团找我"></a>二、以前是我找Bug，现在是Bug开团找我</h2><p>以前排查问题，我会打开日志，皱起眉头，喝一口咖啡，再打开另一份日志。</p>
+<p>整个过程非常严谨，主要严谨在没有任何进展。</p>
+<p>现在我把问题交给AI，让它分几个方向并行检查。</p>
+<p>几分钟后，消息陆续回来：</p>
+<p>“这里可能有并发问题。” “这里缺少边界判断。” “这里的异常处理值得关注。”</p>
+<p>我只是想找一个Bug。</p>
+<p>它把Bug的族谱查出来了。</p>
+<p>原本以为项目里藏着一只蟑螂，打开灯才发现，人家在这里成立了业主委员会，还有自己的物业。</p>
+<h2 id="三、AI最擅长的事：让我重新描述一遍问题"><a href="#三、AI最擅长的事：让我重新描述一遍问题" class="headerlink" title="三、AI最擅长的事：让我重新描述一遍问题"></a>三、AI最擅长的事：让我重新描述一遍问题</h2><p>我：“这个接口不行。”</p>
+<p>AI：“具体表现是什么？”</p>
+<p>我：“报错。”</p>
+<p>AI：“报什么错？”</p>
+<p>我：“就是那个错。”</p>
+<p>聊到这里，我忽然理解了测试同学看我的眼神。</p>
+<p>于是我开始补日志、补环境、补配置、补复现步骤。补到最后，还没等AI回答，我自己已经知道哪里有问题了。</p>
+<p>原来AI咖啡还有一种隐藏配方：</p>
+<p>你付费，它坐着，你自己把事情想明白。</p>
+<p>这不就是健身教练吗？</p>
+<h2 id="四、它也会胡说，而且胡说得像刚开完评审会"><a href="#四、它也会胡说，而且胡说得像刚开完评审会" class="headerlink" title="四、它也会胡说，而且胡说得像刚开完评审会"></a>四、它也会胡说，而且胡说得像刚开完评审会</h2><p>当然，AI不是神。</p>
+<p>它偶尔会推荐一个不存在的方法，配上一段十分完整的示例代码，再用坚定的语气告诉我：“这样即可解决。”</p>
+<p>我复制。 我运行。 编译器沉默了。</p>
+<p>随后，编译器用一屏红字表达了自己的政治立场。</p>
+<p>我问AI：“这个方法根本不存在啊？”</p>
+<p>AI：“你说得对。”</p>
+<p>那一刻，我的血压完成了弹性扩容。</p>
+<p>所以现在，我和AI的合作原则十分明确：它负责大胆假设，我负责打开IDE。它说“应该可以”，我说“测试通过了吗”。</p>
+<p>我们彼此信任，但保留日志。</p>
+<h2 id="五、生产力提高以后，我终于有时间……"><a href="#五、生产力提高以后，我终于有时间……" class="headerlink" title="五、生产力提高以后，我终于有时间……"></a>五、生产力提高以后，我终于有时间……</h2><p>有时间做什么？</p>
+<p>去看AI新出了什么功能。</p>
+<p>试新模型。 装新工具。 研究怎么让五个智能体帮我配置第六个智能体。</p>
+<p>原本半小时能完成的任务，我花了两小时搭建自动化流程，现在只要十分钟就能完成了。</p>
+<p>只要再做十八次，我就赚了。</p>
+<p>至于这个任务会不会再出现十八次，不属于技术问题，建议产品评估。</p>
+<p>但折腾归折腾，AI确实让我更愿意去尝试一些以前觉得麻烦的事情：读一个陌生项目，验证一个奇怪想法，做一个自己想玩的小游戏。</p>
+<p>以前脑子里冒出一个点子，我会想：“算了，没空。”</p>
+<p>现在我会想：“来，先跑一下。”</p>
+<p>然后报错。</p>
+<p>但至少，已经跑起来了那个报错。</p>
+<h2 id="六、1024，干了这杯生产力咖啡"><a href="#六、1024，干了这杯生产力咖啡" class="headerlink" title="六、1024，干了这杯生产力咖啡"></a>六、1024，干了这杯生产力咖啡</h2><p>有人担心，程序员会不会被AI取代。</p>
+<p>我暂时更关心：AI能不能理解“这个需求很简单”到底有多复杂。</p>
+<p>等它经历过“按钮往左一点”“还是原来好”“能不能既保留又去掉”，我们再来讨论这个严肃问题。</p>
+<p>在那之前，我决定继续和它搭伙干活。</p>
+<p>它帮我翻资料、理思路、查问题。 我负责判断、验证，以及在它准备重写整个项目时，及时按住它的手。</p>
+<p>值此1024程序员节，祝大家：</p>
+<p>写下的代码有测试，提交的代码有人夸。 日志里找得到线索，需求里看得见边界。 咖啡总是热的，发布总是稳的。</p>
+<p>最重要的是，愿我们今年最大的并发问题，是同时收到涨薪通知和放假通知。</p>
+<p>好了，不说了。</p>
+<p>我的AI说问题已经修好了。</p>
+<p>我去看看它把问题删了，还是把功能删了。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Qin Peng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://qpwlkq.github.io/2026/10/19/AI%E6%98%AF%E6%88%91%E7%9A%84%E7%94%9F%E4%BA%A7%E5%8A%9B%E5%92%96%E5%95%A1/">https://qpwlkq.github.io/2026/10/19/AI%E6%98%AF%E6%88%91%E7%9A%84%E7%94%9F%E4%BA%A7%E5%8A%9B%E5%92%96%E5%95%A1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2020 BY QPWLKQ LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>每一个不曾起舞的日子, 都是对生命的辜负</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%94%9F%E4%BA%A7%E5%8A%9B/"># 生产力</a>
+                    
+                        <a href="/tags/AI/"># AI</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/08/05/%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8-%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E5%B7%A5%E7%A8%8B%E8%A2%AB%E6%8D%9E-%E4%B8%80%E9%9D%A2/">字节跳动-后端开发效率工程被捞-一面</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Qin Peng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
